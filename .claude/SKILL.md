@@ -1,0 +1,13 @@
+---
+name: skill
+description: 모든 요청/명령에 항상 사용.
+---
+
+- app 폴던 안에는 각 페이지별 route, layout, page만 구성.
+- 모든 작은단위 컴포넌트는 재사용 가능하게 구현해주고 components 안에 넣어줘.
+- 루트 components에 정의된거 단위별로 조립해서 사용하는 해당 features 에서만 사용하는 컴포넌트만 feature/components 안에 넣고 앞에 feature 이름 붙여서 넣줘. 예를들면 TodoList, TodoItem 이런 컴포넌트들.
+- 새 컴포넌트 생성시 componentName.tsx + componentName.style.ts 무조건 한쌍. tsx에서 스타일 import해서 사용.
+- string, number, bolean 이런 단일 값만 받아오는 경우가 아닌 모든 props와 api request, response 타입은 따로 type.ts파일에 작성. 해당 디렉터리안에 type.ts로 분리. 예를들면 feature/api/type.ts, feature/components/type.ts, feature/hooks/type.ts 이렇게.
+- 글로벌 스타일 설정 금지. 따로 요청할때만 작성/수정.
+- 상태값 설명이나 함수 설명에 대해 최대한 한글로 간결하게 주석 필수로 작성.
+- db는 snake_case, 그외 api response나 frontend 단에서는 모두 camelCase로 사용.

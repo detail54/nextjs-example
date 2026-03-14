@@ -10,3 +10,4 @@ description: 모든 요청/명령에 항상 사용.
 - string, number, bolean 이런 단일 값만 받아오는 경우가 아닌 모든 props와 api request, response 타입은 따로 type.ts파일에 작성. 해당 디렉터리안에 type.ts로 분리. 예를들면 feature/api/type.ts, feature/components/type.ts, feature/hooks/type.ts 이렇게.
 - 상태값 설명이나 함수 설명에 대해 최대한 한글로 간결하게 주석 필수로 작성.
 - db는 snake_case, 그외 api response나 frontend 단에서는 모두 camelCase로 사용.
+- frontend에서는 클라이언트 상태는 zustand, 서버 상태는 tanstack query로 관리.

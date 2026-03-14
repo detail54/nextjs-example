@@ -1,0 +1,156 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import BasicButton from '@/components/button/BasicButton'
+import BasicInput from '@/components/input/BasicInput'
+import TextButton from '@/components/button/TextButton'
+import { AUTH_MSG } from '@/context/authMsg'
+import { useLogin } from '../hooks/useLogin'
+import { loginFormStyles as s } from './AuthLoginForm.styles'
+import { type AuthLoginFormProps } from './type'
+
+export default function AuthLoginForm({
+  onAddAccount,
+  onFindUsername,
+  onFindPassword,
+}: AuthLoginFormProps) {
+  // 입력 상태
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const router = useRouter()
+
+  const { mutate: login, isPending } = useLogin({
+    // 로그인 성공 시 홈으로 이동
+    onSuccess: () => router.push('/'),
+  })
+
+  // 로그인 제출 핸들러
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    login({ username, password })
+  }
+
+  return (
+    <div className={s.wrapper}>
+      {/* 배경 장식 */}
+      <div className={s.blobWrapper}>
+        <div className={s.blob1} />
+        <div className={s.blob2} />
+      </div>
+
+      <div className={s.card}>
+        {/* 좌측 브랜드 패널 */}
+        <div className={s.brandPanel}>
+          <div className={s.brandTop}>
+            {/* 브랜드 아이콘 */}
+            <div className={s.brandIconWrapper}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 11l3 3L22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+              </svg>
+            </div>
+
+            <div>
+              <h1 className={s.brandName}>{AUTH_MSG.BRAND_NAME}</h1>
+              <p className={s.brandDesc}>{AUTH_MSG.BRAND_DESCRIPTION}</p>
+            </div>
+
+            {/* 기능 목록 */}
+            <ul className={s.brandFeatures}>
+              {['프로젝트 관리', '팀 협업', '실시간 진행 현황'].map((feature) => (
+                <li key={feature} className={s.brandFeatureItem}>
+                  <span className={s.brandFeatureDot} />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className={s.brandBottom}>
+            <p className={s.brandCopyright}>© 2026 TaskFlow. All rights reserved.</p>
+          </div>
+        </div>
+
+        {/* 우측 폼 패널 */}
+        <div className={s.formPanel}>
+          <div className={s.formHeader}>
+            <h2 className={s.formTitle}>{AUTH_MSG.LOGIN_TITLE}</h2>
+            <p className={s.formSubtitle}>{AUTH_MSG.LOGIN_SUBTITLE}</p>
+          </div>
+
+          <form className={s.form} onSubmit={handleSubmit} noValidate>
+            {/* 아이디 입력 */}
+            <div className={s.fieldWrapper}>
+              <label className={s.label}>{AUTH_MSG.USERNAME_LABEL}</label>
+              <div className={s.inputIconWrapper}>
+                <span className={s.inputIcon}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </span>
+                <BasicInput
+                  type="text"
+                  value={username}
+                  placeholder={AUTH_MSG.USERNAME_PLACEHOLDER}
+                  className="pl-10"
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* 비밀번호 입력 */}
+            <div className={s.fieldWrapper}>
+              <label className={s.label}>{AUTH_MSG.PASSWORD_LABEL}</label>
+              <div className={s.inputIconWrapper}>
+                <span className={s.inputIcon}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <BasicInput
+                  type="password"
+                  value={password}
+                  placeholder={AUTH_MSG.PASSWORD_PLACEHOLDER}
+                  className="pl-10"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* 로그인 버튼 */}
+            <div className={s.submitWrapper}>
+              <BasicButton
+                type="submit"
+                variant="primary"
+                size="lg"
+                disabled={isPending}
+                className="w-full"
+              >
+                {isPending ? '로그인 중...' : AUTH_MSG.LOGIN_BUTTON}
+              </BasicButton>
+            </div>
+          </form>
+
+          {/* 하단 텍스트 버튼 링크 */}
+          <div className={s.footerLinks}>
+            <TextButton onClick={onAddAccount}>
+              {AUTH_MSG.ADD_ACCOUNT}
+            </TextButton>
+            <span className={s.divider}>·</span>
+            <TextButton onClick={onFindUsername}>
+              {AUTH_MSG.FIND_USERNAME}
+            </TextButton>
+            <span className={s.divider}>·</span>
+            <TextButton onClick={onFindPassword}>
+              {AUTH_MSG.FIND_PASSWORD}
+            </TextButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

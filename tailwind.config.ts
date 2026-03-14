@@ -74,6 +74,8 @@ const config: Config = {
           900: '#881337',
           950: '#4c0519',
         },
+        white: '#ffffff',
+        black: '#000000',
       },
     },
   },

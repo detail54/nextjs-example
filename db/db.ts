@@ -1,5 +1,6 @@
 import path from 'path'
 import Database from 'better-sqlite3'
+import bcrypt from 'bcryptjs'
 
 const dbPath = path.join(process.cwd(), 'db.sqlite')
 
@@ -46,3 +47,19 @@ db.exec(`
   CREATE INDEX idx_tasks_epic_id ON tasks(epic_id);
   CREATE INDEX idx_tasks_status ON tasks(status);
 `)
+
+// admin 계정 생성
+const admin = db.prepare('SELECT id FROM users WHERE username = ?').get('admin')
+
+if (!admin) {
+  const hashed = bcrypt.hashSync('admin123', 10)
+
+  db.prepare(
+    `
+    INSERT INTO users (username, password, role)
+    VALUES (?, ?, ?)
+  `,
+  ).run('admin', hashed, 'ADMIN')
+
+  console.log('✔ admin 계정 생성 (admin / admin123)')
+}

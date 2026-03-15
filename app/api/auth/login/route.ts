@@ -1,7 +1,14 @@
 import { authRepository } from '@/features/auth/api/auth.repository'
 import { type LoginRequest, type LoginResponse } from '@/features/auth/api/type'
 import { type BasicResponse, type DbUser } from '@/db/type'
-import { signJwt, AUTH_COOKIE } from '@/lib/jwt'
+import {
+  signAccessToken,
+  signRefreshToken,
+  ACCESS_TOKEN_COOKIE,
+  REFRESH_TOKEN_COOKIE,
+  ACCESS_TOKEN_MAX_AGE,
+  REFRESH_TOKEN_MAX_AGE,
+} from '@/lib/jwt'
 import { AUTH_MSG } from '@/context/authMsg'
 import bcrypt from 'bcryptjs'
 import { NextRequest, NextResponse } from 'next/server'
@@ -31,12 +38,13 @@ export async function POST(
       )
     }
 
-    // JWT 발급
-    const token = await signJwt({
-      userId: user.id,
-      username: user.username,
-      role: user.role,
-    })
+    const tokenPayload = { userId: user.id, username: user.username, role: user.role }
+
+    // 액세스 토큰 (15분) + 리프레시 토큰 (7일) 발급
+    const [accessToken, refreshToken] = await Promise.all([
+      signAccessToken(tokenPayload),
+      signRefreshToken(tokenPayload),
+    ])
 
     const response = NextResponse.json<BasicResponse<LoginResponse>>({
       success: true,
@@ -48,13 +56,24 @@ export async function POST(
       },
     })
 
-    // HttpOnly 쿠키에 토큰 저장 (XSS 방지)
-    response.cookies.set(AUTH_COOKIE, token, {
+    const isProd = process.env.NODE_ENV === 'production'
+
+    // 액세스 토큰 쿠키 (15분, HttpOnly)
+    response.cookies.set(ACCESS_TOKEN_COOKIE, accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProd,
       sameSite: 'lax',
-      maxAge: Number(process.env.COOKIE_MAX_AGE),
+      maxAge: ACCESS_TOKEN_MAX_AGE,
       path: '/',
+    })
+
+    // 리프레시 토큰 쿠키 (7일, HttpOnly, refresh 경로에만 전송)
+    response.cookies.set(REFRESH_TOKEN_COOKIE, refreshToken, {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: 'lax',
+      maxAge: REFRESH_TOKEN_MAX_AGE,
+      path: '/api/auth/refresh',
     })
 
     return response

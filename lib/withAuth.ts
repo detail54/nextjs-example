@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyJwt, AUTH_COOKIE, type JwtUserPayload } from './jwt'
+import { verifyAccessToken, ACCESS_TOKEN_COOKIE, type JwtUserPayload } from './jwt'
 import { AuthError, AuthErrorCode } from './authError'
 import { AUTH_MSG } from '@/context/authMsg'
 import { type UserRole, type BasicResponse } from '@/db/type'
@@ -25,14 +25,14 @@ type AuthedHandler = (
 export function withAuth(handler: AuthedHandler, options: WithAuthOptions = {}) {
   return async (request: NextRequest): Promise<NextResponse> => {
     try {
-      // 쿠키에서 토큰 추출
-      const token = request.cookies.get(AUTH_COOKIE)?.value
+      // 쿠키에서 액세스 토큰 추출
+      const token = request.cookies.get(ACCESS_TOKEN_COOKIE)?.value
       if (!token) {
         throw new AuthError(AuthErrorCode.UNAUTHORIZED)
       }
 
-      // 토큰 검증 (만료/유효하지 않음 구분)
-      const user = await verifyJwt(token)
+      // 액세스 토큰 검증 (만료/유효하지 않음 구분)
+      const user = await verifyAccessToken(token)
 
       // 역할 검사
       if (options.roles && !options.roles.includes(user.role)) {

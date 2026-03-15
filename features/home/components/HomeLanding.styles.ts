@@ -18,5 +18,4 @@ export const homeLandingStyles = {
   subtitle: 'text-lg leading-relaxed text-secondary-400',
 
   actions: 'flex flex-col items-center gap-3 w-full sm:flex-row sm:w-auto',
-  loginButton: 'w-full sm:w-auto',
 }

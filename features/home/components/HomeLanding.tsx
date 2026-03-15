@@ -1,5 +1,4 @@
-import Link from 'next/link'
-import BasicButton from '@/components/button/BasicButton'
+import LinkButton from '@/components/button/LinkButton'
 import { APP_PATHS } from '@/context/appPaths'
 import { AUTH_MSG } from '@/context/authMsg'
 import { HOME_MSG } from '@/context/homeMsg'
@@ -39,11 +38,15 @@ export default function HomeLanding() {
         </div>
 
         <div className={s.actions}>
-          <Link href={APP_PATHS.AUTH.LOGIN} className={s.loginButton}>
-            <BasicButton variant='primary' size='lg' className='w-full'>
-              {HOME_MSG.LOGIN_BUTTON}
-            </BasicButton>
-          </Link>
+          <LinkButton
+            buttonType='basic'
+            href={APP_PATHS.AUTH.LOGIN}
+            variant='primary'
+            size='lg'
+            className='w-full sm:w-auto'
+          >
+            {HOME_MSG.LOGIN_BUTTON}
+          </LinkButton>
         </div>
       </div>
     </div>

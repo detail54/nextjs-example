@@ -16,6 +16,7 @@ export const AUTH_MSG = {
   FIND_USERNAME: '아이디 찾기',
   FIND_PASSWORD: '비밀번호 찾기',
 
+  LOGIN_LOADING: '로그인 중...',
   REQUIRED_FIELD: '필수 입력 항목입니다',
   LOGIN_FAILED: '로그인에 실패했습니다',
   LOGIN_FAILED_DESC: '아이디 또는 비밀번호를 확인해주세요',
@@ -26,4 +27,7 @@ export const AUTH_MSG = {
   TOKEN_EXPIRED: '로그인이 만료됐습니다. 다시 로그인해주세요',
   INVALID_TOKEN: '유효하지 않은 인증입니다',
   FORBIDDEN: '접근 권한이 없습니다',
+
+  COPYRIGHT: '© 2026 TaskFlow. All rights reserved.',
+  BRAND_FEATURES: ['프로젝트 관리', '팀 협업', '실시간 진행 현황'] as const,
 }

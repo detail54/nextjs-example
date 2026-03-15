@@ -59,7 +59,7 @@ export default function AuthLoginForm({
 
             {/* 기능 목록 */}
             <ul className={s.brandFeatures}>
-              {['프로젝트 관리', '팀 협업', '실시간 진행 현황'].map((feature) => (
+              {AUTH_MSG.BRAND_FEATURES.map((feature) => (
                 <li key={feature} className={s.brandFeatureItem}>
                   <span className={s.brandFeatureDot} />
                   {feature}
@@ -69,7 +69,7 @@ export default function AuthLoginForm({
           </div>
 
           <div className={s.brandBottom}>
-            <p className={s.brandCopyright}>© 2026 TaskFlow. All rights reserved.</p>
+            <p className={s.brandCopyright}>{AUTH_MSG.COPYRIGHT}</p>
           </div>
         </div>
 
@@ -130,7 +130,7 @@ export default function AuthLoginForm({
                 disabled={isPending}
                 className="w-full"
               >
-                {isPending ? '로그인 중...' : AUTH_MSG.LOGIN_BUTTON}
+                {isPending ? AUTH_MSG.LOGIN_LOADING : AUTH_MSG.LOGIN_BUTTON}
               </BasicButton>
             </div>
           </form>

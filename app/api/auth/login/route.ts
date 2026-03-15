@@ -1,13 +1,14 @@
 import { authRepository } from '@/features/auth/api/auth.repository'
-import { type DbUser } from '@/db/type'
-import { type LoginRequest } from '@/features/auth/api/type'
+import { type LoginRequest, type LoginResponse } from '@/features/auth/api/type'
+import { type BasicResponse, type DbUser } from '@/db/type'
 import { signJwt, AUTH_COOKIE } from '@/lib/jwt'
 import { AUTH_MSG } from '@/context/authMsg'
 import bcrypt from 'bcryptjs'
 import { NextRequest, NextResponse } from 'next/server'
 
-
-export async function POST(request: NextRequest) {
+export async function POST(
+  request: NextRequest,
+): Promise<NextResponse<BasicResponse<LoginResponse>>> {
   try {
     const body: LoginRequest = await request.json()
     const { username, password } = body
@@ -16,7 +17,7 @@ export async function POST(request: NextRequest) {
     const user = authRepository.findByUsername(username) as DbUser | undefined
     if (!user) {
       return NextResponse.json(
-        { message: AUTH_MSG.INVALID_CREDENTIALS },
+        { success: false, data: null as never, message: AUTH_MSG.INVALID_CREDENTIALS },
         { status: 401 },
       )
     }
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
     const isValid = await bcrypt.compare(password, user.password)
     if (!isValid) {
       return NextResponse.json(
-        { message: AUTH_MSG.INVALID_CREDENTIALS },
+        { success: false, data: null as never, message: AUTH_MSG.INVALID_CREDENTIALS },
         { status: 401 },
       )
     }
@@ -37,12 +38,13 @@ export async function POST(request: NextRequest) {
       role: user.role,
     })
 
-    const response = NextResponse.json({
-      user: {
+    const response = NextResponse.json<BasicResponse<LoginResponse>>({
+      success: true,
+      data: {
         id: user.id,
         username: user.username,
         role: user.role,
-        createdAt: user.created_at,
+        createdAt: user.createdAt,
       },
     })
 
@@ -57,6 +59,9 @@ export async function POST(request: NextRequest) {
 
     return response
   } catch {
-    return NextResponse.json({ message: AUTH_MSG.SERVER_ERROR }, { status: 500 })
+    return NextResponse.json(
+      { success: false, data: null as never, message: AUTH_MSG.SERVER_ERROR },
+      { status: 500 },
+    )
   }
 }

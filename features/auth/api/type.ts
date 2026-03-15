@@ -26,17 +26,10 @@ export type LoginRequest = {
   password: string
 }
 
-// 로그인 성공 응답 타입
+// 로그인 성공 응답 - 유저 데이터
 export type LoginResponse = {
-  user: {
-    id: number
-    username: string
-    role: UserRole
-    createdAt: string
-  }
-}
-
-// 로그인 실패 응답 타입
-export type LoginErrorResponse = {
-  message: string
+  id: number
+  username: string
+  role: UserRole
+  createdAt: string
 }

@@ -21,4 +21,9 @@ export const AUTH_MSG = {
   LOGIN_FAILED_DESC: '아이디 또는 비밀번호를 확인해주세요',
   INVALID_CREDENTIALS: '아이디 또는 비밀번호가 올바르지 않습니다',
   SERVER_ERROR: '서버 오류가 발생했습니다',
+
+  UNAUTHORIZED: '로그인이 필요합니다',
+  TOKEN_EXPIRED: '로그인이 만료됐습니다. 다시 로그인해주세요',
+  INVALID_TOKEN: '유효하지 않은 인증입니다',
+  FORBIDDEN: '접근 권한이 없습니다',
 }

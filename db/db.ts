@@ -1,16 +1,19 @@
 import path from 'path'
-import Database from 'better-sqlite3'
+import BetterSqlite3 from 'better-sqlite3'
+import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { eq } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
+import * as schema from './schema'
 
 const dbPath = path.join(process.cwd(), 'db.sqlite')
 
-export const db = new Database(dbPath)
+const sqlite = new BetterSqlite3(dbPath)
 
 // SQLite 성능 설정
-db.pragma('journal_mode = WAL')
+sqlite.pragma('journal_mode = WAL')
 
 // 테이블 생성
-db.exec(`
+sqlite.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
@@ -45,15 +48,18 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_tasks_status ON tasks(status);
 `)
 
+export const db = drizzle(sqlite, { schema })
+
 // admin 계정 초기 생성
-const admin = db.prepare('SELECT id FROM users WHERE username = ?').get('admin')
+const admin = db.select({ id: schema.users.id })
+  .from(schema.users)
+  .where(eq(schema.users.username, 'admin'))
+  .get()
 
 if (!admin) {
   const hashed = bcrypt.hashSync('admin123', 10)
-  db.prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)').run(
-    'admin',
-    hashed,
-    'ADMIN',
-  )
+  db.insert(schema.users)
+    .values({ username: 'admin', password: hashed, role: 'ADMIN' })
+    .run()
   console.log('✔ admin 계정 생성 (admin / admin123)')
 }

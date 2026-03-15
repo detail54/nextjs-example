@@ -1,49 +1,58 @@
 import { db } from '@/db/db'
-import {
-  type CreateTaskParams,
-  type UpdateTaskParams,
-  type UpdateTaskStatusParams,
-  type MoveToEpicParams,
+import { tasks } from '@/db/schema'
+import { eq, asc, sql } from 'drizzle-orm'
+import type {
+  CreateTaskParams,
+  UpdateTaskParams,
+  UpdateTaskStatusParams,
+  MoveToEpicParams,
 } from './type'
 
 export const taskRepository = {
+  /** epic 하위 task 목록 조회 (오래된순) */
   getByEpicId(epicId: number) {
-    return db.prepare('SELECT * FROM tasks WHERE epic_id = ? ORDER BY created_at ASC').all(epicId)
+    return db.select().from(tasks).where(eq(tasks.epicId, epicId)).orderBy(asc(tasks.createdAt)).all()
   },
 
+  /** task 단건 조회 */
   getById(id: number) {
-    return db.prepare('SELECT * FROM tasks WHERE id = ?').get(id)
+    return db.select().from(tasks).where(eq(tasks.id, id)).get()
   },
 
+  /** task 생성 */
   create({ epicId, title, description }: CreateTaskParams) {
-    const result = db
-      .prepare('INSERT INTO tasks (epic_id, title, description) VALUES (?, ?, ?)')
-      .run(epicId, title, description)
-
-    return result.lastInsertRowid
+    return db.insert(tasks).values({ epicId, title, description }).run().lastInsertRowid
   },
 
+  /** task 상태 변경 */
   updateStatus({ id, status }: UpdateTaskStatusParams) {
     return db
-      .prepare('UPDATE tasks SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
-      .run(status, id)
+      .update(tasks)
+      .set({ status, updatedAt: sql`CURRENT_TIMESTAMP` })
+      .where(eq(tasks.id, id))
+      .run()
   },
 
+  /** task 내용 수정 */
   update({ id, title, description }: UpdateTaskParams) {
     return db
-      .prepare(
-        'UPDATE tasks SET title = ?, description = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-      )
-      .run(title, description, id)
+      .update(tasks)
+      .set({ title, description, updatedAt: sql`CURRENT_TIMESTAMP` })
+      .where(eq(tasks.id, id))
+      .run()
   },
 
+  /** task를 다른 epic으로 이동 */
   moveToEpic({ taskId, epicId }: MoveToEpicParams) {
     return db
-      .prepare('UPDATE tasks SET epic_id = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
-      .run(epicId, taskId)
+      .update(tasks)
+      .set({ epicId, updatedAt: sql`CURRENT_TIMESTAMP` })
+      .where(eq(tasks.id, taskId))
+      .run()
   },
 
+  /** task 삭제 */
   delete(id: number) {
-    return db.prepare('DELETE FROM tasks WHERE id = ?').run(id)
+    return db.delete(tasks).where(eq(tasks.id, id)).run()
   },
 }

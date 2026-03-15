@@ -1,5 +1,6 @@
-import { SignJWT, jwtVerify } from 'jose'
+import { SignJWT, jwtVerify, errors as joseErrors } from 'jose'
 import { type UserRole } from '@/db/type'
+import { AuthError, AuthErrorCode } from './authError'
 
 // JWT 서명에 사용할 시크릿 키
 const SECRET = new TextEncoder().encode(process.env.JWT_SECRET)
@@ -20,13 +21,16 @@ export async function signJwt(payload: JwtUserPayload): Promise<string> {
     .sign(SECRET)
 }
 
-// JWT 토큰 검증 - 유효하지 않으면 null 반환
-export async function verifyJwt(token: string): Promise<JwtUserPayload | null> {
+// JWT 토큰 검증 - 만료/유효하지 않음 구분해서 AuthError throw
+export async function verifyJwt(token: string): Promise<JwtUserPayload> {
   try {
     const { payload } = await jwtVerify(token, SECRET)
     return payload as unknown as JwtUserPayload
-  } catch {
-    return null
+  } catch (error) {
+    if (error instanceof joseErrors.JWTExpired) {
+      throw new AuthError(AuthErrorCode.TOKEN_EXPIRED)
+    }
+    throw new AuthError(AuthErrorCode.INVALID_TOKEN)
   }
 }
 

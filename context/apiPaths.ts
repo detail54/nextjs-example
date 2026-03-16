@@ -4,5 +4,6 @@ export const API_PATHS = {
     LOGIN: '/api/auth/login',
     LOGOUT: '/api/auth/logout',
     REFRESH: '/api/auth/refresh',
+    ME: '/api/auth/me',
   },
 } as const

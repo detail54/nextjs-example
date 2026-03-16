@@ -33,3 +33,10 @@ export type LoginResponse = {
   role: UserRole
   createdAt: string
 }
+
+// 현재 세션 유저 데이터 (JWT 페이로드 기반)
+export type MeResponse = {
+  userId: number
+  username: string
+  role: UserRole
+}

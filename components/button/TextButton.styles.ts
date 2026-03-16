@@ -1,7 +1,9 @@
 import { cva } from 'class-variance-authority'
 
 export const textButtonStyle = cva(
-  'inline-flex items-center justify-center font-medium transition-colors duration-150 focus-visible:outline-none disabled:opacity-40 disabled:cursor-not-allowed',
+  'inline-flex items-center justify-center rounded font-medium transition-colors duration-150' +
+    ' focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1' +
+    ' disabled:opacity-40 disabled:cursor-not-allowed',
   {
     variants: {
       variant: {

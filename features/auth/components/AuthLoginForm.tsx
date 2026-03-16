@@ -4,17 +4,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import BasicButton from '@/components/button/BasicButton'
 import BasicInput from '@/components/input/BasicInput'
-import TextButton from '@/components/button/TextButton'
+import LinkButton from '@/components/button/LinkButton'
 import { AUTH_MSG } from '@/context/authMsg'
 import { useLogin } from '../hooks/useLogin'
 import { loginFormStyles as s } from './AuthLoginForm.styles'
-import { type AuthLoginFormProps } from './type'
-
-export default function AuthLoginForm({
-  onAddAccount,
-  onFindUsername,
-  onFindPassword,
-}: AuthLoginFormProps) {
+export default function AuthLoginForm() {
   // 입력 상태
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -137,17 +131,17 @@ export default function AuthLoginForm({
 
           {/* 하단 텍스트 버튼 링크 */}
           <div className={s.footerLinks}>
-            <TextButton onClick={onAddAccount}>
+            <LinkButton buttonType="text" href="/auth/register">
               {AUTH_MSG.ADD_ACCOUNT}
-            </TextButton>
+            </LinkButton>
             <span className={s.divider}>·</span>
-            <TextButton onClick={onFindUsername}>
+            <LinkButton buttonType="text" href="/auth/find-username">
               {AUTH_MSG.FIND_USERNAME}
-            </TextButton>
+            </LinkButton>
             <span className={s.divider}>·</span>
-            <TextButton onClick={onFindPassword}>
+            <LinkButton buttonType="text" href="/auth/find-password">
               {AUTH_MSG.FIND_PASSWORD}
-            </TextButton>
+            </LinkButton>
           </div>
         </div>
       </div>

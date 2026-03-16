@@ -1,4 +1,6 @@
+import { SquareCheckBig } from 'lucide-react'
 import LinkButton from '@/components/button/LinkButton'
+import Icon from '@/components/icon/Icon'
 import { APP_PATHS } from '@/context/appPaths'
 import { AUTH_MSG } from '@/context/authMsg'
 import { HOME_MSG } from '@/context/homeMsg'
@@ -17,19 +19,7 @@ export default function HomeLanding() {
       <div className={s.content}>
         {/* 브랜드 아이콘 */}
         <div className={s.iconWrapper}>
-          <svg
-            width='32'
-            height='32'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='white'
-            strokeWidth='2.2'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-          >
-            <path d='M9 11l3 3L22 4' />
-            <path d='M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11' />
-          </svg>
+          <Icon icon={SquareCheckBig} size="2xl" className="stroke-white" />
         </div>
 
         <div className='space-y-3'>

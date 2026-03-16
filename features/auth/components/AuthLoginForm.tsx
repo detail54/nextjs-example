@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { SquareCheckBig, User, Lock } from 'lucide-react'
 import BasicButton from '@/components/button/BasicButton'
 import BasicInput from '@/components/input/BasicInput'
 import LinkButton from '@/components/button/LinkButton'
+import Icon from '@/components/icon/Icon'
 import { AUTH_MSG } from '@/context/authMsg'
 import { useLogin } from '../hooks/useLogin'
 import { loginFormStyles as s } from './AuthLoginForm.styles'
@@ -40,10 +42,7 @@ export default function AuthLoginForm() {
           <div className={s.brandTop}>
             {/* 브랜드 아이콘 */}
             <div className={s.brandIconWrapper}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-              </svg>
+              <Icon icon={SquareCheckBig} size="xl" className="stroke-white" />
             </div>
 
             <div>
@@ -80,10 +79,7 @@ export default function AuthLoginForm() {
               <label className={s.label}>{AUTH_MSG.USERNAME_LABEL}</label>
               <div className={s.inputIconWrapper}>
                 <span className={s.inputIcon}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
+                  <Icon icon={User} size="sm" />
                 </span>
                 <BasicInput
                   type="text"
@@ -100,10 +96,7 @@ export default function AuthLoginForm() {
               <label className={s.label}>{AUTH_MSG.PASSWORD_LABEL}</label>
               <div className={s.inputIconWrapper}>
                 <span className={s.inputIcon}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
+                  <Icon icon={Lock} size="sm" />
                 </span>
                 <BasicInput
                   type="password"

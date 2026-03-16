@@ -1,4 +1,4 @@
-import type { users, epics, tasks } from './schema'
+import type { users, epics, tasks, notices } from './schema'
 
 // ─── Response 제너릭 타입 ─────────────────────────────────────────
 
@@ -43,3 +43,6 @@ export type DbEpic = typeof epics.$inferSelect
 
 /** tasks 테이블 row 타입 */
 export type DbTask = typeof tasks.$inferSelect
+
+/** notices 테이블 row 타입 */
+export type DbNotice = typeof notices.$inferSelect

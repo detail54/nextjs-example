@@ -71,3 +71,22 @@ export const taskAssignees = sqliteTable('task_assignees', {
     .notNull()
     .references(() => users.id),
 })
+
+// notices 테이블 스키마
+export const notices = sqliteTable('notices', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  authorId: integer('author_id')
+    .notNull()
+    .references(() => users.id),
+  title: text('title').notNull(),
+  content: text('content').notNull(),
+  isPinned: integer('is_pinned', { mode: 'boolean' }).default(false).notNull(),
+  isPublished: integer('is_published', { mode: 'boolean' }).default(true).notNull(),
+  publishedAt: text('published_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+  createdAt: text('created_at')
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: text('updated_at')
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+})

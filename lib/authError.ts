@@ -1,9 +1,9 @@
 // 인증 에러 코드
 export const AuthErrorCode = {
-  UNAUTHORIZED: 'UNAUTHORIZED',   // 토큰 없음 (미로그인)
+  UNAUTHORIZED: 'UNAUTHORIZED', // 토큰 없음 (미로그인)
   TOKEN_EXPIRED: 'TOKEN_EXPIRED', // 토큰 만료
   INVALID_TOKEN: 'INVALID_TOKEN', // 토큰 유효하지 않음
-  FORBIDDEN: 'FORBIDDEN',         // 권한 없음 (역할 불일치)
+  FORBIDDEN: 'FORBIDDEN', // 권한 없음 (역할 불일치)
 } as const
 
 export type AuthErrorCode = (typeof AuthErrorCode)[keyof typeof AuthErrorCode]

@@ -14,13 +14,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ko">
+    <html lang='ko'>
       <body>
         <Providers>
           {children}
           {/* Sonner 토스트 - primary 테마에 맞춰 커스텀 */}
           <Toaster
-            position="top-right"
+            position='top-right'
             richColors
             toastOptions={{
               style: {

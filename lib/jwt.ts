@@ -66,5 +66,5 @@ export const ACCESS_TOKEN_COOKIE = process.env.ACCESS_TOKEN_COOKIE_NAME!
 export const REFRESH_TOKEN_COOKIE = process.env.REFRESH_TOKEN_COOKIE_NAME!
 
 // 쿠키 maxAge 상수 (초)
-export const ACCESS_TOKEN_MAX_AGE = 15 * 60          // 15분
+export const ACCESS_TOKEN_MAX_AGE = 15 * 60 // 15분
 export const REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60 // 7일

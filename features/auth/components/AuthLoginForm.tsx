@@ -42,7 +42,7 @@ export default function AuthLoginForm() {
           <div className={s.brandTop}>
             {/* 브랜드 아이콘 */}
             <div className={s.brandIconWrapper}>
-              <Icon icon={SquareCheckBig} size="xl" className="stroke-white" />
+              <Icon icon={SquareCheckBig} size='xl' className='stroke-white' />
             </div>
 
             <div>
@@ -79,13 +79,13 @@ export default function AuthLoginForm() {
               <label className={s.label}>{AUTH_MSG.USERNAME_LABEL}</label>
               <div className={s.inputIconWrapper}>
                 <span className={s.inputIcon}>
-                  <Icon icon={User} size="sm" />
+                  <Icon icon={User} size='sm' />
                 </span>
                 <BasicInput
-                  type="text"
+                  type='text'
                   value={username}
                   placeholder={AUTH_MSG.USERNAME_PLACEHOLDER}
-                  className="pl-10"
+                  className='pl-10'
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
@@ -96,13 +96,13 @@ export default function AuthLoginForm() {
               <label className={s.label}>{AUTH_MSG.PASSWORD_LABEL}</label>
               <div className={s.inputIconWrapper}>
                 <span className={s.inputIcon}>
-                  <Icon icon={Lock} size="sm" />
+                  <Icon icon={Lock} size='sm' />
                 </span>
                 <BasicInput
-                  type="password"
+                  type='password'
                   value={password}
                   placeholder={AUTH_MSG.PASSWORD_PLACEHOLDER}
-                  className="pl-10"
+                  className='pl-10'
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
@@ -111,11 +111,11 @@ export default function AuthLoginForm() {
             {/* 로그인 버튼 */}
             <div className={s.submitWrapper}>
               <BasicButton
-                type="submit"
-                variant="primary"
-                size="lg"
+                type='submit'
+                variant='primary'
+                size='lg'
                 disabled={isPending}
-                className="w-full"
+                className='w-full'
               >
                 {isPending ? AUTH_MSG.LOGIN_LOADING : AUTH_MSG.LOGIN_BUTTON}
               </BasicButton>
@@ -124,15 +124,15 @@ export default function AuthLoginForm() {
 
           {/* 하단 텍스트 버튼 링크 */}
           <div className={s.footerLinks}>
-            <LinkButton buttonType="text" href="/auth/register">
+            <LinkButton buttonType='text' href='/auth/register'>
               {AUTH_MSG.ADD_ACCOUNT}
             </LinkButton>
             <span className={s.divider}>·</span>
-            <LinkButton buttonType="text" href="/auth/find-username">
+            <LinkButton buttonType='text' href='/auth/find-username'>
               {AUTH_MSG.FIND_USERNAME}
             </LinkButton>
             <span className={s.divider}>·</span>
-            <LinkButton buttonType="text" href="/auth/find-password">
+            <LinkButton buttonType='text' href='/auth/find-password'>
               {AUTH_MSG.FIND_PASSWORD}
             </LinkButton>
           </div>

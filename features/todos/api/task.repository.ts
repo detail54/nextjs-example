@@ -11,7 +11,12 @@ import type {
 export const taskRepository = {
   /** epic 하위 task 목록 조회 (오래된순) */
   getByEpicId(epicId: number) {
-    return db.select().from(tasks).where(eq(tasks.epicId, epicId)).orderBy(asc(tasks.createdAt)).all()
+    return db
+      .select()
+      .from(tasks)
+      .where(eq(tasks.epicId, epicId))
+      .orderBy(asc(tasks.createdAt))
+      .all()
   },
 
   /** task 단건 조회 */

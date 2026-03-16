@@ -76,15 +76,14 @@ sqlite.exec(`
 export const db = drizzle(sqlite, { schema })
 
 // admin 계정 초기 생성
-const admin = db.select({ id: schema.users.id })
+const admin = db
+  .select({ id: schema.users.id })
   .from(schema.users)
   .where(eq(schema.users.username, 'admin'))
   .get()
 
 if (!admin) {
   const hashed = bcrypt.hashSync('admin123', 10)
-  db.insert(schema.users)
-    .values({ username: 'admin', password: hashed, role: 'ADMIN' })
-    .run()
+  db.insert(schema.users).values({ username: 'admin', password: hashed, role: 'ADMIN' }).run()
   console.log('✔ admin 계정 생성 (admin / admin123)')
 }

@@ -1,7 +1,6 @@
 // 홈 랜딩 페이지 스타일 상수
 export const homeLandingStyles = {
-  wrapper:
-    'relative min-h-screen flex flex-col items-center justify-center bg-secondary-950 px-4',
+  wrapper: 'relative min-h-screen flex flex-col items-center justify-center bg-secondary-950 px-4',
 
   blobWrapper: 'absolute inset-0 overflow-hidden pointer-events-none',
   blob1:

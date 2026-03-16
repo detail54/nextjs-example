@@ -5,14 +5,17 @@ export const loginFormStyles = {
 
   // 배경 장식 블롭
   blobWrapper: 'absolute inset-0 overflow-hidden pointer-events-none',
-  blob1: 'absolute -top-48 -left-32 w-[560px] h-[560px] rounded-full bg-primary-700 opacity-20 blur-[120px]',
-  blob2: 'absolute -bottom-48 -right-32 w-[480px] h-[480px] rounded-full bg-primary-500 opacity-15 blur-[140px]',
+  blob1:
+    'absolute -top-48 -left-32 w-[560px] h-[560px] rounded-full bg-primary-700 opacity-20 blur-[120px]',
+  blob2:
+    'absolute -bottom-48 -right-32 w-[480px] h-[480px] rounded-full bg-primary-500 opacity-15 blur-[140px]',
 
   // 카드 - 두 컬럼 레이아웃
   card: 'relative z-10 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl grid grid-cols-1 lg:grid-cols-2',
 
   // ── 좌측 브랜드 패널 ──
-  brandPanel: 'hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-primary-700 to-primary-950',
+  brandPanel:
+    'hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-primary-700 to-primary-950',
   brandTop: 'space-y-6',
   brandIconWrapper: 'w-12 h-12 bg-white/15 rounded-xl flex items-center justify-center',
   brandName: 'text-4xl font-bold text-white tracking-tight',

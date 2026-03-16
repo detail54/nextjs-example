@@ -19,7 +19,7 @@ export default function HomeLanding() {
       <div className={s.content}>
         {/* 브랜드 아이콘 */}
         <div className={s.iconWrapper}>
-          <Icon icon={SquareCheckBig} size="2xl" className="stroke-white" />
+          <Icon icon={SquareCheckBig} size='2xl' className='stroke-white' />
         </div>
 
         <div className='space-y-3'>

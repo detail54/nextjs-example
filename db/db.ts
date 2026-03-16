@@ -27,8 +27,17 @@ sqlite.exec(`
     title TEXT NOT NULL,
     description TEXT,
     status TEXT DEFAULT 'active',
+    due_date TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS epic_assignees (
+    epic_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    PRIMARY KEY (epic_id, user_id),
+    FOREIGN KEY (epic_id) REFERENCES epics(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
   );
 
   CREATE TABLE IF NOT EXISTS tasks (
@@ -38,14 +47,30 @@ sqlite.exec(`
     description TEXT,
     status TEXT DEFAULT 'todo',
     priority INTEGER DEFAULT 0,
-    due_date DATETIME,
+    due_date TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (epic_id) REFERENCES epics(id)
   );
 
+  CREATE TABLE IF NOT EXISTS task_assignees (
+    task_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    PRIMARY KEY (task_id, user_id),
+    FOREIGN KEY (task_id) REFERENCES tasks(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+
   CREATE INDEX IF NOT EXISTS idx_tasks_epic_id ON tasks(epic_id);
   CREATE INDEX IF NOT EXISTS idx_tasks_status ON tasks(status);
+  CREATE INDEX IF NOT EXISTS idx_tasks_priority ON tasks(priority);
+  CREATE INDEX IF NOT EXISTS idx_tasks_due_date ON tasks(due_date);
+  CREATE INDEX IF NOT EXISTS idx_epics_status ON epics(status);
+  CREATE INDEX IF NOT EXISTS idx_epics_due_date ON epics(due_date);
+  CREATE INDEX IF NOT EXISTS idx_epic_assignees_epic_id ON epic_assignees(epic_id);
+  CREATE INDEX IF NOT EXISTS idx_epic_assignees_user_id ON epic_assignees(user_id);
+  CREATE INDEX IF NOT EXISTS idx_task_assignees_task_id ON task_assignees(task_id);
+  CREATE INDEX IF NOT EXISTS idx_task_assignees_user_id ON task_assignees(user_id);
 `)
 
 export const db = drizzle(sqlite, { schema })

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { buttonStyle } from './BasicButton.styles'
 import { textButtonStyle } from './TextButton.styles'
-import { iconLinkButtonStyle } from './LinkButton.styles'
+import { iconButtonStyle } from './IconButton.styles'
 import { type LinkButtonProps } from './type'
 
 // Next.js Link 기반 버튼 - 키보드 탭 네비게이션 지원
@@ -43,7 +43,7 @@ export default function LinkButton(props: LinkButtonProps) {
       href={href}
       target={target}
       aria-label={ariaLabel}
-      className={iconLinkButtonStyle({ variant, size, className })}
+      className={iconButtonStyle({ variant, size, className })}
     >
       {children}
     </Link>

@@ -2,7 +2,7 @@ import { type VariantProps } from 'class-variance-authority'
 import { type ReactNode } from 'react'
 import { buttonStyle } from './BasicButton.styles'
 import { textButtonStyle } from './TextButton.styles'
-import { iconLinkButtonStyle } from './LinkButton.styles'
+import { iconButtonStyle } from './IconButton.styles'
 
 export type BasicButtonProps = VariantProps<typeof buttonStyle> & {
   children: string
@@ -17,6 +17,16 @@ export type TextButtonProps = VariantProps<typeof textButtonStyle> & {
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   className?: string
+  onClick?: () => void
+}
+
+export type IconButtonProps = VariantProps<typeof iconButtonStyle> & {
+  children: ReactNode
+  type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
+  className?: string
+  /** 접근성 레이블 */
+  ariaLabel?: string
   onClick?: () => void
 }
 
@@ -46,7 +56,7 @@ type TextLinkButtonProps = BaseLinkButtonProps &
 
 // icon: 아이콘 버튼 스타일 + Link
 type IconLinkButtonProps = BaseLinkButtonProps &
-  VariantProps<typeof iconLinkButtonStyle> & {
+  VariantProps<typeof iconButtonStyle> & {
     buttonType: 'icon'
     children: ReactNode
   }

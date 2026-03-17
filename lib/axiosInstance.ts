@@ -33,9 +33,9 @@ axiosInstance.interceptors.response.use(
       // 원본 요청 재시도
       return axiosInstance(originalRequest)
     } catch {
-      // 리프레시도 실패 → 로그인 페이지로 이동
+      // 리프레시도 실패 → 홈 페이지로 이동
       if (typeof window !== 'undefined') {
-        window.location.href = APP_PATHS.AUTH.LOGIN
+        window.location.href = APP_PATHS.HOME
       }
       return Promise.reject(error)
     }

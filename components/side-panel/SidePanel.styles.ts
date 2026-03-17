@@ -9,8 +9,20 @@ export const sidePanelStyles = {
 
   // 리사이즈 핸들 - 패널 좌측 엣지 드래그 영역
   resizeHandle: cva(
-    'absolute left-0 top-0 z-10 h-full w-1 cursor-col-resize' +
-      ' hover:bg-primary-500 transition-colors duration-150',
+    'absolute left-0 top-0 z-10 h-full w-3 cursor-col-resize group' +
+      ' hover:bg-primary-500/20 transition-colors duration-150',
+  )(),
+
+  // 리사이즈 가능 표시 그립 도트 컨테이너
+  resizeGrip: cva(
+    'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' +
+      ' flex flex-col items-center gap-[3px]' +
+      ' opacity-25 group-hover:opacity-100 transition-opacity duration-150',
+  )(),
+
+  // 그립 도트 개별 요소
+  resizeDot: cva(
+    'h-[3px] w-[3px] rounded-full bg-secondary-400 group-hover:bg-primary-400 transition-colors duration-150',
   )(),
 
   // 헤더 영역

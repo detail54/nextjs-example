@@ -97,7 +97,15 @@ export default function SidePanel({
           onMouseDown={handleResizeMouseDown}
           role='separator'
           aria-label='패널 너비 조절'
-        />
+        >
+          {/* 리사이즈 가능 표시 그립 인디케이터 */}
+          <div className={sidePanelStyles.resizeGrip}>
+            <span className={sidePanelStyles.resizeDot} />
+            <span className={sidePanelStyles.resizeDot} />
+            <span className={sidePanelStyles.resizeDot} />
+            <span className={sidePanelStyles.resizeDot} />
+          </div>
+        </div>
 
         {/* 헤더 */}
         <div className={sidePanelStyles.header}>

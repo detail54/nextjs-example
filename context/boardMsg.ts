@@ -12,6 +12,13 @@ export const BOARD_MSG = {
   TASK_CREATE: '만들기',
   TASK_TITLE_PLACEHOLDER: '태스크 제목을 입력하세요',
 
+  // 태스크 상세 패널
+  TASK_PANEL_TITLE: '태스크 상세',
+  TASK_STATUS_LABEL: '상태',
+  TASK_DESCRIPTION_LABEL: '설명',
+  TASK_TITLE_EMPTY: '제목 없음',
+  TASK_DESCRIPTION_EMPTY: '설명을 추가하세요',
+
   // 에픽 등록 패널
   EPIC_REGISTER: '에픽 등록',
   EPIC_REGISTER_TITLE: '에픽 등록',

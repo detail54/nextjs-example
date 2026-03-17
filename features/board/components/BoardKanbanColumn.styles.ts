@@ -32,7 +32,7 @@ export const kanbanColumnStyles = {
   count: cva('text-xs text-secondary-500')(),
 
   // task 목록 영역
-  taskList: cva('flex flex-col gap-2 flex-1')(),
+  taskList: cva('flex flex-col gap-2')(),
 
   // 빈 컬럼 안내
   empty: cva('text-secondary-600 text-xs text-center py-6')(),

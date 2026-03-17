@@ -7,15 +7,17 @@ import {
 } from '@/lib/jwt'
 import { AuthError } from '@/lib/authError'
 import { AUTH_MSG } from '@/context/authMsg'
+import { logger } from '@/lib/logger'
+import { withLogger } from '@/lib/withLogger'
 import { type BasicResponse } from '@/db/type'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(request: NextRequest): Promise<NextResponse<BasicResponse<null>>> {
+export const POST = withLogger(async (request: NextRequest) => {
   try {
     // 리프레시 토큰 추출 및 검증
     const refreshToken = request.cookies.get(REFRESH_TOKEN_COOKIE)?.value
     if (!refreshToken) {
-      return NextResponse.json(
+      return NextResponse.json<BasicResponse<null>>(
         { success: false, data: null, message: AUTH_MSG.UNAUTHORIZED },
         { status: 401 },
       )
@@ -40,18 +42,21 @@ export async function POST(request: NextRequest): Promise<NextResponse<BasicResp
       path: '/',
     })
 
+    logger.auth({ event: 'TOKEN_REFRESH', username: user.username })
     return response
   } catch (error) {
     if (error instanceof AuthError) {
-      return NextResponse.json(
+      logger.auth({ event: 'SESSION_EXPIRED', reason: 'refresh token expired' })
+      return NextResponse.json<BasicResponse<null>>(
         { success: false, data: null, message: AUTH_MSG.TOKEN_EXPIRED },
         { status: 401 },
       )
     }
 
-    return NextResponse.json(
+    logger.error('POST /api/auth/refresh', error)
+    return NextResponse.json<BasicResponse<null>>(
       { success: false, data: null, message: AUTH_MSG.SERVER_ERROR },
       { status: 500 },
     )
   }
-}
+})

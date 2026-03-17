@@ -4,6 +4,7 @@ import { jwtVerify, SignJWT } from 'jose'
 import type { UserRole } from '@/db/type'
 import { MENU_LIST } from '@/context/menuConfig'
 import { APP_PATHS } from '@/context/appPaths'
+import { logger } from '@/lib/logger'
 
 const ACCESS_COOKIE = process.env.ACCESS_TOKEN_COOKIE_NAME!
 const REFRESH_COOKIE = process.env.REFRESH_TOKEN_COOKIE_NAME!
@@ -129,15 +130,17 @@ export async function proxy(request: NextRequest) {
 
   // 토큰이 전혀 없음 → 401 (로그인 필요)
   if (!accessToken && !refreshToken) {
+    logger.auth({ event: 'UNAUTHORIZED', path: pathname, reason: 'no token' })
     return unauthorized(request, APP_PATHS.LOGIN_REQUIRED)
   }
 
   // 액세스 토큰 검증
   if (accessToken) {
     try {
-      const { role } = await verifyAccess(accessToken)
+      const { role, username } = await verifyAccess(accessToken)
       // 역할 부족 → 403 (권한없음)
       if (!hasRoleAccess(pathname, role)) {
+        logger.auth({ event: 'FORBIDDEN', username, path: pathname })
         return unauthorized(request, APP_PATHS.UNAUTHORIZED)
       }
       return NextResponse.next()
@@ -148,6 +151,7 @@ export async function proxy(request: NextRequest) {
 
   // 리프레시 토큰도 없음 → 401
   if (!refreshToken) {
+    logger.auth({ event: 'UNAUTHORIZED', path: pathname, reason: 'no refresh token' })
     return unauthorized(request, APP_PATHS.LOGIN_REQUIRED)
   }
 
@@ -156,12 +160,15 @@ export async function proxy(request: NextRequest) {
     const { newToken, payload } = await rotateAccessToken(refreshToken)
 
     if (!hasRoleAccess(pathname, payload.role)) {
+      logger.auth({ event: 'FORBIDDEN', username: payload.username, path: pathname })
       return unauthorized(request, APP_PATHS.UNAUTHORIZED)
     }
 
+    logger.auth({ event: 'TOKEN_REFRESH', username: payload.username, path: pathname })
     return buildRefreshedResponse(request, newToken)
   } catch {
     // 리프레시 토큰 만료 → 세션 만료 페이지 (모달) 또는 API는 401
+    logger.auth({ event: 'SESSION_EXPIRED', path: pathname, reason: 'refresh token expired' })
     return unauthorized(request, APP_PATHS.SESSION_EXPIRED)
   }
 }

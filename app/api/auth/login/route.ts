@@ -10,12 +10,12 @@ import {
   REFRESH_TOKEN_MAX_AGE,
 } from '@/lib/jwt'
 import { AUTH_MSG } from '@/context/authMsg'
+import { logger } from '@/lib/logger'
+import { withLogger } from '@/lib/withLogger'
 import bcrypt from 'bcryptjs'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(
-  request: NextRequest,
-): Promise<NextResponse<BasicResponse<LoginResponse>>> {
+export const POST = withLogger(async (request: NextRequest) => {
   try {
     const body: LoginRequest = await request.json()
     const { username, password } = body
@@ -23,7 +23,8 @@ export async function POST(
     // DB에서 유저 조회
     const user = authRepository.findByUsername(username) as DbUser | undefined
     if (!user) {
-      return NextResponse.json(
+      logger.auth({ event: 'LOGIN_FAIL', username, reason: 'user not found' })
+      return NextResponse.json<BasicResponse<LoginResponse>>(
         { success: false, data: null as never, message: AUTH_MSG.INVALID_CREDENTIALS },
         { status: 401 },
       )
@@ -32,7 +33,8 @@ export async function POST(
     // 비밀번호 검증
     const isValid = await bcrypt.compare(password, user.password)
     if (!isValid) {
-      return NextResponse.json(
+      logger.auth({ event: 'LOGIN_FAIL', username, reason: 'invalid password' })
+      return NextResponse.json<BasicResponse<LoginResponse>>(
         { success: false, data: null as never, message: AUTH_MSG.INVALID_CREDENTIALS },
         { status: 401 },
       )
@@ -76,11 +78,13 @@ export async function POST(
       path: '/',
     })
 
+    logger.auth({ event: 'LOGIN_SUCCESS', username: user.username })
     return response
-  } catch {
-    return NextResponse.json(
+  } catch (err) {
+    logger.error('POST /api/auth/login', err)
+    return NextResponse.json<BasicResponse<LoginResponse>>(
       { success: false, data: null as never, message: AUTH_MSG.SERVER_ERROR },
       { status: 500 },
     )
   }
-}
+})

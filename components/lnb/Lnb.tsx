@@ -84,7 +84,7 @@ export function Lnb() {
               label={item.label}
               path={item.path}
               icon={ICON_MAP[item.iconName]}
-              isActive={pathname.startsWith(item.path)}
+              isActive={pathname === item.path || pathname.startsWith(item.path + '/')}
               isCollapsed={isCollapsed}
               // 역할 제한이 있는 메뉴는 관리자 배지 표시
               showAdminBadge={item.roles.length > 0}

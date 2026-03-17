@@ -37,13 +37,22 @@ export default function SidePanel({
   // 드래그 중 여부
   const isDraggingRef = useRef(false)
 
-  // ESC 키로 패널 닫기
+  // ESC 키 및 외부 클릭으로 패널 닫기
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) onClose()
     }
+    const handleMouseDown = (e: MouseEvent) => {
+      if (isOpen && innerRef.current && !innerRef.current.contains(e.target as Node)) {
+        onClose()
+      }
+    }
     document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
+    document.addEventListener('mousedown', handleMouseDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('mousedown', handleMouseDown)
+    }
   }, [isOpen, onClose])
 
   // 리사이즈 드래그 시작

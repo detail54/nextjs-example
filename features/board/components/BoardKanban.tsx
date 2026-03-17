@@ -172,32 +172,29 @@ export default function BoardKanban({ epic }: Props) {
       const overContainer = findContainer(over.id)
       if (!overContainer) return
 
-      // 현재 columns 기준으로 task 위치 파악
-      setColumns((prev) => {
-        const destItems = prev[overContainer]
-        const taskIndex = destItems.findIndex((t) => t.id === active.id)
-        if (taskIndex === -1) return prev
+      // columns를 직접 읽어 task 위치 파악 (updater 안에서 side effect 금지)
+      const destItems = columns[overContainer]
+      const taskIndex = destItems.findIndex((t) => t.id === active.id)
+      if (taskIndex === -1) return
 
-        const prevTask = destItems[taskIndex - 1]
-        const nextTask = destItems[taskIndex + 1]
-        const newPriority = calcPriority(prevTask, nextTask)
+      const prevTask = destItems[taskIndex - 1]
+      const nextTask = destItems[taskIndex + 1]
+      const newPriority = calcPriority(prevTask, nextTask)
 
-        const updatedTask: BoardTask = {
-          ...destItems[taskIndex],
-          status: overContainer,
-          priority: newPriority,
-        }
+      const updatedTask: BoardTask = {
+        ...destItems[taskIndex],
+        status: overContainer,
+        priority: newPriority,
+      }
 
-        const newDest = [...destItems]
-        newDest[taskIndex] = updatedTask
+      const newDest = [...destItems]
+      newDest[taskIndex] = updatedTask
 
-        // 서버에 저장
-        moveTask({ id: updatedTask.id, status: overContainer, priority: newPriority })
-
-        return { ...prev, [overContainer]: newDest }
-      })
+      // state 업데이트는 순수하게, API 호출은 별도로 (Strict Mode에서도 1번만 실행)
+      setColumns((prev) => ({ ...prev, [overContainer]: newDest }))
+      moveTask({ id: updatedTask.id, status: overContainer, priority: newPriority })
     },
-    [findContainer, moveTask],
+    [columns, findContainer, moveTask],
   )
 
   // 드래그 취소: 원래 상태로 복원

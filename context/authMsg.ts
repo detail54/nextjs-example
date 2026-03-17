@@ -24,9 +24,13 @@ export const AUTH_MSG = {
   SERVER_ERROR: '서버 오류가 발생했습니다',
 
   UNAUTHORIZED: '로그인이 필요합니다',
+  LOGIN_REQUIRED_DESC: '이 페이지에 접근하려면 로그인이 필요합니다.',
+  LOGIN_REQUIRED_BUTTON: '로그인하러 가기',
   TOKEN_EXPIRED: '로그인이 만료됐습니다. 다시 로그인해주세요',
   INVALID_TOKEN: '유효하지 않은 인증입니다',
   FORBIDDEN: '접근 권한이 없습니다',
+  SESSION_EXPIRED_TITLE: '세션이 만료되었습니다',
+  SESSION_EXPIRED_DESC: '인증이 만료되었습니다. 다시 로그인해 주세요.',
 
   COPYRIGHT: '© 2026 TaskFlow. All rights reserved.',
   BRAND_FEATURES: ['프로젝트 관리', '팀 협업', '실시간 진행 현황'] as const,

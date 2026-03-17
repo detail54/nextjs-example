@@ -22,6 +22,9 @@ export const buttonStyle = cva(
         outline:
           'border border-secondary-300 text-secondary-700 hover:bg-secondary-50 active:bg-secondary-100 focus-visible:ring-secondary-400' +
           ' disabled:border-secondary-200 disabled:text-secondary-300',
+        'outline-dark':
+          'border border-secondary-600 text-secondary-300 hover:bg-secondary-700 hover:text-white' +
+          ' active:bg-secondary-600 focus-visible:ring-secondary-500 disabled:border-secondary-700 disabled:text-secondary-600',
       },
       size: {
         sm: 'text-xs px-3 py-1.5',

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 import Providers from '@/lib/Providers'
+import ModalProvider from '@/components/modal/ModalProvider'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -18,6 +19,8 @@ export default function RootLayout({
       <body>
         <Providers>
           {children}
+          {/* 전역 모달 - useModalStore로 제어 */}
+          <ModalProvider />
           {/* Sonner 토스트 - primary 테마에 맞춰 커스텀 */}
           <Toaster
             position='top-right'

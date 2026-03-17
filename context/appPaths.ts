@@ -7,4 +7,24 @@ export const APP_PATHS = {
   BOARD: {
     ROOT: '/board',
   },
+  CALENDAR: {
+    ROOT: '/calendar',
+  },
+  TIMELINE: {
+    ROOT: '/timeline',
+  },
+  NOTICE: {
+    ROOT: '/notice',
+  },
+  NOTICE_MANAGE: {
+    ROOT: '/notice-manage',
+  },
+  MY_PAGE: {
+    ROOT: '/my-page',
+  },
+  UNAUTHORIZED: '/unauthorized',
+  /** 401 - 토큰 없음 (미로그인 상태로 보호 경로 접근) */
+  LOGIN_REQUIRED: '/login-required',
+  /** 리프레시 토큰 만료 - 세션 만료 모달 표시 */
+  SESSION_EXPIRED: '/session-expired',
 } as const

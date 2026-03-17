@@ -8,6 +8,7 @@ import BasicInput from '@/components/input/BasicInput'
 import LinkButton from '@/components/button/LinkButton'
 import Icon from '@/components/icon/Icon'
 import { AUTH_MSG } from '@/context/authMsg'
+import { APP_PATHS } from '@/context/appPaths'
 import { useLogin } from '../hooks/useLogin'
 import { loginFormStyles as s } from './AuthLoginForm.styles'
 export default function AuthLoginForm() {
@@ -18,8 +19,8 @@ export default function AuthLoginForm() {
   const router = useRouter()
 
   const { mutate: login, isPending } = useLogin({
-    // 로그인 성공 시 홈으로 이동
-    onSuccess: () => router.push('/'),
+    // 로그인 성공 시 보드로 이동
+    onSuccess: () => router.push(APP_PATHS.BOARD.ROOT),
   })
 
   // 로그인 제출 핸들러

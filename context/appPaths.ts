@@ -4,4 +4,7 @@ export const APP_PATHS = {
   AUTH: {
     LOGIN: '/auth/login',
   },
+  BOARD: {
+    ROOT: '/board',
+  },
 } as const

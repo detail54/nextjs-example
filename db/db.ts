@@ -96,14 +96,35 @@ sqlite.exec(`
 export const db = drizzle(sqlite, { schema })
 
 // admin 계정 초기 생성
-const admin = db
+let adminId: number | undefined = db
   .select({ id: schema.users.id })
   .from(schema.users)
   .where(eq(schema.users.username, 'admin'))
-  .get()
+  .get()?.id
 
-if (!admin) {
+if (!adminId) {
   const hashed = bcrypt.hashSync('admin123', 10)
-  db.insert(schema.users).values({ username: 'admin', password: hashed, role: 'ADMIN' }).run()
+  const result = db
+    .insert(schema.users)
+    .values({ username: 'admin', password: hashed, role: 'ADMIN' })
+    .run()
+  adminId = Number(result.lastInsertRowid)
   console.log('✔ admin 계정 생성 (admin / admin123)')
+}
+
+// 기본 공지사항 생성 (공지가 하나도 없을 때)
+const existingNotice = db.select({ id: schema.notices.id }).from(schema.notices).limit(1).get()
+
+if (!existingNotice) {
+  db.insert(schema.notices)
+    .values({
+      authorId: adminId,
+      title: '서비스 이용 안내',
+      content:
+        '안녕하세요.\n\n서비스를 이용해 주셔서 감사합니다.\n\n궁금한 사항이 있으시면 관리자에게 문의해 주세요.',
+      isPinned: true,
+      isPublished: true,
+    })
+    .run()
+  console.log('✔ 기본 공지사항 생성')
 }

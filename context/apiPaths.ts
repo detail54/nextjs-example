@@ -6,6 +6,9 @@ export const API_PATHS = {
     REFRESH: '/api/auth/refresh',
     ME: '/api/auth/me',
   },
+  NOTICE: {
+    LIST: '/api/notice',
+  },
   BOARD: {
     LIST: '/api/board',
     TASK_MOVE: (id: number) => `/api/board/tasks/${id}`,

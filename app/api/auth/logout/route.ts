@@ -8,11 +8,11 @@ export async function POST(): Promise<NextResponse<BasicResponse<null>>> {
   // 액세스 토큰 쿠키 제거
   response.cookies.delete(ACCESS_TOKEN_COOKIE)
 
-  // 리프레시 토큰 쿠키 제거 (path 일치 필요)
+  // 리프레시 토큰 쿠키 제거 (발급 시 path와 동일하게 설정)
   response.cookies.set(REFRESH_TOKEN_COOKIE, '', {
     httpOnly: true,
     maxAge: 0,
-    path: '/api/auth/refresh',
+    path: '/',
   })
 
   return response

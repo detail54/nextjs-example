@@ -67,13 +67,13 @@ export async function POST(
       path: '/',
     })
 
-    // 리프레시 토큰 쿠키 (7일, HttpOnly, refresh 경로에만 전송)
+    // 리프레시 토큰 쿠키 (7일, HttpOnly, 미들웨어에서 읽을 수 있도록 path: '/')
     response.cookies.set(REFRESH_TOKEN_COOKIE, refreshToken, {
       httpOnly: true,
       secure: isProd,
       sameSite: 'lax',
       maxAge: REFRESH_TOKEN_MAX_AGE,
-      path: '/api/auth/refresh',
+      path: '/',
     })
 
     return response

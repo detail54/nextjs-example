@@ -3,37 +3,52 @@
 import { useState } from 'react'
 import { BOARD_MSG } from '@/context/boardMsg'
 import { useEpicCreate } from '../hooks/useEpicCreate'
+import { useEpicUpdate } from '../hooks/useEpicUpdate'
+import type { EpicWithTasks } from '../api/type'
 import BasicInput from '@/components/input/BasicInput'
 import BasicButton from '@/components/button/BasicButton'
 import { boardEpicFormStyles } from './BoardEpicForm.styles'
 
 interface BoardEpicFormProps {
+  // epic이 있으면 수정 모드
+  epic?: EpicWithTasks
   onSuccess?: () => void
 }
 
-// 에픽 등록 폼
-export default function BoardEpicForm({ onSuccess }: BoardEpicFormProps) {
+// 에픽 등록/수정 폼
+export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
   // 에픽명
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState(epic?.title ?? '')
   // 설명
-  const [description, setDescription] = useState('')
+  const [description, setDescription] = useState(epic?.description ?? '')
 
-  const { mutate: createEpic, isPending } = useEpicCreate()
+  const { mutate: createEpic, isPending: isCreating } = useEpicCreate()
+  const { mutate: updateEpic, isPending: isUpdating } = useEpicUpdate()
+  const isPending = isCreating || isUpdating
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const isEditMode = !!epic
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!title.trim()) return
 
-    createEpic(
-      { title: title.trim(), description: description.trim() || undefined },
-      {
-        onSuccess: () => {
-          setTitle('')
-          setDescription('')
-          onSuccess?.()
+    if (isEditMode) {
+      updateEpic(
+        { id: epic.id, title: title.trim(), description: description.trim() || undefined },
+        { onSuccess: () => onSuccess?.() },
+      )
+    } else {
+      createEpic(
+        { title: title.trim(), description: description.trim() || undefined },
+        {
+          onSuccess: () => {
+            setTitle('')
+            setDescription('')
+            onSuccess?.()
+          },
         },
-      },
-    )
+      )
+    }
   }
 
   return (
@@ -73,7 +88,7 @@ export default function BoardEpicForm({ onSuccess }: BoardEpicFormProps) {
           size='md'
           disabled={isPending || !title.trim()}
         >
-          {BOARD_MSG.EPIC_SUBMIT}
+          {isEditMode ? BOARD_MSG.EPIC_UPDATE_SUBMIT : BOARD_MSG.EPIC_SUBMIT}
         </BasicButton>
       </div>
     </form>

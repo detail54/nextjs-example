@@ -12,5 +12,7 @@ export const API_PATHS = {
     EPIC_CREATE: '/api/board/epics',
     TASK_CREATE: (epicId: number) => `/api/board/epics/${epicId}/tasks`,
     TASK_UPDATE: (id: number) => `/api/board/tasks/${id}`,
+    EPIC_UPDATE: (id: number) => `/api/board/epics/${id}`,
+    EPIC_DELETE: (id: number) => `/api/board/epics/${id}`,
   },
 } as const

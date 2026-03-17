@@ -26,22 +26,28 @@ export default function BoardPage() {
   // 패널 현재 너비
   const [panelWidth, setPanelWidth] = useState(DEFAULT_PANEL_WIDTH)
 
-  // 선택된 태스크 (상세보기)
-  const { selectedTask, setSelectedTask } = useBoardPanelStore()
+  // 선택된 태스크 (상세보기) / 수정 중인 에픽
+  const { selectedTask, setSelectedTask, editingEpic, setEditingEpic } = useBoardPanelStore()
 
   // 패널 열림 여부 및 타이틀 결정
-  const isPanelOpen = isEpicFormOpen || !!selectedTask
-  const panelTitle = isEpicFormOpen ? BOARD_MSG.EPIC_REGISTER_TITLE : BOARD_MSG.TASK_PANEL_TITLE
+  const isPanelOpen = isEpicFormOpen || !!selectedTask || !!editingEpic
+  const panelTitle = isEpicFormOpen
+    ? BOARD_MSG.EPIC_REGISTER_TITLE
+    : editingEpic
+      ? BOARD_MSG.EPIC_EDIT_TITLE
+      : BOARD_MSG.TASK_PANEL_TITLE
 
   const handleOpenEpicForm = () => {
-    // 태스크 상세 닫고 에픽 등록 열기
+    // 다른 패널 닫고 에픽 등록 열기
     setSelectedTask(null)
+    setEditingEpic(null)
     setIsEpicFormOpen(true)
   }
 
   const handleClosePanel = () => {
     setIsEpicFormOpen(false)
     setSelectedTask(null)
+    setEditingEpic(null)
   }
 
   return (
@@ -69,7 +75,7 @@ export default function BoardPage() {
         )}
       </div>
 
-      {/* 우측 슬라이드 패널 (에픽 등록 / 태스크 상세 공용) */}
+      {/* 우측 슬라이드 패널 (에픽 등록 / 에픽 수정 / 태스크 상세 공용) */}
       <SidePanel
         isOpen={isPanelOpen}
         onClose={handleClosePanel}
@@ -81,6 +87,8 @@ export default function BoardPage() {
       >
         {isEpicFormOpen ? (
           <BoardEpicForm onSuccess={() => setIsEpicFormOpen(false)} />
+        ) : editingEpic ? (
+          <BoardEpicForm epic={editingEpic} onSuccess={handleClosePanel} />
         ) : selectedTask ? (
           <BoardTaskDetail task={selectedTask} />
         ) : null}

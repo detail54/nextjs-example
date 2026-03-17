@@ -82,7 +82,9 @@ export const notices = sqliteTable('notices', {
   content: text('content').notNull(),
   isPinned: integer('is_pinned', { mode: 'boolean' }).default(false).notNull(),
   isPublished: integer('is_published', { mode: 'boolean' }).default(true).notNull(),
-  publishedAt: text('published_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+  publishedAt: text('published_at')
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
   createdAt: text('created_at')
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

@@ -1,7 +1,70 @@
 'use client'
 
+import { useState } from 'react'
+import { Plus } from 'lucide-react'
 import { BOARD_MSG } from '@/context/boardMsg'
+import { useBoardQuery } from '../hooks/useBoardQuery'
+import BoardEpicAccordion from './BoardEpicAccordion'
+import BoardEpicForm from './BoardEpicForm'
+import SidePanel from '@/components/side-panel/SidePanel'
+import BasicButton from '@/components/button/BasicButton'
+import { boardPageStyles } from './BoardPage.styles'
 
+// 패널 기본/최소/최대 너비
+const DEFAULT_PANEL_WIDTH = 480
+const MIN_PANEL_WIDTH = 320
+const MAX_PANEL_WIDTH = 800
+
+// 보드 메인 페이지
 export default function BoardPage() {
-  return <div>{BOARD_MSG.PAGE_TITLE}</div>
+  const { data: epics = [] } = useBoardQuery()
+
+  // 에픽 등록 패널 열림 상태
+  const [isPanelOpen, setIsPanelOpen] = useState(false)
+  // 패널 현재 너비
+  const [panelWidth, setPanelWidth] = useState(DEFAULT_PANEL_WIDTH)
+
+  return (
+    <div className={boardPageStyles.container}>
+      {/* 콘텐츠 영역 - 패널이 열리면 자연스럽게 밀림 */}
+      <div className={boardPageStyles.content}>
+        {/* 페이지 헤더 */}
+        <div className={boardPageStyles.header}>
+          <h1 className={boardPageStyles.title}>{BOARD_MSG.PAGE_TITLE}</h1>
+          <BasicButton
+            variant='primary'
+            size='sm'
+            onClick={() => setIsPanelOpen(true)}
+          >
+            <Plus className='mr-1.5 h-4 w-4' />
+            {BOARD_MSG.EPIC_REGISTER}
+          </BasicButton>
+        </div>
+
+        {/* 에픽 목록 */}
+        {epics.length === 0 ? (
+          <p className={boardPageStyles.empty}>{BOARD_MSG.EMPTY_EPICS}</p>
+        ) : (
+          <div className={boardPageStyles.epicList}>
+            {epics.map((epic) => (
+              <BoardEpicAccordion key={epic.id} epic={epic} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 우측 슬라이드 패널 */}
+      <SidePanel
+        isOpen={isPanelOpen}
+        onClose={() => setIsPanelOpen(false)}
+        title={BOARD_MSG.EPIC_REGISTER_TITLE}
+        panelWidth={panelWidth}
+        onWidthChange={setPanelWidth}
+        minWidth={MIN_PANEL_WIDTH}
+        maxWidth={MAX_PANEL_WIDTH}
+      >
+        <BoardEpicForm onSuccess={() => setIsPanelOpen(false)} />
+      </SidePanel>
+    </div>
+  )
 }

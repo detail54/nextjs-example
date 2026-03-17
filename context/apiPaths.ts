@@ -6,4 +6,10 @@ export const API_PATHS = {
     REFRESH: '/api/auth/refresh',
     ME: '/api/auth/me',
   },
+  BOARD: {
+    LIST: '/api/board',
+    TASK_MOVE: (id: number) => `/api/board/tasks/${id}`,
+    EPIC_CREATE: '/api/board/epics',
+    TASK_CREATE: (epicId: number) => `/api/board/epics/${epicId}/tasks`,
+  },
 } as const

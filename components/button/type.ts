@@ -5,7 +5,7 @@ import { textButtonStyle } from './TextButton.styles'
 import { iconButtonStyle } from './IconButton.styles'
 
 export type BasicButtonProps = VariantProps<typeof buttonStyle> & {
-  children: string
+  children: ReactNode
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   className?: string
@@ -44,7 +44,7 @@ type BaseLinkButtonProps = {
 type BasicLinkButtonProps = BaseLinkButtonProps &
   VariantProps<typeof buttonStyle> & {
     buttonType: 'basic'
-    children: string
+    children: ReactNode
   }
 
 // text: TextButton 스타일 + Link

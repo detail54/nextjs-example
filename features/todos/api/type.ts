@@ -34,3 +34,9 @@ export type MoveToEpicParams = {
   taskId: number
   epicId: number
 }
+
+export type UpdateTaskMoveParams = {
+  id: number
+  status: TaskStatus
+  priority: number
+}

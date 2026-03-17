@@ -6,6 +6,7 @@ import type {
   UpdateTaskParams,
   UpdateTaskStatusParams,
   MoveToEpicParams,
+  UpdateTaskMoveParams,
 } from './type'
 
 export const taskRepository = {
@@ -27,6 +28,11 @@ export const taskRepository = {
   /** task 생성 */
   create({ epicId, title, description }: CreateTaskParams) {
     return db.insert(tasks).values({ epicId, title, description }).run().lastInsertRowid
+  },
+
+  /** task 생성 (priority 직접 지정) */
+  createWithPriority({ epicId, title, priority }: { epicId: number; title: string; priority: number }) {
+    return db.insert(tasks).values({ epicId, title, priority }).run().lastInsertRowid
   },
 
   /** task 상태 변경 */
@@ -53,6 +59,25 @@ export const taskRepository = {
       .update(tasks)
       .set({ epicId, updatedAt: sql`CURRENT_TIMESTAMP` })
       .where(eq(tasks.id, taskId))
+      .run()
+  },
+
+  /** epic 하위 task 목록 조회 (priority ASC, createdAt ASC) */
+  getByEpicIdSorted(epicId: number) {
+    return db
+      .select()
+      .from(tasks)
+      .where(eq(tasks.epicId, epicId))
+      .orderBy(asc(tasks.priority), asc(tasks.createdAt))
+      .all()
+  },
+
+  /** task status + priority 업데이트 (드래그앤드롭 이동) */
+  updateMove({ id, status, priority }: UpdateTaskMoveParams) {
+    return db
+      .update(tasks)
+      .set({ status, priority, updatedAt: sql`CURRENT_TIMESTAMP` })
+      .where(eq(tasks.id, id))
       .run()
   },
 

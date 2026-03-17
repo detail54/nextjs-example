@@ -3,7 +3,7 @@ name: common-skill
 description: 모든 요청/명령에 항상 사용.
 ---
 
-- prettierrc 설정 고려해서 코드 작성.
+- prettierrc 설정 고려해서 코드 작성. (요청으로 인해 작업한 파일만.)
 
 ```
 {

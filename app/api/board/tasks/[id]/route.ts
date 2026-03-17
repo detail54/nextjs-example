@@ -1,0 +1,51 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { verifyAccessToken, ACCESS_TOKEN_COOKIE } from '@/lib/jwt'
+import { AuthError, AuthErrorCode } from '@/lib/authError'
+import { taskRepository } from '@/features/todos/api/task.repository'
+import type { BasicResponse, TaskStatus } from '@/db/type'
+
+type RouteContext = { params: Promise<{ id: string }> }
+
+// task 이동 (status + priority 업데이트)
+export async function PATCH(request: NextRequest, context: RouteContext) {
+  // 인증 검사
+  const token = request.cookies.get(ACCESS_TOKEN_COOKIE)?.value
+  if (!token) {
+    return NextResponse.json<BasicResponse<null>>(
+      { success: false, data: null, message: '인증이 필요합니다.' },
+      { status: 401 },
+    )
+  }
+
+  try {
+    await verifyAccessToken(token)
+  } catch (error) {
+    if (error instanceof AuthError && error.code === AuthErrorCode.TOKEN_EXPIRED) {
+      return NextResponse.json<BasicResponse<null>>(
+        { success: false, data: null, message: '토큰이 만료되었습니다.' },
+        { status: 401 },
+      )
+    }
+    return NextResponse.json<BasicResponse<null>>(
+      { success: false, data: null, message: '유효하지 않은 토큰입니다.' },
+      { status: 401 },
+    )
+  }
+
+  const { id } = await context.params
+  const taskId = Number(id)
+
+  if (isNaN(taskId)) {
+    return NextResponse.json<BasicResponse<null>>(
+      { success: false, data: null, message: '유효하지 않은 task ID입니다.' },
+      { status: 400 },
+    )
+  }
+
+  const body = await request.json()
+  const { status, priority } = body as { status: TaskStatus; priority: number }
+
+  taskRepository.updateMove({ id: taskId, status, priority })
+
+  return NextResponse.json<BasicResponse<null>>({ success: true, data: null })
+}

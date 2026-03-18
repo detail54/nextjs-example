@@ -29,6 +29,14 @@ export type SortSelectorProps = {
   onChange: (value: string) => void
 }
 
+/** DataList 스켈레톤 설정 */
+export type DataListSkeletonConfig = {
+  /** 스켈레톤 행 수 */
+  rows?: number
+  /** 각 컬럼 너비 (미지정 시 flex-1) */
+  columnWidths?: (string | undefined)[]
+}
+
 /** DataList 컴포넌트 props */
 export type DataListProps<T> = {
   columns: ListColumn<T>[]
@@ -39,4 +47,8 @@ export type DataListProps<T> = {
   pageSizeSelector?: PageSizeSelectorProps
   /** 정렬 셀렉터 (있을 경우 리스트 상단에 렌더링) */
   sortSelector?: SortSelectorProps
+  /** 로딩 상태 (true면 스켈레톤 렌더링) */
+  isLoading?: boolean
+  /** 로딩 스켈레톤 설정 */
+  skeletonConfig?: DataListSkeletonConfig
 }

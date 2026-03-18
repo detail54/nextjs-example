@@ -6,6 +6,7 @@ import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useBoardQuery } from '../hooks/useBoardQuery'
 import { useBoardPanelStore } from '@/stores/useBoardPanelStore'
 import BoardEpicAccordion from './BoardEpicAccordion'
+import BoardEpicAccordionSkeleton from './BoardEpicAccordionSkeleton'
 import BoardEpicForm from './BoardEpicForm'
 import BoardTaskDetail from './BoardTaskDetail'
 import SidePanel from '@/components/side-panel/SidePanel'
@@ -19,7 +20,7 @@ const MAX_PANEL_WIDTH = 800
 
 // 보드 메인 페이지
 export default function BoardPage() {
-  const { data: epics = [] } = useBoardQuery()
+  const { data: epics = [], isLoading } = useBoardQuery()
 
   // 에픽 등록 패널 열림 상태
   const [isEpicFormOpen, setIsEpicFormOpen] = useState(false)
@@ -64,7 +65,9 @@ export default function BoardPage() {
         </div>
 
         {/* 에픽 목록 */}
-        {epics.length === 0 ? (
+        {isLoading ? (
+          <BoardEpicAccordionSkeleton count={3} />
+        ) : epics.length === 0 ? (
           <p className={boardPageStyles.empty}>{BOARD_MSG.EMPTY_EPICS}</p>
         ) : (
           <div className={boardPageStyles.epicList}>

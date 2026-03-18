@@ -38,7 +38,7 @@ export default function NoticePage() {
   const [selectedNotice, setSelectedNotice] = useState<NoticeItem | null>(null)
 
   const { sortBy, sortOrder } = SORT_MAP[sortValue]
-  const { data } = useNoticeQuery(page, pageSize, sortBy, sortOrder)
+  const { data, isLoading } = useNoticeQuery(page, pageSize, sortBy, sortOrder)
   const notices = data?.data ?? []
   const totalPages = data?.pagination.totalPages ?? 1
 
@@ -127,6 +127,11 @@ export default function NoticePage() {
           data={notices}
           onRowClick={handleRowClick}
           emptyMessage={NOTICE_MSG.EMPTY}
+          isLoading={isLoading}
+          skeletonConfig={{
+            rows: pageSize,
+            columnWidths: ['72px', undefined, '120px', '120px'],
+          }}
           sortSelector={{
             value: sortValue,
             options: sortOptions,

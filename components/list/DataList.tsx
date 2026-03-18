@@ -10,6 +10,7 @@ import {
   emptyCellStyle,
 } from './DataList.styles'
 import SelectBox from '@/components/select/SelectBox'
+import DataListSkeleton from './DataListSkeleton'
 import type { DataListProps } from './type'
 
 // 재사용 가능한 데이터 리스트 테이블 컴포넌트
@@ -20,8 +21,23 @@ export default function DataList<T>({
   emptyMessage,
   pageSizeSelector,
   sortSelector,
+  isLoading = false,
+  skeletonConfig,
 }: DataListProps<T>) {
   const isClickable = !!onRowClick
+  const hasToolbar = !!(sortSelector || pageSizeSelector)
+
+  // 로딩 중이면 스켈레톤 렌더링
+  if (isLoading) {
+    return (
+      <DataListSkeleton
+        columns={columns.length}
+        rows={skeletonConfig?.rows}
+        hasToolbar={hasToolbar}
+        columnWidths={skeletonConfig?.columnWidths}
+      />
+    )
+  }
 
   return (
     <div className={listWrapperStyle}>

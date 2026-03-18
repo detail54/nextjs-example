@@ -8,4 +8,8 @@ export const NOTICE_MSG = {
   COLUMN_AUTHOR: '작성자',
   MODAL_CLOSE: '닫기',
   PAGE_SIZE_SUFFIX: '개씩 보기',
+  SORT_CREATED_DESC: '작성일 최신순',
+  SORT_CREATED_ASC: '작성일 오래된순',
+  SORT_TITLE_ASC: '제목 오름차순',
+  SORT_TITLE_DESC: '제목 내림차순',
 } as const

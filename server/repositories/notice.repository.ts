@@ -1,6 +1,6 @@
 import { db } from '@/server/db/db'
 import { notices, users } from '@/server/db/schema'
-import { eq, desc, count } from 'drizzle-orm'
+import { eq, desc, asc, count } from 'drizzle-orm'
 
 export const noticeRepository = {
   /** 게시된 공지사항 전체 건수 조회 */
@@ -13,8 +13,16 @@ export const noticeRepository = {
     return result?.total ?? 0
   },
 
-  /** 게시된 공지사항 페이지 목록 조회 (작성자 join, 최신순) */
-  getPublished(page: number, pageSize: number) {
+  /** 게시된 공지사항 페이지 목록 조회 (작성자 join, 정렬 지원) */
+  getPublished(
+    page: number,
+    pageSize: number,
+    sortBy: 'createdAt' | 'title' = 'createdAt',
+    sortOrder: 'asc' | 'desc' = 'desc',
+  ) {
+    const sortCol = sortBy === 'title' ? notices.title : notices.createdAt
+    const orderFn = sortOrder === 'asc' ? asc : desc
+
     return db
       .select({
         id: notices.id,
@@ -28,7 +36,7 @@ export const noticeRepository = {
       .from(notices)
       .innerJoin(users, eq(notices.authorId, users.id))
       .where(eq(notices.isPublished, true))
-      .orderBy(desc(notices.createdAt))
+      .orderBy(orderFn(sortCol))
       .limit(pageSize)
       .offset((page - 1) * pageSize)
       .all()

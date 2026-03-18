@@ -2,5 +2,6 @@
 export const noticeKeys = {
   all: ['notice'] as const,
   lists: () => [...noticeKeys.all, 'list'] as const,
-  list: (page: number, pageSize: number) => [...noticeKeys.lists(), { page, pageSize }] as const,
+  list: (page: number, pageSize: number, sortBy: string, sortOrder: string) =>
+    [...noticeKeys.lists(), { page, pageSize, sortBy, sortOrder }] as const,
 }

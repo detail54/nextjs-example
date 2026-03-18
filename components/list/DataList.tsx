@@ -19,19 +19,33 @@ export default function DataList<T>({
   onRowClick,
   emptyMessage,
   pageSizeSelector,
+  sortSelector,
 }: DataListProps<T>) {
   const isClickable = !!onRowClick
 
   return (
     <div className={listWrapperStyle}>
-      {/* 페이지 사이즈 셀렉터 - props 있을 경우에만 렌더링 */}
-      {pageSizeSelector && (
+      {/* 툴바 - 정렬(좌) / 페이지 사이즈(우), 하나라도 있을 경우 렌더링 */}
+      {(sortSelector || pageSizeSelector) && (
         <div className={listToolbarStyle}>
-          <SelectBox
-            value={pageSizeSelector.value}
-            options={pageSizeSelector.options}
-            onChange={(v) => pageSizeSelector.onChange(v as number)}
-          />
+          <div>
+            {sortSelector && (
+              <SelectBox
+                value={sortSelector.value}
+                options={sortSelector.options}
+                onChange={(v) => sortSelector.onChange(v as string)}
+              />
+            )}
+          </div>
+          <div>
+            {pageSizeSelector && (
+              <SelectBox
+                value={pageSizeSelector.value}
+                options={pageSizeSelector.options}
+                onChange={(v) => pageSizeSelector.onChange(v as number)}
+              />
+            )}
+          </div>
         </div>
       )}
 

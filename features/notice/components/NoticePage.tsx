@@ -7,11 +7,19 @@ import DataList from '@/components/list/DataList'
 import Pagination from '@/components/pagination/Pagination'
 import NoticeModal from './NoticeModal'
 import { noticePageStyles } from './NoticePage.styles'
-import type { NoticeItem } from '../api/type'
+import type { NoticeItem, NoticeSortBy, NoticeSortOrder } from '../api/type'
 import type { ListColumn } from '@/components/list/type'
 
 // 페이지 사이즈 옵션 목록
 const PAGE_SIZE_OPTIONS = [10, 20, 30]
+
+// 정렬 값 → sortBy/sortOrder 매핑
+const SORT_MAP: Record<string, { sortBy: NoticeSortBy; sortOrder: NoticeSortOrder }> = {
+  createdAt_desc: { sortBy: 'createdAt', sortOrder: 'desc' },
+  createdAt_asc: { sortBy: 'createdAt', sortOrder: 'asc' },
+  title_asc: { sortBy: 'title', sortOrder: 'asc' },
+  title_desc: { sortBy: 'title', sortOrder: 'desc' },
+}
 
 // YYYY-MM-DD HH:MM:SS → YYYY.MM.DD 형식 변환
 function formatDate(dateStr: string): string {
@@ -24,10 +32,13 @@ export default function NoticePage() {
   const [page, setPage] = useState(1)
   // 페이지당 항목 수
   const [pageSize, setPageSize] = useState(DEFAULT_NOTICE_PAGE_SIZE)
+  // 정렬 선택 값 (SORT_MAP 키)
+  const [sortValue, setSortValue] = useState('createdAt_desc')
   // 모달에 표시할 선택된 공지사항
   const [selectedNotice, setSelectedNotice] = useState<NoticeItem | null>(null)
 
-  const { data } = useNoticeQuery(page, pageSize)
+  const { sortBy, sortOrder } = SORT_MAP[sortValue]
+  const { data } = useNoticeQuery(page, pageSize, sortBy, sortOrder)
   const notices = data?.data ?? []
   const totalPages = data?.pagination.totalPages ?? 1
 
@@ -40,6 +51,12 @@ export default function NoticePage() {
   // 페이지 사이즈 변경 시 1페이지로 초기화
   const handlePageSizeChange = useCallback((value: number) => {
     setPageSize(value)
+    setPage(1)
+  }, [])
+
+  // 정렬 변경 시 1페이지로 초기화
+  const handleSortChange = useCallback((value: string) => {
+    setSortValue(value)
     setPage(1)
   }, [])
 
@@ -87,6 +104,17 @@ export default function NoticePage() {
     [],
   )
 
+  // 정렬 셀렉터 옵션
+  const sortOptions = useMemo(
+    () => [
+      { label: NOTICE_MSG.SORT_CREATED_DESC, value: 'createdAt_desc' },
+      { label: NOTICE_MSG.SORT_CREATED_ASC, value: 'createdAt_asc' },
+      { label: NOTICE_MSG.SORT_TITLE_ASC, value: 'title_asc' },
+      { label: NOTICE_MSG.SORT_TITLE_DESC, value: 'title_desc' },
+    ],
+    [],
+  )
+
   return (
     <div className={noticePageStyles.container}>
       <div className={noticePageStyles.content}>
@@ -99,6 +127,11 @@ export default function NoticePage() {
           data={notices}
           onRowClick={handleRowClick}
           emptyMessage={NOTICE_MSG.EMPTY}
+          sortSelector={{
+            value: sortValue,
+            options: sortOptions,
+            onChange: handleSortChange,
+          }}
           pageSizeSelector={{
             value: pageSize,
             options: pageSizeOptions,

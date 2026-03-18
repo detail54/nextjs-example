@@ -19,6 +19,16 @@ export type PageSizeSelectorProps = {
   onChange: (value: number) => void
 }
 
+/** 정렬 셀렉터 props */
+export type SortSelectorProps = {
+  /** 현재 선택된 정렬 값 */
+  value: string
+  /** 선택 옵션 목록 */
+  options: SelectOption[]
+  /** 변경 콜백 */
+  onChange: (value: string) => void
+}
+
 /** DataList 컴포넌트 props */
 export type DataListProps<T> = {
   columns: ListColumn<T>[]
@@ -27,4 +37,6 @@ export type DataListProps<T> = {
   emptyMessage?: string
   /** 페이지 사이즈 셀렉터 (있을 경우 리스트 상단에 렌더링) */
   pageSizeSelector?: PageSizeSelectorProps
+  /** 정렬 셀렉터 (있을 경우 리스트 상단에 렌더링) */
+  sortSelector?: SortSelectorProps
 }

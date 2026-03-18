@@ -14,7 +14,8 @@ type ApiLogOptions = {
   status: number
   duration: number
   user?: { username: string; role: string }
-  body?: unknown
+  reqBody?: unknown
+  resBody?: unknown
 }
 
 type AuthLogOptions = {
@@ -24,14 +25,13 @@ type AuthLogOptions = {
   reason?: string
 }
 
-// 현재 시각 ISO 문자열
+const LINE = '─'.repeat(72)
 const now = () => new Date().toISOString()
 
-// 상태 코드별 레벨 및 아이콘
-function resolveLevel(status: number): { label: string; icon: string } {
-  if (status >= 500) return { label: 'ERROR', icon: '✗' }
-  if (status >= 400) return { label: 'WARN ', icon: '△' }
-  return { label: 'INFO ', icon: '✓' }
+function statusIcon(status: number): string {
+  if (status >= 500) return '✗'
+  if (status >= 400) return '△'
+  return '✓'
 }
 
 // 인증 이벤트별 아이콘
@@ -52,33 +52,37 @@ function maskSensitive(body: unknown): unknown {
 }
 
 export const logger = {
-  // API 요청/응답 로그 (method, path, status, 소요시간, 유저, body)
-  api: ({ method, path, status, duration, user, body }: ApiLogOptions) => {
-    const { label, icon } = resolveLevel(status)
-    const userStr = user ? ` [${user.username}:${user.role}]` : ''
-    console.log(
-      `[${now()}] [${label}] API  ${method.padEnd(6)} ${path.padEnd(45)} ${icon} ${status}  (${duration}ms)${userStr}`,
-    )
-    if (body) {
-      console.log(`             body:`, JSON.stringify(maskSensitive(body), null, 2))
+  // API 요청/응답 로그
+  api: ({ method, path, status, duration, user, reqBody, resBody }: ApiLogOptions) => {
+    const icon = statusIcon(status)
+
+    console.log(`┌${LINE}`)
+    console.log(`│ ← ${method.padEnd(6)} ${path}`)
+    console.log(`│    ${now()}`)
+    console.log(`│    user: ${user ? `${user.username} [${user.role}]` : '(anonymous)'}`)
+    if (reqBody) {
+      console.log(`│    req : ${JSON.stringify(maskSensitive(reqBody))}`)
     }
+    console.log(`├${LINE}`)
+    console.log(`│ → ${icon} ${status}  (${duration}ms)`)
+    if (resBody) {
+      console.log(`│    res : ${JSON.stringify(maskSensitive(resBody))}`)
+    }
+    console.log(`└${LINE}`)
   },
 
   // 인증 이벤트 로그 (로그인, 토큰 갱신, 세션 만료 등)
   auth: ({ event, username, path, reason }: AuthLogOptions) => {
     const icon = authIcon(event)
-    const parts: string[] = [`[${now()}] [INFO ] AUTH ${icon} ${event}`]
+    const parts: string[] = [`[${now()}] AUTH ${icon} ${event}`]
     if (username) parts.push(`[${username}]`)
     if (path) parts.push(`path: ${path}`)
     if (reason) parts.push(`reason: ${reason}`)
-    console.log(parts.join(' '))
+    console.log(parts.join('  '))
   },
 
   // 서버 에러 로그
   error: (message: string, err?: unknown) => {
-    console.error(
-      `[${now()}] [ERROR] ${message}`,
-      err instanceof Error ? err.stack : err,
-    )
+    console.error(`[${now()}] ERROR  ${message}`, err instanceof Error ? err.stack : err)
   },
 }

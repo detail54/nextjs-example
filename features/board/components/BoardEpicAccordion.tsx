@@ -48,7 +48,7 @@ export default function BoardEpicAccordion({ epic }: Props) {
   return (
     <div className={epicAccordionStyles.container}>
       {/* 아코디언 헤더 */}
-      <div className={epicAccordionStyles.header}>
+      <div className={epicAccordionStyles.header({ open: isOpen })}>
         {/* 토글 버튼 (제목 + 카운트 + 화살표) */}
         <button
           type='button'

@@ -2,12 +2,21 @@ import { cva } from 'class-variance-authority'
 
 export const epicAccordionStyles = {
   // 아코디언 전체 컨테이너
-  container: cva('group/epic rounded-lg border border-secondary-700 overflow-hidden')(),
+  container: cva('group/epic rounded-lg border border-secondary-700')(),
 
-  // 헤더 영역 (토글 + 더보기 버튼)
+  // 헤더 영역 (토글 + 더보기 버튼), 열림 여부에 따라 하단 둥근 모서리 조건 적용
   header: cva(
-    'flex items-center bg-secondary-800 hover:bg-secondary-700 transition-colors duration-200',
-  )(),
+    'flex items-center bg-secondary-800 hover:bg-secondary-700 transition-colors duration-200 rounded-t-lg',
+    {
+      variants: {
+        open: {
+          true: '',
+          false: 'rounded-b-lg',
+        },
+      },
+      defaultVariants: { open: false },
+    },
+  ),
 
   // 토글 버튼 (클릭 시 펼침/닫힘)
   toggleButton: cva('flex flex-1 items-center justify-between px-4 py-3 cursor-pointer')(),
@@ -44,5 +53,5 @@ export const epicAccordionStyles = {
   )(),
 
   // 칸반 보드 영역
-  content: cva('bg-secondary-900 p-4')(),
+  content: cva('bg-secondary-900 p-4 rounded-b-lg')(),
 }

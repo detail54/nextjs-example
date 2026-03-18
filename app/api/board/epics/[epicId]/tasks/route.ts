@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAccessToken, ACCESS_TOKEN_COOKIE } from '@/lib/jwt'
 import { AuthError, AuthErrorCode } from '@/lib/authError'
-import { taskRepository } from '@/features/todos/api/task.repository'
+import { taskRepository } from '@/features/board/api/task.repository'
 import type { BasicResponse } from '@/db/type'
 
 type RouteContext = { params: Promise<{ epicId: string }> }

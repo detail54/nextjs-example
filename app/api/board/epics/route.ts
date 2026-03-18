@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withAuth } from '@/lib/withAuth'
-import { epicRepository } from '@/features/todos/api/epic.repository'
+import { epicRepository } from '@/features/board/api/epic.repository'
 import type { BasicResponse } from '@/db/type'
 
 // 에픽 생성

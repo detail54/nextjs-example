@@ -1,18 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { withAuth } from '@/lib/withAuth'
-import { epicRepository } from '@/features/todos/api/epic.repository'
-import { taskRepository } from '@/features/todos/api/task.repository'
+import { authenticate } from '@/lib/authenticate'
+import { epicRepository } from '@/features/board/api/epic.repository'
+import { taskRepository } from '@/features/board/api/task.repository'
 import type { BasicResponse } from '@/db/type'
 
-type Params = { params: Promise<{ epicId: string }> }
+type RouteContext = { params: Promise<{ epicId: string }> }
 
 // 에픽 수정
-export const PUT = withAuth(async (request: NextRequest, context: Params) => {
+export async function PUT(request: NextRequest, context: RouteContext) {
+  const authError = await authenticate(request)
+  if (authError) return authError
+
   const { epicId } = await context.params
   const id = Number(epicId)
   if (isNaN(id)) {
-    return NextResponse.json<BasicResponse<never>>(
-      { success: false, data: null as never, message: '잘못된 에픽 ID입니다.' },
+    return NextResponse.json<BasicResponse<null>>(
+      { success: false, data: null, message: '잘못된 에픽 ID입니다.' },
       { status: 400 },
     )
   }
@@ -21,8 +24,8 @@ export const PUT = withAuth(async (request: NextRequest, context: Params) => {
   const { title, description } = body as { title: string; description?: string }
 
   if (!title?.trim()) {
-    return NextResponse.json<BasicResponse<never>>(
-      { success: false, data: null as never, message: '에픽명을 입력해주세요.' },
+    return NextResponse.json<BasicResponse<null>>(
+      { success: false, data: null, message: '에픽명을 입력해주세요.' },
       { status: 400 },
     )
   }
@@ -30,15 +33,18 @@ export const PUT = withAuth(async (request: NextRequest, context: Params) => {
   epicRepository.update({ id, title: title.trim(), description: description?.trim() })
 
   return NextResponse.json<BasicResponse<null>>({ success: true, data: null })
-})
+}
 
 // 에픽 삭제 (하위 태스크 포함)
-export const DELETE = withAuth(async (_request: NextRequest, context: Params) => {
+export async function DELETE(request: NextRequest, context: RouteContext) {
+  const authError = await authenticate(request)
+  if (authError) return authError
+
   const { epicId } = await context.params
   const id = Number(epicId)
   if (isNaN(id)) {
-    return NextResponse.json<BasicResponse<never>>(
-      { success: false, data: null as never, message: '잘못된 에픽 ID입니다.' },
+    return NextResponse.json<BasicResponse<null>>(
+      { success: false, data: null, message: '잘못된 에픽 ID입니다.' },
       { status: 400 },
     )
   }
@@ -51,4 +57,4 @@ export const DELETE = withAuth(async (_request: NextRequest, context: Params) =>
   epicRepository.delete(id)
 
   return NextResponse.json<BasicResponse<null>>({ success: true, data: null })
-})
+}

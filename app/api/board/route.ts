@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withAuth } from '@/lib/withAuth'
-import { epicRepository } from '@/features/todos/api/epic.repository'
-import { taskRepository } from '@/features/todos/api/task.repository'
+import { epicRepository } from '@/features/board/api/epic.repository'
+import { taskRepository } from '@/features/board/api/task.repository'
 import type { ListResponse } from '@/db/type'
 import type { EpicWithTasks } from '@/features/board/api/type'
 

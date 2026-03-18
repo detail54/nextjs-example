@@ -16,7 +16,7 @@ import type { LucideIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import Icon from '@/components/icon/Icon'
 import { LnbMenuItem, LnbActionItem } from './LnbMenuItem'
-import { useModalStore } from '@/stores/useModalStore'
+import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
 import {
   lnbWrapperStyle,
   lnbStyle,
@@ -50,7 +50,7 @@ export function Lnb() {
   const pathname = usePathname()
   const { data: session } = useSession()
   const { mutate: logout } = useLogout()
-  const { openModal } = useModalStore()
+  const { openConfirmModal } = useConfirmModalStore()
 
   // 현재 역할로 접근 가능한 메뉴만 필터링 (roles 빈 배열이면 모든 역할 허용)
   const filteredMenuList = MENU_LIST.filter(
@@ -106,7 +106,7 @@ export function Lnb() {
             icon={LogOut}
             isCollapsed={isCollapsed}
             onClick={() =>
-              openModal({
+              openConfirmModal({
                 type: 'confirm',
                 title: LNB_MSG.LOGOUT_CONFIRM_TITLE,
                 description: LNB_MSG.LOGOUT_CONFIRM_DESC,

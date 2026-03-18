@@ -19,7 +19,7 @@ export default function RootLayout({
       <body>
         <Providers>
           {children}
-          {/* 전역 모달 - useModalStore로 제어 */}
+          {/* 전역 모달 - useConfirmModalStore / useBasicModalStore로 제어 */}
           <ModalProvider />
           {/* Sonner 토스트 - primary 테마에 맞춰 커스텀 */}
           <Toaster

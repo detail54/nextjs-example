@@ -3,9 +3,9 @@
 import { useState, useCallback, useMemo } from 'react'
 import { NOTICE_MSG } from '@/context/messages/noticeMsg'
 import { useNoticeQuery, DEFAULT_NOTICE_PAGE_SIZE } from '../hooks/useNoticeQuery'
+import { useBasicModalStore } from '@/stores/useBasicModalStore'
 import DataList from '@/components/list/DataList'
 import Pagination from '@/components/pagination/Pagination'
-import NoticeModal from './NoticeModal'
 import { noticePageStyles } from './NoticePage.styles'
 import type { NoticeItem, NoticeSortBy, NoticeSortOrder } from '../api/type'
 import type { ListColumn } from '@/components/list/type'
@@ -34,13 +34,13 @@ export default function NoticePage() {
   const [pageSize, setPageSize] = useState(DEFAULT_NOTICE_PAGE_SIZE)
   // 정렬 선택 값 (SORT_MAP 키)
   const [sortValue, setSortValue] = useState('createdAt_desc')
-  // 모달에 표시할 선택된 공지사항
-  const [selectedNotice, setSelectedNotice] = useState<NoticeItem | null>(null)
 
   const { sortBy, sortOrder } = SORT_MAP[sortValue]
   const { data, isLoading } = useNoticeQuery(page, pageSize, sortBy, sortOrder)
   const notices = data?.data ?? []
   const totalPages = data?.pagination.totalPages ?? 1
+
+  const { openBasicModal } = useBasicModalStore()
 
   // 페이지 변경 시 최상단 스크롤
   const handlePageChange = useCallback((nextPage: number) => {
@@ -60,13 +60,16 @@ export default function NoticePage() {
     setPage(1)
   }, [])
 
-  const handleRowClick = useCallback((notice: NoticeItem) => {
-    setSelectedNotice(notice)
-  }, [])
-
-  const handleModalClose = useCallback(() => {
-    setSelectedNotice(null)
-  }, [])
+  // 행 클릭 시 BasicModal store로 공지사항 상세 열기
+  const handleRowClick = useCallback(
+    (notice: NoticeItem) => {
+      openBasicModal({
+        title: notice.title,
+        children: <p className={noticePageStyles.modalContent}>{notice.content}</p>,
+      })
+    },
+    [openBasicModal],
+  )
 
   // 페이지/사이즈 변경 시 번호 재계산
   const noticeColumns = useMemo<ListColumn<NoticeItem>[]>(
@@ -146,8 +149,6 @@ export default function NoticePage() {
 
         <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
       </div>
-
-      <NoticeModal notice={selectedNotice} onClose={handleModalClose} />
     </div>
   )
 }

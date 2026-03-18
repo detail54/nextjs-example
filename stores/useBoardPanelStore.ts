@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
 import type { BoardTask, EpicWithTasks } from '@/features/board/api/type'
 
 // 보드 우측 패널 상태
@@ -11,9 +12,14 @@ type BoardPanelStore = {
   setEditingEpic: (epic: EpicWithTasks | null) => void
 }
 
-export const useBoardPanelStore = create<BoardPanelStore>((set) => ({
-  selectedTask: null,
-  setSelectedTask: (task) => set({ selectedTask: task, editingEpic: null }),
-  editingEpic: null,
-  setEditingEpic: (epic) => set({ editingEpic: epic, selectedTask: null }),
-}))
+export const useBoardPanelStore = create<BoardPanelStore>()(
+  devtools(
+    (set) => ({
+      selectedTask: null,
+      setSelectedTask: (task) => set({ selectedTask: task, editingEpic: null }, false, 'setSelectedTask'),
+      editingEpic: null,
+      setEditingEpic: (epic) => set({ editingEpic: epic, selectedTask: null }, false, 'setEditingEpic'),
+    }),
+    { name: 'BoardPanelStore' },
+  ),
+)

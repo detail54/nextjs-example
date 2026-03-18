@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authenticate } from '@/server/lib/authenticate'
 import { taskRepository } from '@/server/repositories/task.repository'
+import { SERVER_BOARD_MSG } from '@/server/messages/boardMsg'
 import type { BasicResponse } from '@/server/db/type'
 
 type RouteContext = { params: Promise<{ epicId: string }> }
@@ -15,7 +16,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
 
   if (isNaN(epicId)) {
     return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '잘못된 에픽 ID입니다.' },
+      { success: false, data: null, message: SERVER_BOARD_MSG.INVALID_EPIC_ID },
       { status: 400 },
     )
   }
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
 
   if (!title?.trim()) {
     return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '태스크 제목을 입력해주세요.' },
+      { success: false, data: null, message: SERVER_BOARD_MSG.TASK_TITLE_REQUIRED },
       { status: 400 },
     )
   }

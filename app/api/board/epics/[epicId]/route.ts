@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authenticateAdmin } from '@/server/lib/authenticate'
 import { epicRepository } from '@/server/repositories/epic.repository'
 import { taskRepository } from '@/server/repositories/task.repository'
+import { SERVER_BOARD_MSG } from '@/server/messages/boardMsg'
 import type { BasicResponse, EpicStatus } from '@/server/db/type'
 
 type RouteContext = { params: Promise<{ epicId: string }> }
@@ -15,7 +16,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   const id = Number(epicId)
   if (isNaN(id)) {
     return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '잘못된 에픽 ID입니다.' },
+      { success: false, data: null, message: SERVER_BOARD_MSG.INVALID_EPIC_ID },
       { status: 400 },
     )
   }
@@ -30,7 +31,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
 
   if (!title?.trim()) {
     return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '에픽명을 입력해주세요.' },
+      { success: false, data: null, message: SERVER_BOARD_MSG.EPIC_TITLE_REQUIRED },
       { status: 400 },
     )
   }
@@ -55,7 +56,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
   const id = Number(epicId)
   if (isNaN(id)) {
     return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '잘못된 에픽 ID입니다.' },
+      { success: false, data: null, message: SERVER_BOARD_MSG.INVALID_EPIC_ID },
       { status: 400 },
     )
   }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authenticate } from '@/server/lib/authenticate'
 import { taskRepository } from '@/server/repositories/task.repository'
+import { SERVER_BOARD_MSG } from '@/server/messages/boardMsg'
 import type { BasicResponse, TaskStatus } from '@/server/db/type'
 
 type RouteContext = { params: Promise<{ id: string }> }
@@ -15,7 +16,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 
   if (isNaN(taskId)) {
     return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '유효하지 않은 task ID입니다.' },
+      { success: false, data: null, message: SERVER_BOARD_MSG.INVALID_TASK_ID },
       { status: 400 },
     )
   }
@@ -38,7 +39,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
 
   if (isNaN(taskId)) {
     return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '유효하지 않은 task ID입니다.' },
+      { success: false, data: null, message: SERVER_BOARD_MSG.INVALID_TASK_ID },
       { status: 400 },
     )
   }
@@ -53,7 +54,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
 
   if (!title?.trim()) {
     return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '제목을 입력해주세요.' },
+      { success: false, data: null, message: SERVER_BOARD_MSG.TASK_CONTENT_TITLE_REQUIRED },
       { status: 400 },
     )
   }

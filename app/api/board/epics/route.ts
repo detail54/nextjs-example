@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withAuth } from '@/server/lib/withAuth'
 import { epicRepository } from '@/server/repositories/epic.repository'
+import { SERVER_BOARD_MSG } from '@/server/messages/boardMsg'
 import type { BasicResponse } from '@/server/db/type'
 
 // 에픽 생성 (관리자 전용)
@@ -11,7 +12,7 @@ export const POST = withAuth(
 
     if (!title?.trim()) {
       return NextResponse.json<BasicResponse<never>>(
-        { success: false, data: null as never, message: '에픽명을 입력해주세요.' },
+        { success: false, data: null as never, message: SERVER_BOARD_MSG.EPIC_TITLE_REQUIRED },
         { status: 400 },
       )
     }

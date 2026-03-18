@@ -15,6 +15,7 @@ export const BOARD_MSG = {
   // 태스크 상세 패널
   TASK_PANEL_TITLE: '태스크 상세',
   TASK_STATUS_LABEL: '상태',
+  TASK_DUE_DATE_LABEL: '마감일',
   TASK_DESCRIPTION_LABEL: '설명',
   TASK_TITLE_EMPTY: '제목 없음',
   TASK_DESCRIPTION_EMPTY: '설명을 추가하세요',

@@ -3,13 +3,18 @@
 import { useState } from 'react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
 import InlineEdit from '@/components/inline-edit/InlineEdit'
+import SelectBox from '@/components/select/SelectBox'
+import DatePicker from '@/components/datepicker/DatePicker'
 import { useTaskUpdate } from '../hooks/useTask'
 import type { BoardTask } from '../api/type'
-import {
-  boardTaskDetailStyles,
-  taskStatusBadge,
-  TASK_STATUS_LABEL,
-} from './BoardTaskDetail.styles'
+import type { TaskStatus } from '@/server/db/type'
+import { boardTaskDetailStyles, TASK_STATUS_LABEL } from './BoardTaskDetail.styles'
+
+// 상태 SelectBox 옵션 목록
+const TASK_STATUS_OPTIONS = (Object.keys(TASK_STATUS_LABEL) as TaskStatus[]).map((key) => ({
+  value: key,
+  label: TASK_STATUS_LABEL[key],
+}))
 
 interface BoardTaskDetailProps {
   task: BoardTask
@@ -32,25 +37,53 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
   const handleTitleSave = (title: string) => {
     // 낙관적 업데이트: 즉시 반영
     setLocalTask((prev) => ({ ...prev, title }))
-    update({ id: task.id, title, description: localTask.description ?? undefined })
+    update({
+      id: task.id,
+      title,
+      description: localTask.description ?? undefined,
+      status: localTask.status,
+      dueDate: localTask.dueDate,
+    })
   }
 
   const handleDescriptionSave = (description: string) => {
     // 낙관적 업데이트: 즉시 반영
     setLocalTask((prev) => ({ ...prev, description }))
-    update({ id: task.id, title: localTask.title, description })
+    update({
+      id: task.id,
+      title: localTask.title,
+      description,
+      status: localTask.status,
+      dueDate: localTask.dueDate,
+    })
+  }
+
+  const handleStatusChange = (status: TaskStatus) => {
+    // 낙관적 업데이트: 즉시 반영
+    setLocalTask((prev) => ({ ...prev, status }))
+    update({
+      id: task.id,
+      title: localTask.title,
+      description: localTask.description ?? undefined,
+      status,
+      dueDate: localTask.dueDate,
+    })
+  }
+
+  const handleDueDateChange = (dueDate: string) => {
+    // 낙관적 업데이트: 즉시 반영
+    setLocalTask((prev) => ({ ...prev, dueDate: dueDate || null }))
+    update({
+      id: task.id,
+      title: localTask.title,
+      description: localTask.description ?? undefined,
+      status: localTask.status,
+      dueDate: dueDate || null,
+    })
   }
 
   return (
     <div className={boardTaskDetailStyles.wrapper}>
-      {/* 상태 배지 */}
-      <div className={boardTaskDetailStyles.statusRow}>
-        <span className={boardTaskDetailStyles.sectionLabel}>{BOARD_MSG.TASK_STATUS_LABEL}</span>
-        <span className={taskStatusBadge({ status: localTask.status })}>
-          {TASK_STATUS_LABEL[localTask.status]}
-        </span>
-      </div>
-
       {/* 제목 */}
       <div className={boardTaskDetailStyles.section}>
         <InlineEdit
@@ -59,6 +92,22 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
           emptyText={BOARD_MSG.TASK_TITLE_EMPTY}
           textClassName='text-base font-semibold'
         />
+      </div>
+
+      {/* 상태 선택 */}
+      <div className={boardTaskDetailStyles.section}>
+        <p className={boardTaskDetailStyles.sectionLabel}>{BOARD_MSG.TASK_STATUS_LABEL}</p>
+        <SelectBox
+          value={localTask.status}
+          options={TASK_STATUS_OPTIONS}
+          onChange={(val) => handleStatusChange(val as TaskStatus)}
+        />
+      </div>
+
+      {/* 마감일 선택 */}
+      <div className={boardTaskDetailStyles.section}>
+        <p className={boardTaskDetailStyles.sectionLabel}>{BOARD_MSG.TASK_DUE_DATE_LABEL}</p>
+        <DatePicker value={localTask.dueDate ?? ''} onChange={handleDueDateChange} />
       </div>
 
       {/* 설명 */}

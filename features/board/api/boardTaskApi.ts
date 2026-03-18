@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
-import type { BasicResponse } from '@/server/db/type'
+import type { BasicResponse, TaskStatus } from '@/server/db/type'
 
 export type CreateTaskRequest = {
   title: string
@@ -9,6 +9,8 @@ export type CreateTaskRequest = {
 export type UpdateTaskRequest = {
   title: string
   description?: string
+  status?: TaskStatus
+  dueDate?: string | null
 }
 
 // 태스크 내용 수정 API (title + description)

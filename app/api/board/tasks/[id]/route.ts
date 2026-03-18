@@ -44,7 +44,12 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   }
 
   const body = await request.json()
-  const { title, description } = body as { title: string; description?: string }
+  const { title, description, status, dueDate } = body as {
+    title: string
+    description?: string
+    status?: TaskStatus
+    dueDate?: string | null
+  }
 
   if (!title?.trim()) {
     return NextResponse.json<BasicResponse<null>>(
@@ -53,7 +58,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     )
   }
 
-  taskRepository.update({ id: taskId, title: title.trim(), description: description?.trim() })
+  taskRepository.update({ id: taskId, title: title.trim(), description: description?.trim(), status, dueDate })
 
   return NextResponse.json<BasicResponse<null>>({ success: true, data: null })
 }

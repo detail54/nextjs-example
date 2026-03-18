@@ -45,10 +45,10 @@ export const taskRepository = {
   },
 
   /** task 내용 수정 */
-  update({ id, title, description }: UpdateTaskParams) {
+  update({ id, title, description, status, dueDate }: UpdateTaskParams) {
     return db
       .update(tasks)
-      .set({ title, description, updatedAt: sql`CURRENT_TIMESTAMP` })
+      .set({ title, description, status, dueDate, updatedAt: sql`CURRENT_TIMESTAMP` })
       .where(eq(tasks.id, id))
       .run()
   },

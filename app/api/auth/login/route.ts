@@ -1,6 +1,6 @@
-import { authRepository } from '@/features/auth/api/auth.repository'
+import { authRepository } from '@/server/repositories/auth.repository'
 import { type LoginRequest, type LoginResponse } from '@/features/auth/api/type'
-import { type BasicResponse, type DbUser } from '@/db/type'
+import { type BasicResponse, type DbUser } from '@/server/db/type'
 import {
   signAccessToken,
   signRefreshToken,
@@ -8,10 +8,10 @@ import {
   REFRESH_TOKEN_COOKIE,
   ACCESS_TOKEN_MAX_AGE,
   REFRESH_TOKEN_MAX_AGE,
-} from '@/lib/jwt'
-import { AUTH_MSG } from '@/context/authMsg'
-import { logger } from '@/lib/logger'
-import { withLogger } from '@/lib/withLogger'
+} from '@/server/lib/jwt'
+import { AUTH_MSG } from '@/context/messages/authMsg'
+import { logger } from '@/server/lib/logger'
+import { withLogger } from '@/server/lib/withLogger'
 import bcrypt from 'bcryptjs'
 import { NextRequest, NextResponse } from 'next/server'
 

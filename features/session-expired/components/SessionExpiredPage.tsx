@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useModalStore } from '@/stores/useModalStore'
-import { AUTH_MSG } from '@/context/authMsg'
+import { AUTH_MSG } from '@/context/messages/authMsg'
 import { APP_PATHS } from '@/context/appPaths'
 
 // 리프레시 토큰 만료 시 세션 만료 모달을 띄우는 페이지

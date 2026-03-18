@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
-import { BOARD_MSG } from '@/context/boardMsg'
+import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useBoardPanelStore } from '@/stores/useBoardPanelStore'
 import { useEpicDelete } from '../hooks/useEpicDelete'
 import type { EpicWithTasks } from '../api/type'

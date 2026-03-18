@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
-import type { PageResponse } from '@/db/type'
+import type { PageResponse } from '@/server/db/type'
 import type { NoticeItem, NoticeListParams } from './type'
 
 // 게시된 공지사항 페이지 목록 조회

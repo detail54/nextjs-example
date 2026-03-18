@@ -1,7 +1,7 @@
 'use client'
 
 import { useModalStore } from '@/stores/useModalStore'
-import { COMMON_MSG } from '@/context/commonMsg'
+import { COMMON_MSG } from '@/context/messages/commonMsg'
 import ConfirmModal from './ConfirmModal'
 
 // 루트 레이아웃에 마운트되는 전역 모달 렌더러

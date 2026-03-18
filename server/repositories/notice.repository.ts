@@ -1,5 +1,5 @@
-import { db } from '@/db/db'
-import { notices, users } from '@/db/schema'
+import { db } from '@/server/db/db'
+import { notices, users } from '@/server/db/schema'
 import { eq, desc, count } from 'drizzle-orm'
 
 export const noticeRepository = {

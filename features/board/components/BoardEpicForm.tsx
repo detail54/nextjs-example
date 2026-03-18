@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BOARD_MSG } from '@/context/boardMsg'
+import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useEpicCreate } from '../hooks/useEpicCreate'
 import { useEpicUpdate } from '../hooks/useEpicUpdate'
 import type { EpicWithTasks } from '../api/type'

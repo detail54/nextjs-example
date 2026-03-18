@@ -1,5 +1,5 @@
-import { db } from '@/db/db'
-import { tasks } from '@/db/schema'
+import { db } from '@/server/db/db'
+import { tasks } from '@/server/db/schema'
 import { eq, asc, sql } from 'drizzle-orm'
 import type {
   CreateTaskParams,

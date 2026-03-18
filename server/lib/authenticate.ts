@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAccessToken, ACCESS_TOKEN_COOKIE } from './jwt'
 import { AuthError, AuthErrorCode } from './authError'
-import type { BasicResponse } from '@/db/type'
+import type { BasicResponse } from '@/server/db/type'
 
 export async function authenticate(request: NextRequest): Promise<NextResponse | null> {
   const token = request.cookies.get(ACCESS_TOKEN_COOKIE)?.value

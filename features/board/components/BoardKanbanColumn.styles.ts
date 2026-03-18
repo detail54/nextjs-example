@@ -1,5 +1,5 @@
 import { cva } from 'class-variance-authority'
-import type { TaskStatus } from '@/db/type'
+import type { TaskStatus } from '@/server/db/type'
 
 export const kanbanColumnStyles = {
   // 컬럼 전체 컨테이너

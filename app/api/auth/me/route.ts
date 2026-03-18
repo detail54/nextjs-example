@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { withAuth } from '@/lib/withAuth'
-import { type BasicResponse } from '@/db/type'
+import { withAuth } from '@/server/lib/withAuth'
+import { type BasicResponse } from '@/server/db/type'
 import { type MeResponse } from '@/features/auth/api/type'
 
 // 현재 로그인된 유저 세션 정보 반환

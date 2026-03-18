@@ -2,8 +2,8 @@ import { SquareCheckBig } from 'lucide-react'
 import LinkButton from '@/components/button/LinkButton'
 import Icon from '@/components/icon/Icon'
 import { APP_PATHS } from '@/context/appPaths'
-import { AUTH_MSG } from '@/context/authMsg'
-import { HOME_MSG } from '@/context/homeMsg'
+import { AUTH_MSG } from '@/context/messages/authMsg'
+import { HOME_MSG } from '@/context/messages/homeMsg'
 import { homeLandingStyles as s } from './HomeLanding.styles'
 
 // 홈 랜딩 페이지 컴포넌트

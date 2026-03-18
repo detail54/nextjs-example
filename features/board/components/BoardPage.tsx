@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
-import { BOARD_MSG } from '@/context/boardMsg'
+import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useBoardQuery } from '../hooks/useBoardQuery'
 import { useBoardPanelStore } from '@/stores/useBoardPanelStore'
 import BoardEpicAccordion from './BoardEpicAccordion'

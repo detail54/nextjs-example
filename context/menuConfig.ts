@@ -1,5 +1,5 @@
-import type { UserRole } from '@/db/type'
-import { LNB_MSG } from './lnbMsg'
+import type { UserRole } from '@/server/db/type'
+import { LNB_MSG } from '@/context/messages/lnbMsg'
 import { APP_PATHS } from './appPaths'
 
 // 상단 메뉴 아이템 타입

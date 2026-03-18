@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { authenticate } from '@/lib/authenticate'
-import { epicRepository } from '@/features/board/api/epic.repository'
-import { taskRepository } from '@/features/board/api/task.repository'
-import type { BasicResponse } from '@/db/type'
+import { authenticate } from '@/server/lib/authenticate'
+import { epicRepository } from '@/server/repositories/epic.repository'
+import { taskRepository } from '@/server/repositories/task.repository'
+import type { BasicResponse } from '@/server/db/type'
 
 type RouteContext = { params: Promise<{ epicId: string }> }
 

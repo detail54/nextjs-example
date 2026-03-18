@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { withAuth } from '@/lib/withAuth'
-import { noticeRepository } from '@/features/notice/api/notice.repository'
-import type { PageResponse } from '@/db/type'
+import { withAuth } from '@/server/lib/withAuth'
+import { noticeRepository } from '@/server/repositories/notice.repository'
+import type { PageResponse } from '@/server/db/type'
 import type { NoticeItem } from '@/features/notice/api/type'
 
 // 게시된 공지사항 페이지 목록 조회

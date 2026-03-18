@@ -1,4 +1,4 @@
-import { UserRole } from '@/db/type'
+import { UserRole } from '@/server/db/type'
 
 // useLogin 훅 옵션 타입
 export type UseLoginOptions = {

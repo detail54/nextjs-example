@@ -1,5 +1,5 @@
-import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '@/lib/jwt'
-import { type BasicResponse } from '@/db/type'
+import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '@/server/lib/jwt'
+import { type BasicResponse } from '@/server/db/type'
 import { NextResponse } from 'next/server'
 
 export async function POST(): Promise<NextResponse<BasicResponse<null>>> {

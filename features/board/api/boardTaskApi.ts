@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
-import type { BasicResponse } from '@/db/type'
+import type { BasicResponse } from '@/server/db/type'
 
 export type CreateTaskRequest = {
   title: string

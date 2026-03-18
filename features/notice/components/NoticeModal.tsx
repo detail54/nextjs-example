@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
-import { NOTICE_MSG } from '@/context/noticeMsg'
+import { NOTICE_MSG } from '@/context/messages/noticeMsg'
 import BasicButton from '@/components/button/BasicButton'
 import {
   backdropStyle,

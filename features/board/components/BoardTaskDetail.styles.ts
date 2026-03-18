@@ -1,5 +1,5 @@
 import { cva } from 'class-variance-authority'
-import type { TaskStatus } from '@/db/type'
+import type { TaskStatus } from '@/server/db/type'
 
 export const boardTaskDetailStyles = {
   // 전체 래퍼

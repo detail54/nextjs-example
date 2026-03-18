@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify, errors as joseErrors } from 'jose'
-import { type UserRole } from '@/db/type'
+import { type UserRole } from '@/server/db/type'
 import { AuthError, AuthErrorCode } from './authError'
 
 // 액세스 토큰: 15분 (짧은 수명으로 보안 강화)

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { withAuth } from '@/lib/withAuth'
-import { epicRepository } from '@/features/board/api/epic.repository'
-import type { BasicResponse } from '@/db/type'
+import { withAuth } from '@/server/lib/withAuth'
+import { epicRepository } from '@/server/repositories/epic.repository'
+import type { BasicResponse } from '@/server/db/type'
 
 // 에픽 생성
 export const POST = withAuth(async (request: NextRequest) => {

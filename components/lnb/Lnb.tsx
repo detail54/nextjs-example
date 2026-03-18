@@ -27,7 +27,7 @@ import {
   lnbBottomStyle,
 } from './Lnb.styles'
 import { MENU_LIST } from '@/context/menuConfig'
-import { LNB_MSG } from '@/context/lnbMsg'
+import { LNB_MSG } from '@/context/messages/lnbMsg'
 import { APP_PATHS } from '@/context/appPaths'
 import { useSession } from '@/features/auth/hooks/useSession'
 import { useLogout } from '@/features/auth/hooks/useLogout'

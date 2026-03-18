@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAccessToken, ACCESS_TOKEN_COOKIE, type JwtUserPayload } from './jwt'
 import { AuthError, AuthErrorCode } from './authError'
-import { AUTH_MSG } from '@/context/authMsg'
-import { type UserRole, type BasicResponse } from '@/db/type'
+import { AUTH_MSG } from '@/context/messages/authMsg'
+import { type UserRole, type BasicResponse } from '@/server/db/type'
 import { withLogger } from './withLogger'
 import { logger } from './logger'
 

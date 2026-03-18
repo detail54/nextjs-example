@@ -1,6 +1,6 @@
 'use client'
 
-import { LNB_MSG } from '@/context/lnbMsg'
+import { LNB_MSG } from '@/context/messages/lnbMsg'
 
 // 마이페이지 컴포넌트 (추후 구현)
 export default function MyPage() {

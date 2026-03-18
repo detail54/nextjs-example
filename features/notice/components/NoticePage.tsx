@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo } from 'react'
-import { NOTICE_MSG } from '@/context/noticeMsg'
+import { NOTICE_MSG } from '@/context/messages/noticeMsg'
 import { useNoticeQuery, NOTICE_PAGE_SIZE } from '../hooks/useNoticeQuery'
 import DataList from '@/components/list/DataList'
 import Pagination from '@/components/pagination/Pagination'

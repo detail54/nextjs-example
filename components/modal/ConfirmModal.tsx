@@ -8,7 +8,7 @@ import {
   confirmDescStyle,
   confirmActionsStyle,
 } from './ConfirmModal.styles'
-import { COMMON_MSG } from '@/context/commonMsg'
+import { COMMON_MSG } from '@/context/messages/commonMsg'
 import type { ConfirmModalProps } from './type'
 
 // 확인/취소 공통 모달 컴포넌트

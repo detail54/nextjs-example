@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Lock } from 'lucide-react'
 import Icon from '@/components/icon/Icon'
 import BasicButton from '@/components/button/BasicButton'
-import { AUTH_MSG } from '@/context/authMsg'
+import { AUTH_MSG } from '@/context/messages/authMsg'
 import { APP_PATHS } from '@/context/appPaths'
 
 // 401 - 로그인이 필요한 페이지

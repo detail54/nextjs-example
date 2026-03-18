@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { ShieldX } from 'lucide-react'
 import Icon from '@/components/icon/Icon'
-import { LNB_MSG } from '@/context/lnbMsg'
+import { LNB_MSG } from '@/context/messages/lnbMsg'
 
 // 권한 없음 페이지 컴포넌트
 export default function UnauthorizedPage() {

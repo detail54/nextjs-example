@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
-import type { ListResponse, BasicResponse } from '@/db/type'
+import type { ListResponse, BasicResponse } from '@/server/db/type'
 import type { EpicWithTasks, TaskMoveParams } from './type'
 
 // 보드 전체 조회

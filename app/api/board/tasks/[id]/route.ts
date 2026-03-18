@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { authenticate } from '@/lib/authenticate'
-import { taskRepository } from '@/features/board/api/task.repository'
-import type { BasicResponse, TaskStatus } from '@/db/type'
+import { authenticate } from '@/server/lib/authenticate'
+import { taskRepository } from '@/server/repositories/task.repository'
+import type { BasicResponse, TaskStatus } from '@/server/db/type'
 
 type RouteContext = { params: Promise<{ id: string }> }
 

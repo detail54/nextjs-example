@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 import Icon from '@/components/icon/Icon'
-import { SIDE_PANEL_MSG } from '@/context/sidePanelMsg'
+import { SIDE_PANEL_MSG } from '@/context/messages/sidePanelMsg'
 import { sidePanelStyles } from './SidePanel.styles'
 
 interface SidePanelProps {

@@ -4,12 +4,12 @@ import {
   ACCESS_TOKEN_COOKIE,
   REFRESH_TOKEN_COOKIE,
   ACCESS_TOKEN_MAX_AGE,
-} from '@/lib/jwt'
-import { AuthError } from '@/lib/authError'
-import { AUTH_MSG } from '@/context/authMsg'
-import { logger } from '@/lib/logger'
-import { withLogger } from '@/lib/withLogger'
-import { type BasicResponse } from '@/db/type'
+} from '@/server/lib/jwt'
+import { AuthError } from '@/server/lib/authError'
+import { AUTH_MSG } from '@/context/messages/authMsg'
+import { logger } from '@/server/lib/logger'
+import { withLogger } from '@/server/lib/withLogger'
+import { type BasicResponse } from '@/server/db/type'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = withLogger(async (request: NextRequest) => {

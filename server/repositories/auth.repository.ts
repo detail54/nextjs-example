@@ -1,5 +1,5 @@
-import { db } from '@/db/db'
-import { users } from '@/db/schema'
+import { db } from '@/server/db/db'
+import { users } from '@/server/db/schema'
 import { eq } from 'drizzle-orm'
 import type {
   CreateUserParams,

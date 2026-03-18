@@ -1,6 +1,6 @@
 'use client'
 
-import { LNB_MSG } from '@/context/lnbMsg'
+import { LNB_MSG } from '@/context/messages/lnbMsg'
 
 // 타임라인 페이지 컴포넌트 (추후 구현)
 export default function TimelinePage() {

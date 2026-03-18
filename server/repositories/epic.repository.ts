@@ -1,5 +1,5 @@
-import { db } from '@/db/db'
-import { epics } from '@/db/schema'
+import { db } from '@/server/db/db'
+import { epics } from '@/server/db/schema'
 import { eq, desc, sql } from 'drizzle-orm'
 import type { CreateEpicParams, UpdateEpicParams } from './type'
 

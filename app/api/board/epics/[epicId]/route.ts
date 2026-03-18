@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { authenticate } from '@/server/lib/authenticate'
+import { authenticateAdmin } from '@/server/lib/authenticate'
 import { epicRepository } from '@/server/repositories/epic.repository'
 import { taskRepository } from '@/server/repositories/task.repository'
 import type { BasicResponse, EpicStatus } from '@/server/db/type'
@@ -8,7 +8,7 @@ type RouteContext = { params: Promise<{ epicId: string }> }
 
 // 에픽 수정
 export async function PUT(request: NextRequest, context: RouteContext) {
-  const authError = await authenticate(request)
+  const authError = await authenticateAdmin(request)
   if (authError) return authError
 
   const { epicId } = await context.params
@@ -48,7 +48,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
 
 // 에픽 삭제 (하위 태스크 포함)
 export async function DELETE(request: NextRequest, context: RouteContext) {
-  const authError = await authenticate(request)
+  const authError = await authenticateAdmin(request)
   if (authError) return authError
 
   const { epicId } = await context.params

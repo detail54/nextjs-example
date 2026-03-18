@@ -6,6 +6,7 @@ import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useBoardPanelStore } from '@/stores/useBoardPanelStore'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
 import { useEpicDelete } from '../hooks/useEpic'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 import type { EpicWithTasks } from '../api/type'
 import BoardKanban from './BoardKanban'
 import DropdownMenu from '@/components/dropdown/DropdownMenu'
@@ -21,6 +22,7 @@ export default function BoardEpicAccordion({ epic }: Props) {
   // 아코디언 펼침 여부
   const [isOpen, setIsOpen] = useState(false)
 
+  const { isAdmin } = useAuth()
   const { setEditingEpic } = useBoardPanelStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { mutate: deleteEpic } = useEpicDelete()
@@ -68,14 +70,16 @@ export default function BoardEpicAccordion({ epic }: Props) {
           </span>
         </button>
 
-        {/* ⋯ 더보기 버튼 (hover 시 표시) */}
-        <div className={epicAccordionStyles.moreButtonWrapper}>
-          <DropdownMenu
-            trigger={<Icon icon={MoreHorizontal} size='sm' />}
-            triggerClassName={epicAccordionStyles.moreButton}
-            items={dropdownItems}
-          />
-        </div>
+        {/* ⋯ 더보기 버튼 (관리자만 표시) */}
+        {isAdmin && (
+          <div className={epicAccordionStyles.moreButtonWrapper}>
+            <DropdownMenu
+              trigger={<Icon icon={MoreHorizontal} size='sm' />}
+              triggerClassName={epicAccordionStyles.moreButton}
+              items={dropdownItems}
+            />
+          </div>
+        )}
       </div>
 
       {/* 칸반 보드 (펼쳐진 경우에만 렌더링) */}

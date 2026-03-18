@@ -2,11 +2,12 @@ import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 import Providers from '@/lib/Providers'
 import ModalProvider from '@/components/modal/ModalProvider'
+import { PAGE_TITLES } from '@/context/pageTitles'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'nextjs-example-todo-list',
-  description: 'nextjs-example-todo-list',
+  title: PAGE_TITLES.HOME,
+  description: PAGE_TITLES.HOME,
 }
 
 export default function RootLayout({

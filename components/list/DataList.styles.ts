@@ -1,5 +1,11 @@
 import { cva } from 'class-variance-authority'
 
+// 전체 래퍼 (툴바 + 테이블)
+export const listWrapperStyle = cva('flex flex-col gap-3')()
+
+// 툴바 (페이지 사이즈 셀렉터 등) - 우측 정렬
+export const listToolbarStyle = cva('flex items-center justify-end')()
+
 // 테이블 래퍼
 export const tableWrapperStyle = cva([
   'w-full',

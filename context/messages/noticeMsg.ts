@@ -7,4 +7,5 @@ export const NOTICE_MSG = {
   COLUMN_CREATED_AT: '작성일',
   COLUMN_AUTHOR: '작성자',
   MODAL_CLOSE: '닫기',
+  PAGE_SIZE_SUFFIX: '개씩 보기',
 } as const

@@ -32,8 +32,6 @@ function getPageNumbers(current: number, total: number): (number | null)[] {
 
 // 페이지네이션 컴포넌트
 export default function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
-  if (totalPages <= 1) return null
-
   const pageNumbers = getPageNumbers(currentPage, totalPages)
 
   return (

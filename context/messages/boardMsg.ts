@@ -38,6 +38,9 @@ export const BOARD_MSG = {
   EPIC_EDIT: '수정',
   EPIC_DELETE: '삭제',
 
+  // 에픽 수정 완료 토스트
+  EPIC_UPDATE_SUCCESS: '에픽이 수정되었습니다.',
+
   // 에픽 삭제 확인 모달
   EPIC_DELETE_CONFIRM_TITLE: '에픽을 삭제하시겠습니까?',
   EPIC_DELETE_CONFIRM_DESC: '에픽에 포함된 모든 태스크도 함께 삭제됩니다.',

@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { createEpic, updateEpic, deleteEpic } from '../api/boardEpicApi'
 import { boardKeys } from '../api/queryKeys'
+import { BOARD_MSG } from '@/context/messages/boardMsg'
 import type { CreateEpicRequest, UpdateEpicRequest } from '../api/boardEpicApi'
 
 // 에픽 생성 뮤테이션
@@ -24,6 +26,7 @@ export function useEpicUpdate() {
     mutationFn: (params: UpdateEpicRequest) => updateEpic(params),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: boardKeys.list() })
+      toast.success(BOARD_MSG.EPIC_UPDATE_SUCCESS)
     },
   })
 }

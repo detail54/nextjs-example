@@ -2,10 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
+import { COMMON_MSG } from '@/context/messages/commonMsg'
 import { datePickerStyles } from './DatePicker.styles'
-
-// 요일 헤더
-const DAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'] as const
 
 type DatePickerProps = {
   /** 날짜 값 (YYYY-MM-DD 형식, 빈 문자열이면 미선택) */
@@ -36,7 +34,7 @@ function formatValue(date: Date): string {
 function formatDisplay(value: string): string {
   const date = parseDate(value)
   if (!date) return ''
-  return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
+  return `${date.getFullYear()}${COMMON_MSG.DATE_YEAR_SUFFIX} ${date.getMonth() + 1}${COMMON_MSG.DATE_MONTH_SUFFIX} ${date.getDate()}${COMMON_MSG.DATE_DAY_SUFFIX}`
 }
 
 /** 해당 월의 날짜 그리드 생성 (앞뒤 빈칸 포함) */
@@ -70,7 +68,7 @@ function buildCalendarGrid(year: number, month: number) {
 export default function DatePicker({
   value,
   onChange,
-  placeholder = '날짜 선택',
+  placeholder = COMMON_MSG.DATE_PICKER_PLACEHOLDER,
   disabled,
 }: DatePickerProps) {
   // 캘린더 열림 여부
@@ -172,25 +170,25 @@ export default function DatePicker({
 
       {/* 캘린더 패널 */}
       {isOpen && (
-        <div className={datePickerStyles.panel} role='dialog' aria-label='날짜 선택'>
+        <div className={datePickerStyles.panel} role='dialog' aria-label={COMMON_MSG.DATE_PICKER_ARIA_LABEL}>
           {/* 월 이동 헤더 */}
           <div className={datePickerStyles.header}>
             <button
               type='button'
               className={datePickerStyles.navButton}
               onClick={handlePrevMonth}
-              aria-label='이전 달'
+              aria-label={COMMON_MSG.DATE_PICKER_PREV_MONTH}
             >
               <ChevronLeft size={14} />
             </button>
             <span className={datePickerStyles.monthLabel}>
-              {viewYear}년 {viewMonth + 1}월
+              {viewYear}{COMMON_MSG.DATE_YEAR_SUFFIX} {viewMonth + 1}{COMMON_MSG.DATE_MONTH_SUFFIX}
             </span>
             <button
               type='button'
               className={datePickerStyles.navButton}
               onClick={handleNextMonth}
-              aria-label='다음 달'
+              aria-label={COMMON_MSG.DATE_PICKER_NEXT_MONTH}
             >
               <ChevronRight size={14} />
             </button>
@@ -198,7 +196,7 @@ export default function DatePicker({
 
           {/* 요일 헤더 */}
           <div className={datePickerStyles.dayHeaders}>
-            {DAY_LABELS.map((label) => (
+            {COMMON_MSG.DATE_PICKER_DAY_LABELS.map((label) => (
               <div key={label} className={datePickerStyles.dayLabel}>
                 {label}
               </div>
@@ -236,7 +234,7 @@ export default function DatePicker({
                   setIsOpen(false)
                 }}
               >
-                날짜 초기화
+                {COMMON_MSG.DATE_PICKER_CLEAR}
               </button>
             </div>
           )}

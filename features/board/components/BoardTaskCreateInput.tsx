@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Check } from 'lucide-react'
 import Icon from '@/components/icon/Icon'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
-import { useTaskCreate } from '../hooks/useTaskCreate'
+import { useTaskCreate } from '../hooks/useTask'
 import { boardTaskCreateInputStyles } from './BoardTaskCreateInput.styles'
 
 interface BoardTaskCreateInputProps {

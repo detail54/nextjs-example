@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
 import InlineEdit from '@/components/inline-edit/InlineEdit'
-import { useTaskUpdate } from '../hooks/useTaskUpdate'
+import { useTaskUpdate } from '../hooks/useTask'
 import type { BoardTask } from '../api/type'
 import {
   boardTaskDetailStyles,

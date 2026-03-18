@@ -2,8 +2,7 @@
 
 import { useState } from 'react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
-import { useEpicCreate } from '../hooks/useEpicCreate'
-import { useEpicUpdate } from '../hooks/useEpicUpdate'
+import { useEpicCreate, useEpicUpdate } from '../hooks/useEpic'
 import type { EpicWithTasks } from '../api/type'
 import BasicInput from '@/components/input/BasicInput'
 import BasicButton from '@/components/button/BasicButton'

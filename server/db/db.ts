@@ -117,14 +117,38 @@ const existingNotice = db.select({ id: schema.notices.id }).from(schema.notices)
 
 if (!existingNotice) {
   db.insert(schema.notices)
-    .values({
-      authorId: adminId,
-      title: '서비스 이용 안내',
-      content:
-        '안녕하세요.\n\n서비스를 이용해 주셔서 감사합니다.\n\n궁금한 사항이 있으시면 관리자에게 문의해 주세요.',
-      isPinned: true,
-      isPublished: true,
-    })
+    .values([
+      {
+        authorId: adminId,
+        title: '서비스 이용 안내',
+        content:
+          '안녕하세요.\n\n서비스를 이용해 주셔서 감사합니다.\n\n궁금한 사항이 있으시면 관리자에게 문의해 주세요.',
+        isPinned: true,
+        isPublished: true,
+        createdAt: '2026-01-10 09:00:00',
+        publishedAt: '2026-01-10 09:00:00',
+      },
+      {
+        authorId: adminId,
+        title: '시스템 점검 안내',
+        content:
+          '안녕하세요.\n\n서버 안정화를 위한 시스템 점검이 예정되어 있습니다.\n\n점검 중에는 서비스 이용이 일시적으로 제한될 수 있습니다.',
+        isPinned: false,
+        isPublished: true,
+        createdAt: '2026-02-05 10:00:00',
+        publishedAt: '2026-02-05 10:00:00',
+      },
+      {
+        authorId: adminId,
+        title: '신규 기능 업데이트 안내',
+        content:
+          '안녕하세요.\n\n새로운 기능이 추가되었습니다.\n\n보드 기능이 개선되었으며, 더욱 편리하게 업무를 관리하실 수 있습니다.',
+        isPinned: false,
+        isPublished: true,
+        createdAt: '2026-03-01 11:00:00',
+        publishedAt: '2026-03-01 11:00:00',
+      },
+    ])
     .run()
   console.log('✔ 기본 공지사항 생성')
 }

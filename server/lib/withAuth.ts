@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAccessToken, ACCESS_TOKEN_COOKIE, type JwtUserPayload } from './jwt'
 import { AuthError, AuthErrorCode } from './authError'
-import { AUTH_MSG } from '@/context/messages/authMsg'
+import { SERVER_AUTH_MSG } from '@/server/messages/authMsg'
+import { HTTP_STATUS } from '@/server/messages/httpStatus'
 import { type UserRole, type BasicResponse } from '@/server/db/type'
 import { withLogger } from './withLogger'
 import { logger } from './logger'
 
 // 에러 코드 → 문구 매핑
 const AUTH_ERROR_MSG: Record<AuthErrorCode, string> = {
-  UNAUTHORIZED: AUTH_MSG.UNAUTHORIZED,
-  TOKEN_EXPIRED: AUTH_MSG.TOKEN_EXPIRED,
-  INVALID_TOKEN: AUTH_MSG.INVALID_TOKEN,
-  FORBIDDEN: AUTH_MSG.FORBIDDEN,
+  UNAUTHORIZED: SERVER_AUTH_MSG.UNAUTHORIZED,
+  TOKEN_EXPIRED: SERVER_AUTH_MSG.TOKEN_EXPIRED,
+  INVALID_TOKEN: SERVER_AUTH_MSG.INVALID_TOKEN,
+  FORBIDDEN: SERVER_AUTH_MSG.FORBIDDEN,
 }
 
 type WithAuthOptions = {
@@ -64,8 +65,8 @@ export function withAuth(handler: AuthedHandler, options: WithAuthOptions = {}) 
 
       logger.error(`${request.method} ${request.nextUrl.pathname}`, error)
       return NextResponse.json<BasicResponse<never>>(
-        { success: false, data: null as never, message: AUTH_MSG.SERVER_ERROR },
-        { status: 500 },
+        { success: false, data: null as never, message: SERVER_AUTH_MSG.SERVER_ERROR },
+        { status: HTTP_STATUS.INTERNAL_SERVER_ERROR },
       )
     }
   }, getUserFromToken)

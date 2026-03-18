@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyAccessToken, ACCESS_TOKEN_COOKIE } from '@/server/lib/jwt'
-import { AuthError, AuthErrorCode } from '@/server/lib/authError'
+import { authenticate } from '@/server/lib/authenticate'
 import { taskRepository } from '@/server/repositories/task.repository'
 import type { BasicResponse } from '@/server/db/type'
 
@@ -8,29 +7,8 @@ type RouteContext = { params: Promise<{ epicId: string }> }
 
 // 태스크 생성 (todo 컬럼 맨 마지막 priority로 자동 계산)
 export async function POST(request: NextRequest, context: RouteContext) {
-  // 인증 검사
-  const token = request.cookies.get(ACCESS_TOKEN_COOKIE)?.value
-  if (!token) {
-    return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '인증이 필요합니다.' },
-      { status: 401 },
-    )
-  }
-
-  try {
-    await verifyAccessToken(token)
-  } catch (error) {
-    if (error instanceof AuthError && error.code === AuthErrorCode.TOKEN_EXPIRED) {
-      return NextResponse.json<BasicResponse<null>>(
-        { success: false, data: null, message: '토큰이 만료되었습니다.' },
-        { status: 401 },
-      )
-    }
-    return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: '유효하지 않은 토큰입니다.' },
-      { status: 401 },
-    )
-  }
+  const authError = await authenticate(request)
+  if (authError) return authError
 
   const { epicId: epicIdStr } = await context.params
   const epicId = Number(epicIdStr)

@@ -6,7 +6,8 @@ import {
   ACCESS_TOKEN_MAX_AGE,
 } from '@/server/lib/jwt'
 import { AuthError } from '@/server/lib/authError'
-import { AUTH_MSG } from '@/context/messages/authMsg'
+import { SERVER_AUTH_MSG } from '@/server/messages/authMsg'
+import { HTTP_STATUS } from '@/server/messages/httpStatus'
 import { logger } from '@/server/lib/logger'
 import { withLogger } from '@/server/lib/withLogger'
 import { type BasicResponse } from '@/server/db/type'
@@ -18,8 +19,8 @@ export const POST = withLogger(async (request: NextRequest) => {
     const refreshToken = request.cookies.get(REFRESH_TOKEN_COOKIE)?.value
     if (!refreshToken) {
       return NextResponse.json<BasicResponse<null>>(
-        { success: false, data: null, message: AUTH_MSG.UNAUTHORIZED },
-        { status: 401 },
+        { success: false, data: null, message: SERVER_AUTH_MSG.UNAUTHORIZED },
+        { status: HTTP_STATUS.UNAUTHORIZED },
       )
     }
 
@@ -48,15 +49,15 @@ export const POST = withLogger(async (request: NextRequest) => {
     if (error instanceof AuthError) {
       logger.auth({ event: 'SESSION_EXPIRED', reason: 'refresh token expired' })
       return NextResponse.json<BasicResponse<null>>(
-        { success: false, data: null, message: AUTH_MSG.TOKEN_EXPIRED },
-        { status: 401 },
+        { success: false, data: null, message: SERVER_AUTH_MSG.TOKEN_EXPIRED },
+        { status: HTTP_STATUS.UNAUTHORIZED },
       )
     }
 
     logger.error('POST /api/auth/refresh', error)
     return NextResponse.json<BasicResponse<null>>(
-      { success: false, data: null, message: AUTH_MSG.SERVER_ERROR },
-      { status: 500 },
+      { success: false, data: null, message: SERVER_AUTH_MSG.SERVER_ERROR },
+      { status: HTTP_STATUS.INTERNAL_SERVER_ERROR },
     )
   }
 })

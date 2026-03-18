@@ -72,7 +72,7 @@ export function Lnb() {
 
         {/* 브랜드 로고 영역 */}
         <div className={lnbLogoStyle()}>
-          <Icon icon={LayoutDashboard} size='lg' className='shrink-0 text-primary-400' />
+          <img src='/icon.svg' alt='logo' className='w-6 h-6 shrink-0 rounded-sm' />
           <span className={lnbLogoTextStyle({ collapsed: isCollapsed })}>{LNB_MSG.BRAND}</span>
         </div>
 

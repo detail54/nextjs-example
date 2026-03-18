@@ -24,7 +24,7 @@ export const boardTaskCreateInputStyles = {
 
   // 만들기 버튼
   createButton: cva(
-    'flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-xs text-secondary-500' +
+    'flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-xs text-secondary-500 cursor-pointer' +
       ' hover:bg-secondary-700 hover:text-secondary-300 transition-colors duration-150',
   )(),
 }

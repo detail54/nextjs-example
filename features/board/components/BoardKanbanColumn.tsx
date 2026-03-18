@@ -39,7 +39,7 @@ export default function BoardKanbanColumn({ status, tasks, epicId }: Props) {
       {/* 컬럼 헤더 */}
       <div className={kanbanColumnStyles.header}>
         <span className={kanbanColumnStyles.title({ status })}>{COLUMN_LABEL[status]}</span>
-        <span className={kanbanColumnStyles.count}>{tasks.length}</span>
+        <span className={kanbanColumnStyles.count({ status })}>{tasks.length}</span>
       </div>
 
       {/* task 목록 */}

@@ -28,8 +28,20 @@ export const kanbanColumnStyles = {
     defaultVariants: { status: 'todo' },
   }),
 
-  // task 개수
-  count: cva('text-xs text-secondary-500')(),
+  // task 개수 배지 (status별 색상)
+  count: cva(
+    'flex items-center justify-center min-w-[20px] h-5 rounded-full px-1.5 text-xs font-medium',
+    {
+      variants: {
+        status: {
+          todo: 'bg-secondary-700 text-secondary-400',
+          in_progress: 'bg-warning-400/15 text-warning-400',
+          done: 'bg-success-400/15 text-success-400',
+        },
+      },
+      defaultVariants: { status: 'todo' },
+    },
+  ),
 
   // task 목록 영역
   taskList: cva('flex flex-col gap-2')(),

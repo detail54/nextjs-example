@@ -1,4 +1,4 @@
-import { type UserRole, type TaskStatus } from '@/server/db/type'
+import { type UserRole, type EpicStatus, type TaskStatus } from '@/server/db/type'
 
 // ─── Epic ─────────────────────────────────────────────────────────
 
@@ -11,6 +11,8 @@ export type UpdateEpicParams = {
   id: number
   title: string
   description?: string
+  status?: EpicStatus
+  dueDate?: string | null
 }
 
 // ─── Task ─────────────────────────────────────────────────────────

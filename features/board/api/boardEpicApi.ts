@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
-import type { BasicResponse } from '@/server/db/type'
+import type { BasicResponse, EpicStatus } from '@/server/db/type'
 
 export type CreateEpicRequest = {
   title: string
@@ -11,6 +11,8 @@ export type UpdateEpicRequest = {
   id: number
   title: string
   description?: string
+  status?: EpicStatus
+  dueDate?: string | null
 }
 
 // 에픽 생성 API

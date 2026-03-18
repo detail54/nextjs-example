@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authenticate } from '@/server/lib/authenticate'
 import { epicRepository } from '@/server/repositories/epic.repository'
 import { taskRepository } from '@/server/repositories/task.repository'
-import type { BasicResponse } from '@/server/db/type'
+import type { BasicResponse, EpicStatus } from '@/server/db/type'
 
 type RouteContext = { params: Promise<{ epicId: string }> }
 
@@ -21,7 +21,12 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   }
 
   const body = await request.json()
-  const { title, description } = body as { title: string; description?: string }
+  const { title, description, status, dueDate } = body as {
+    title: string
+    description?: string
+    status?: EpicStatus
+    dueDate?: string | null
+  }
 
   if (!title?.trim()) {
     return NextResponse.json<BasicResponse<null>>(
@@ -30,7 +35,13 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     )
   }
 
-  epicRepository.update({ id, title: title.trim(), description: description?.trim() })
+  epicRepository.update({
+    id,
+    title: title.trim(),
+    description: description?.trim(),
+    status,
+    dueDate,
+  })
 
   return NextResponse.json<BasicResponse<null>>({ success: true, data: null })
 }

@@ -4,9 +4,20 @@ import { useState } from 'react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useEpicCreate, useEpicUpdate } from '../hooks/useEpic'
 import type { EpicWithTasks } from '../api/type'
+import type { EpicStatus } from '@/server/db/type'
+import type { SelectOption } from '@/components/select/SelectBox'
 import BasicInput from '@/components/input/BasicInput'
 import BasicButton from '@/components/button/BasicButton'
+import SelectBox from '@/components/select/SelectBox'
+import DatePicker from '@/components/datepicker/DatePicker'
 import { boardEpicFormStyles } from './BoardEpicForm.styles'
+
+// 에픽 상태 옵션 목록
+const EPIC_STATUS_OPTIONS: SelectOption[] = [
+  { value: 'active', label: BOARD_MSG.EPIC_STATUS_ACTIVE },
+  { value: 'inactive', label: BOARD_MSG.EPIC_STATUS_INACTIVE },
+  { value: 'completed', label: BOARD_MSG.EPIC_STATUS_COMPLETED },
+]
 
 interface BoardEpicFormProps {
   // epic이 있으면 수정 모드
@@ -20,6 +31,10 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
   const [title, setTitle] = useState(epic?.title ?? '')
   // 설명
   const [description, setDescription] = useState(epic?.description ?? '')
+  // 상태 (수정 모드 전용)
+  const [status, setStatus] = useState<EpicStatus>(epic?.status ?? 'active')
+  // 마감일 (수정 모드 전용, YYYY-MM-DD 형식)
+  const [dueDate, setDueDate] = useState(epic?.dueDate ?? '')
 
   const { mutate: createEpic, isPending: isCreating } = useEpicCreate()
   const { mutate: updateEpic, isPending: isUpdating } = useEpicUpdate()
@@ -33,7 +48,13 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
 
     if (isEditMode) {
       updateEpic(
-        { id: epic.id, title: title.trim(), description: description.trim() || undefined },
+        {
+          id: epic.id,
+          title: title.trim(),
+          description: description.trim() || undefined,
+          status,
+          dueDate: dueDate || null,
+        },
         { onSuccess: () => onSuccess?.() },
       )
     } else {
@@ -78,6 +99,27 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
           maxLength={500}
         />
       </div>
+
+      {/* 수정 모드 전용: 상태 + 마감일 */}
+      {isEditMode && (
+        <>
+          {/* 상태 선택 */}
+          <div className={boardEpicFormStyles.field}>
+            <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_STATUS_LABEL}</label>
+            <SelectBox
+              value={status}
+              options={EPIC_STATUS_OPTIONS}
+              onChange={(val) => setStatus(val as EpicStatus)}
+            />
+          </div>
+
+          {/* 마감일 선택 */}
+          <div className={boardEpicFormStyles.field}>
+            <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_DUE_DATE_LABEL}</label>
+            <DatePicker value={dueDate} onChange={setDueDate} />
+          </div>
+        </>
+      )}
 
       {/* 제출 버튼 */}
       <div className={boardEpicFormStyles.actions}>

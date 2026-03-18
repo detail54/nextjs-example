@@ -5,7 +5,7 @@ export const boardPageStyles = {
   container: cva('flex h-full bg-secondary-900')(),
 
   // 콘텐츠 영역 - 패널이 열리면 flex에 의해 자연스럽게 밀림
-  content: cva('flex-1 min-w-0 overflow-auto p-6')(),
+  content: cva('flex-1 min-w-0 overflow-auto p-6 pt-[60px]')(),
 
   // 헤더 - 타이틀과 등록 버튼
   header: cva('flex items-center justify-between mb-6')(),

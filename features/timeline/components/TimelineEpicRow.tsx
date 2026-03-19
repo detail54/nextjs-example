@@ -36,7 +36,7 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   const { isAdmin } = useAuth()
-  const { openEpicEdit, openTaskCreate } = useTimelinePanelStore()
+  const { openEpicEdit, openTaskCreate, openTaskDetail } = useTimelinePanelStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { mutate: deleteEpic } = useEpicDelete()
 
@@ -163,10 +163,11 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
               className={timelineEpicRowStyles.taskRow()}
               style={{ height: TASK_ROW_HEIGHT }}
             >
-              {/* 왼쪽: 태스크 정보 (sticky, 들여쓰기) */}
+              {/* 왼쪽: 태스크 정보 (sticky, 들여쓰기) - 클릭 시 상세 패널 열기 */}
               <div
-                className={timelineEpicRowStyles.taskLeft}
+                className={`${timelineEpicRowStyles.taskLeft} cursor-pointer hover:bg-secondary-800/50`}
                 style={{ width: 280, minWidth: 280 }}
+                onClick={() => openTaskDetail(task)}
               >
                 <span className={timelineEpicRowStyles.taskDot} />
                 <span className={timelineEpicRowStyles.taskTitle}>{task.title}</span>

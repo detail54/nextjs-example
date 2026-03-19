@@ -1,13 +1,14 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import type { EpicWithTasks } from '@/features/board/api/type'
+import type { BoardTask, EpicWithTasks } from '@/features/board/api/type'
 
-// 패널 타입 정의 (none | 에픽 등록 | 에픽 수정 | 하위 작업 등록)
+// 패널 타입 정의 (none | 에픽 등록 | 에픽 수정 | 하위 작업 등록 | 태스크 상세)
 type PanelState =
   | { type: 'none' }
   | { type: 'epicCreate' }
   | { type: 'epicEdit'; epic: EpicWithTasks }
   | { type: 'taskCreate'; epicId: number }
+  | { type: 'taskDetail'; task: BoardTask }
 
 type TimelinePanelStore = {
   // 현재 열린 패널 상태
@@ -15,6 +16,7 @@ type TimelinePanelStore = {
   openEpicCreate: () => void
   openEpicEdit: (epic: EpicWithTasks) => void
   openTaskCreate: (epicId: number) => void
+  openTaskDetail: (task: BoardTask) => void
   closePanel: () => void
 }
 
@@ -26,6 +28,8 @@ export const useTimelinePanelStore = create<TimelinePanelStore>()(
       openEpicEdit: (epic) => set({ panel: { type: 'epicEdit', epic } }, false, 'openEpicEdit'),
       openTaskCreate: (epicId) =>
         set({ panel: { type: 'taskCreate', epicId } }, false, 'openTaskCreate'),
+      openTaskDetail: (task) =>
+        set({ panel: { type: 'taskDetail', task } }, false, 'openTaskDetail'),
       closePanel: () => set({ panel: { type: 'none' } }, false, 'closePanel'),
     }),
     { name: 'TimelinePanelStore' },

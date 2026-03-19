@@ -8,6 +8,7 @@ import { useBoardQuery } from '@/features/board/hooks/useBoardQuery'
 import { useTimelinePanelStore } from '@/stores/useTimelinePanelStore'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import BoardEpicForm from '@/features/board/components/BoardEpicForm'
+import BoardTaskDetail from '@/features/board/components/BoardTaskDetail'
 import TimelineEpicRow from './TimelineEpicRow'
 import TimelineTaskCreateForm from './TimelineTaskCreateForm'
 import SidePanel from '@/components/side-panel/SidePanel'
@@ -41,7 +42,7 @@ export default function TimelinePage() {
   // 패널 현재 너비
   const [panelWidth, setPanelWidth] = useState(DEFAULT_PANEL_WIDTH)
 
-  // 패널 상태 (none | epicCreate | epicEdit | taskCreate)
+  // 패널 상태 (none | epicCreate | epicEdit | taskCreate | taskDetail)
   const { panel, openEpicCreate, closePanel } = useTimelinePanelStore()
 
   // 패널 열림 여부 및 타이틀 결정
@@ -53,7 +54,9 @@ export default function TimelinePage() {
         ? TIMELINE_MSG.EPIC_EDIT_TITLE
         : panel.type === 'taskCreate'
           ? TIMELINE_MSG.TASK_CREATE_TITLE
-          : ''
+          : panel.type === 'taskDetail'
+            ? BOARD_MSG.TASK_PANEL_TITLE
+            : ''
 
   return (
     <div className={timelinePageStyles.container}>
@@ -161,6 +164,8 @@ export default function TimelinePage() {
           <BoardEpicForm epic={panel.epic} onSuccess={closePanel} />
         ) : panel.type === 'taskCreate' ? (
           <TimelineTaskCreateForm epicId={panel.epicId} onSuccess={closePanel} />
+        ) : panel.type === 'taskDetail' ? (
+          <BoardTaskDetail task={panel.task} />
         ) : null}
       </SidePanel>
     </div>

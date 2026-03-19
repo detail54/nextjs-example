@@ -105,19 +105,6 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
         />
       </div>
 
-      {/* 설명 입력 */}
-      <div className={boardEpicFormStyles.field}>
-        <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_DESCRIPTION_LABEL}</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder={BOARD_MSG.EPIC_DESCRIPTION_PLACEHOLDER}
-          className={boardEpicFormStyles.textarea}
-          rows={5}
-          maxLength={500}
-        />
-      </div>
-
       {/* 상태 선택 */}
       <div className={boardEpicFormStyles.field}>
         <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_STATUS_LABEL}</label>
@@ -144,6 +131,19 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
       <div className={boardEpicFormStyles.field}>
         <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_COLOR_LABEL}</label>
         <ColorPicker value={color} onChange={setColor} />
+      </div>
+
+      {/* 설명 입력 */}
+      <div className={boardEpicFormStyles.field}>
+        <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_DESCRIPTION_LABEL}</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder={BOARD_MSG.EPIC_DESCRIPTION_PLACEHOLDER}
+          className={boardEpicFormStyles.textarea}
+          rows={5}
+          maxLength={500}
+        />
       </div>
 
       {/* 제출 버튼 */}

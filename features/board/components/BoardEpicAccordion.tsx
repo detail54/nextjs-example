@@ -20,8 +20,8 @@ type Props = {
 
 // 에픽 별 아코디언 컴포넌트
 export default function BoardEpicAccordion({ epic }: Props) {
-  // 아코디언 펼침 여부
-  const [isOpen, setIsOpen] = useState(false)
+  // 아코디언 펼침 여부 (기본값: 펼침)
+  const [isOpen, setIsOpen] = useState(true)
 
   const { isAdmin } = useAuth()
   const { openEpicEdit } = useEpicPanelStore()

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronRight, MoreHorizontal } from 'lucide-react'
+import { CheckSquare, ChevronRight, Layers, MoreHorizontal } from 'lucide-react'
 import { TIMELINE_MSG } from '@/context/messages/timelineMsg'
 import { useTimelinePanelStore } from '@/stores/useTimelinePanelStore'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
@@ -90,7 +90,8 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
             />
           </button>
 
-          {/* 에픽 제목 */}
+          {/* 에픽 아이콘 + 제목 */}
+          <Layers size={14} className='shrink-0 text-primary-400' />
           <span className={timelineEpicRowStyles.epicTitle}>{epic.title}</span>
 
           {/* ⋯ 드롭다운 (관리자만) */}
@@ -169,7 +170,8 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
                 style={{ width: 280, minWidth: 280 }}
                 onClick={() => openTaskDetail(task)}
               >
-                <span className={timelineEpicRowStyles.taskDot} />
+                {/* 태스크 아이콘 + 제목 */}
+                <CheckSquare size={12} className='shrink-0 text-secondary-400' />
                 <span className={timelineEpicRowStyles.taskTitle}>{task.title}</span>
               </div>
 

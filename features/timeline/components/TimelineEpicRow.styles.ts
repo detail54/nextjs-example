@@ -58,12 +58,9 @@ export const timelineEpicRowStyles = {
 
   // 왼쪽 태스크 정보 영역 (sticky, 들여쓰기)
   taskLeft: cva(
-    'flex items-center gap-2 pl-9 pr-2 border-r border-secondary-700/60' +
+    'flex items-center gap-2 pl-14 pr-2 border-r border-secondary-700/60' +
       ' bg-secondary-900/95 sticky left-0 z-10',
   )(),
-
-  // 태스크 아이콘 (작은 원)
-  taskDot: cva('w-1.5 h-1.5 flex-shrink-0 rounded-full bg-secondary-500')(),
 
   // 태스크 제목
   taskTitle: cva('flex-1 min-w-0 text-xs text-secondary-300 truncate')(),

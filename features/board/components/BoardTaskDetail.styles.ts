@@ -10,6 +10,14 @@ export const boardTaskDetailStyles = {
 
   // 섹션 라벨
   sectionLabel: cva('text-xs font-medium uppercase tracking-wide text-secondary-500')(),
+
+  // 삭제 버튼 영역 (하단 구분선 위)
+  deleteSection: cva('pt-4 mt-auto border-t border-secondary-700/50')(),
+
+  // 삭제 버튼
+  deleteButton: cva(
+    'flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 transition-colors',
+  )(),
 }
 
 // 상태 레이블 매핑 (SelectBox 옵션 생성에 사용)

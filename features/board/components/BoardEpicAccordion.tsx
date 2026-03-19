@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
+import { COMMON_MSG } from '@/context/messages/commonMsg'
 import { useEpicPanelStore } from '@/stores/useEpicPanelStore'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
 import { useEpicDelete } from '../hooks/useEpic'
@@ -32,9 +33,9 @@ export default function BoardEpicAccordion({ epic }: Props) {
   const handleDeleteClick = () => {
     openConfirmModal({
       type: 'confirm',
-      title: BOARD_MSG.EPIC_DELETE_CONFIRM_TITLE,
-      description: BOARD_MSG.EPIC_DELETE_CONFIRM_DESC,
-      confirmLabel: BOARD_MSG.EPIC_DELETE_CONFIRM,
+      title: COMMON_MSG.EPIC_DELETE_CONFIRM_TITLE,
+      description: COMMON_MSG.EPIC_DELETE_CONFIRM_DESC,
+      confirmLabel: COMMON_MSG.EPIC_DELETE_CONFIRM,
       variant: 'danger',
       onConfirm: () => deleteEpic(epic.id),
     })

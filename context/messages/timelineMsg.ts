@@ -10,10 +10,6 @@ export const TIMELINE_MSG = {
   EPIC_EDIT_TITLE: '에픽 수정',
   EPIC_EDIT: '수정',
   EPIC_DELETE: '삭제',
-  EPIC_DELETE_CONFIRM_TITLE: '에픽을 삭제하시겠습니까?',
-  EPIC_DELETE_CONFIRM_DESC: '에픽에 포함된 모든 태스크도 함께 삭제됩니다.',
-  EPIC_DELETE_CONFIRM: '삭제',
-
   // 하위 작업 등록
   TASK_CREATE: '하위 작업 등록',
   TASK_CREATE_TITLE: '하위 작업 등록',

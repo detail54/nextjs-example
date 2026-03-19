@@ -1,12 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+import { Trash2 } from 'lucide-react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
+import { COMMON_MSG } from '@/context/messages/commonMsg'
 import InlineEdit from '@/components/inline-edit/InlineEdit'
 import SelectBox from '@/components/select/SelectBox'
 import DatePicker from '@/components/datepicker/DatePicker'
 import ColorPicker from '@/components/colorpicker/ColorPicker'
-import { useTaskUpdate } from '../hooks/useTask'
+import { useTaskUpdate, useTaskDelete } from '../hooks/useTask'
+import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
+import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 import type { BoardTask } from '../api/type'
 import type { TaskStatus } from '@/server/db/type'
 import { boardTaskDetailStyles, TASK_STATUS_LABEL } from './BoardTaskDetail.styles'
@@ -33,7 +38,25 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
     setLocalTask(task)
   }
 
+  const { isAdmin } = useAuth()
   const { mutate: update } = useTaskUpdate()
+  const { mutate: deleteTask } = useTaskDelete()
+  const { openConfirmModal } = useConfirmModalStore()
+  const { closePanel } = useTaskPanelStore()
+
+  // 삭제 확인 모달 열기
+  const handleDeleteClick = () => {
+    openConfirmModal({
+      type: 'confirm',
+      title: COMMON_MSG.TASK_DELETE_CONFIRM_TITLE,
+      description: COMMON_MSG.TASK_DELETE_CONFIRM_DESC,
+      confirmLabel: COMMON_MSG.TASK_DELETE_CONFIRM,
+      variant: 'danger',
+      onConfirm: () => {
+        deleteTask(task.id, { onSuccess: closePanel })
+      },
+    })
+  }
 
   const handleTitleSave = (title: string) => {
     // 낙관적 업데이트: 즉시 반영
@@ -164,6 +187,16 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
           emptyText={BOARD_MSG.TASK_DESCRIPTION_EMPTY}
         />
       </div>
+
+      {/* 삭제 버튼 (관리자만 표시) */}
+      {isAdmin && (
+        <div className={boardTaskDetailStyles.deleteSection}>
+          <button type='button' className={boardTaskDetailStyles.deleteButton} onClick={handleDeleteClick}>
+            <Trash2 size={14} />
+            {BOARD_MSG.TASK_DELETE}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

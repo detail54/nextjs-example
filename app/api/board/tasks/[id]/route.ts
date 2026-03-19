@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { authenticate } from '@/server/lib/authenticate'
+import { authenticate, authenticateAdmin } from '@/server/lib/authenticate'
 import { taskRepository } from '@/server/repositories/task.repository'
 import { SERVER_BOARD_MSG } from '@/server/messages/boardMsg'
 import type { BasicResponse, TaskStatus } from '@/server/db/type'
@@ -70,6 +70,26 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     dueDate,
     color,
   })
+
+  return NextResponse.json<BasicResponse<null>>({ success: true, data: null })
+}
+
+// 태스크 삭제
+export async function DELETE(request: NextRequest, context: RouteContext) {
+  const authError = await authenticateAdmin(request)
+  if (authError) return authError
+
+  const { id } = await context.params
+  const taskId = Number(id)
+
+  if (isNaN(taskId)) {
+    return NextResponse.json<BasicResponse<null>>(
+      { success: false, data: null, message: SERVER_BOARD_MSG.INVALID_TASK_ID },
+      { status: 400 },
+    )
+  }
+
+  taskRepository.delete(taskId)
 
   return NextResponse.json<BasicResponse<null>>({ success: true, data: null })
 }

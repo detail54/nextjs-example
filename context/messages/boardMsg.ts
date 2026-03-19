@@ -51,11 +51,9 @@ export const BOARD_MSG = {
   TASK_COLOR_LABEL: '색상',
   COLOR_RESET: '기본',
 
+  // 태스크 삭제 버튼
+  TASK_DELETE: '삭제',
+
   // 에픽 수정 완료 토스트
   EPIC_UPDATE_SUCCESS: '에픽이 수정되었습니다.',
-
-  // 에픽 삭제 확인 모달
-  EPIC_DELETE_CONFIRM_TITLE: '에픽을 삭제하시겠습니까?',
-  EPIC_DELETE_CONFIRM_DESC: '에픽에 포함된 모든 태스크도 함께 삭제됩니다.',
-  EPIC_DELETE_CONFIRM: '삭제',
 } as const

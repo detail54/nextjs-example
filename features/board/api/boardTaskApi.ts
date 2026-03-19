@@ -26,6 +26,12 @@ export async function updateTask(
   return data
 }
 
+// 태스크 삭제 API
+export async function deleteTask(id: number): Promise<BasicResponse<null>> {
+  const { data } = await axios.delete<BasicResponse<null>>(API_PATHS.BOARD.TASK_DELETE(id))
+  return data
+}
+
 // 태스크 생성 API (todo 컬럼 맨 마지막에 추가)
 export async function createTask(
   epicId: number,

@@ -13,6 +13,7 @@ import {
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { ChevronRight, Layers, MoreHorizontal } from 'lucide-react'
 import { TIMELINE_MSG } from '@/context/messages/timelineMsg'
+import { COMMON_MSG } from '@/context/messages/commonMsg'
 import { useEpicPanelStore } from '@/stores/useEpicPanelStore'
 import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
@@ -98,9 +99,9 @@ export default function TimelineEpicRow({ epic, onResizeStart }: TimelineEpicRow
   const handleDeleteClick = () => {
     openConfirmModal({
       type: 'confirm',
-      title: TIMELINE_MSG.EPIC_DELETE_CONFIRM_TITLE,
-      description: TIMELINE_MSG.EPIC_DELETE_CONFIRM_DESC,
-      confirmLabel: TIMELINE_MSG.EPIC_DELETE_CONFIRM,
+      title: COMMON_MSG.EPIC_DELETE_CONFIRM_TITLE,
+      description: COMMON_MSG.EPIC_DELETE_CONFIRM_DESC,
+      confirmLabel: COMMON_MSG.EPIC_DELETE_CONFIRM,
       variant: 'danger',
       onConfirm: () => deleteEpic(epic.id),
     })

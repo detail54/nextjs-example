@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createTask, updateTask } from '../api/boardTaskApi'
+import { createTask, updateTask, deleteTask } from '../api/boardTaskApi'
 import { moveTask } from '../api/boardApi'
 import { boardKeys } from '../api/queryKeys'
 import type { CreateTaskRequest, UpdateTaskRequest } from '../api/boardTaskApi'
@@ -29,6 +29,19 @@ export function useTaskUpdate() {
       updateTask(id, { title, description, status, startDate, dueDate, color }),
     onSuccess: () => {
       // 보드 쿼리 초기화 (칸반 카드 제목 등 반영)
+      queryClient.invalidateQueries({ queryKey: boardKeys.list() })
+    },
+  })
+}
+
+// 태스크 삭제 뮤테이션
+export function useTaskDelete() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: number) => deleteTask(id),
+    onSuccess: () => {
+      // 보드 전체 초기화 (삭제된 태스크 반영)
       queryClient.invalidateQueries({ queryKey: boardKeys.list() })
     },
   })

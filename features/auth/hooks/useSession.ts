@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { meApi } from '../api/meApi'
+import { meApi } from '../api/authApi'
 import { authKeys } from '../api/queryKeys'
 
 // 현재 로그인 세션 정보 조회 훅

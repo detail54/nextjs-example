@@ -34,4 +34,27 @@ export const AUTH_MSG = {
 
   COPYRIGHT: '© 2026 TaskFlow. All rights reserved.',
   BRAND_FEATURES: ['프로젝트 관리', '팀 협업', '실시간 진행 현황'] as const,
+
+  // 계정 추가 (회원가입)
+  REGISTER_TITLE: '계정 추가',
+  REGISTER_SUBTITLE: '새 계정을 등록하세요',
+  REGISTER_BUTTON: '등록',
+  REGISTER_LOADING: '등록 중...',
+  REGISTER_SUCCESS: '계정이 생성되었습니다',
+  REGISTER_FAILED: '계정 생성에 실패했습니다',
+  BACK_TO_LOGIN: '로그인으로 돌아가기',
+
+  // 비밀번호 확인
+  PASSWORD_CONFIRM_LABEL: '비밀번호 확인',
+  PASSWORD_CONFIRM_PLACEHOLDER: '비밀번호를 다시 입력하세요',
+  PASSWORD_MISMATCH: '비밀번호가 일치하지 않습니다',
+  PASSWORD_MATCH: '비밀번호가 일치합니다',
+
+  // 중복 확인
+  CHECK_USERNAME: '중복 확인',
+  CHECKING_USERNAME: '확인 중...',
+  USERNAME_AVAILABLE: '사용 가능한 아이디입니다',
+  USERNAME_TAKEN: '이미 사용 중인 아이디입니다',
+  USERNAME_CHECK_REQUIRED: '아이디 중복 확인을 해주세요',
+  USERNAME_CHECK_FAILED: '중복 확인에 실패했습니다',
 }

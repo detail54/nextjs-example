@@ -125,7 +125,7 @@ export default function AuthLoginForm() {
 
           {/* 하단 텍스트 버튼 링크 */}
           <div className={s.footerLinks}>
-            <LinkButton buttonType='text' href='/auth/register'>
+            <LinkButton buttonType='text' href={APP_PATHS.AUTH.REGISTER}>
               {AUTH_MSG.ADD_ACCOUNT}
             </LinkButton>
             <span className={s.divider}>·</span>

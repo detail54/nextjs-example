@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { logoutApi } from '../api/logoutApi'
+import { logoutApi } from '../api/authApi'
 import { authKeys } from '../api/queryKeys'
 import { APP_PATHS } from '@/context/appPaths'
 

@@ -3,6 +3,7 @@ export const APP_PATHS = {
   HOME: '/',
   AUTH: {
     LOGIN: '/auth/login',
+    REGISTER: '/auth/register',
   },
   BOARD: {
     ROOT: '/board',

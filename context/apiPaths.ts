@@ -5,6 +5,8 @@ export const API_PATHS = {
     LOGOUT: '/api/auth/logout',
     REFRESH: '/api/auth/refresh',
     ME: '/api/auth/me',
+    REGISTER: '/api/auth/register',
+    CHECK_USERNAME: '/api/auth/check-username',
   },
   NOTICE: {
     LIST: '/api/notice',

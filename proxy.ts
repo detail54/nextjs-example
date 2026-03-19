@@ -15,6 +15,7 @@ const refreshSecret = () => new TextEncoder().encode(process.env.REFRESH_TOKEN_S
 const PUBLIC_PATHS: string[] = [
   APP_PATHS.HOME,
   APP_PATHS.AUTH.LOGIN,
+  APP_PATHS.AUTH.REGISTER,
   APP_PATHS.UNAUTHORIZED,
   APP_PATHS.LOGIN_REQUIRED,
   APP_PATHS.SESSION_EXPIRED,

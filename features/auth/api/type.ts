@@ -20,3 +20,14 @@ export type MeResponse = {
   username: string
   role: UserRole
 }
+
+// 계정 등록 요청 타입
+export type RegisterRequest = {
+  username: string
+  password: string
+}
+
+// username 중복 확인 응답 타입
+export type CheckUsernameResponse = {
+  available: boolean
+}

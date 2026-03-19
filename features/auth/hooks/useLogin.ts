@@ -2,7 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { loginApi } from '../api/loginApi'
+import { loginApi } from '../api/authApi'
 import { type LoginRequest } from '../api/type'
 import { type UseLoginOptions } from './type'
 import { AUTH_MSG } from '@/context/messages/authMsg'

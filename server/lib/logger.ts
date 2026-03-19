@@ -7,6 +7,9 @@ export type AuthEvent =
   | 'SESSION_EXPIRED'
   | 'UNAUTHORIZED'
   | 'FORBIDDEN'
+  | 'REGISTER_SUCCESS'
+  | 'REGISTER_FAIL'
+  | 'CHECK_USERNAME'
 
 type ApiLogOptions = {
   method: string

@@ -6,6 +6,10 @@ import { type UserRole, type EpicStatus, type TaskStatus } from '@/server/db/typ
 export type CreateEpicParams = {
   title: string
   description?: string
+  status?: EpicStatus
+  startDate?: string | null
+  dueDate?: string | null
+  color?: string | null
 }
 
 export type UpdateEpicParams = {

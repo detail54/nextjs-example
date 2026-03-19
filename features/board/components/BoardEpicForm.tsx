@@ -32,13 +32,13 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
   const [title, setTitle] = useState(epic?.title ?? '')
   // 설명
   const [description, setDescription] = useState(epic?.description ?? '')
-  // 상태 (수정 모드 전용)
+  // 상태
   const [status, setStatus] = useState<EpicStatus>(epic?.status ?? 'active')
-  // 시작일 (수정 모드 전용, YYYY-MM-DD 형식)
+  // 시작일 (YYYY-MM-DD 형식)
   const [startDate, setStartDate] = useState(epic?.startDate ?? '')
-  // 마감일 (수정 모드 전용, YYYY-MM-DD 형식)
+  // 마감일 (YYYY-MM-DD 형식)
   const [dueDate, setDueDate] = useState(epic?.dueDate ?? '')
-  // 색상 (수정 모드 전용, hex 문자열)
+  // 색상 (hex 문자열)
   const [color, setColor] = useState<string | null>(epic?.color ?? null)
 
   const { mutate: createEpic, isPending: isCreating } = useEpicCreate()
@@ -66,11 +66,22 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
       )
     } else {
       createEpic(
-        { title: title.trim(), description: description.trim() || undefined },
+        {
+          title: title.trim(),
+          description: description.trim() || undefined,
+          status,
+          startDate: startDate || null,
+          dueDate: dueDate || null,
+          color,
+        },
         {
           onSuccess: () => {
             setTitle('')
             setDescription('')
+            setStatus('active')
+            setStartDate('')
+            setDueDate('')
+            setColor(null)
             onSuccess?.()
           },
         },
@@ -107,38 +118,33 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
         />
       </div>
 
-      {/* 수정 모드 전용: 상태 + 마감일 */}
-      {isEditMode && (
-        <>
-          {/* 상태 선택 */}
-          <div className={boardEpicFormStyles.field}>
-            <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_STATUS_LABEL}</label>
-            <SelectBox
-              value={status}
-              options={EPIC_STATUS_OPTIONS}
-              onChange={(val) => setStatus(val as EpicStatus)}
-            />
-          </div>
+      {/* 상태 선택 */}
+      <div className={boardEpicFormStyles.field}>
+        <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_STATUS_LABEL}</label>
+        <SelectBox
+          value={status}
+          options={EPIC_STATUS_OPTIONS}
+          onChange={(val) => setStatus(val as EpicStatus)}
+        />
+      </div>
 
-          {/* 시작일 선택 */}
-          <div className={boardEpicFormStyles.field}>
-            <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_START_DATE_LABEL}</label>
-            <DatePicker value={startDate} onChange={setStartDate} />
-          </div>
+      {/* 시작일 선택 */}
+      <div className={boardEpicFormStyles.field}>
+        <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_START_DATE_LABEL}</label>
+        <DatePicker value={startDate} onChange={setStartDate} />
+      </div>
 
-          {/* 마감일 선택 */}
-          <div className={boardEpicFormStyles.field}>
-            <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_DUE_DATE_LABEL}</label>
-            <DatePicker value={dueDate} onChange={setDueDate} />
-          </div>
+      {/* 마감일 선택 */}
+      <div className={boardEpicFormStyles.field}>
+        <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_DUE_DATE_LABEL}</label>
+        <DatePicker value={dueDate} onChange={setDueDate} />
+      </div>
 
-          {/* 색상 선택 */}
-          <div className={boardEpicFormStyles.field}>
-            <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_COLOR_LABEL}</label>
-            <ColorPicker value={color} onChange={setColor} />
-          </div>
-        </>
-      )}
+      {/* 색상 선택 */}
+      <div className={boardEpicFormStyles.field}>
+        <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_COLOR_LABEL}</label>
+        <ColorPicker value={color} onChange={setColor} />
+      </div>
 
       {/* 제출 버튼 */}
       <div className={boardEpicFormStyles.actions}>

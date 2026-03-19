@@ -5,6 +5,10 @@ import type { BasicResponse, EpicStatus } from '@/server/db/type'
 export type CreateEpicRequest = {
   title: string
   description?: string
+  status?: EpicStatus
+  startDate?: string | null
+  dueDate?: string | null
+  color?: string | null
 }
 
 export type UpdateEpicRequest = {

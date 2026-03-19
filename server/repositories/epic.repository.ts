@@ -15,8 +15,9 @@ export const epicRepository = {
   },
 
   /** epic 생성 */
-  create({ title, description }: CreateEpicParams) {
-    return db.insert(epics).values({ title, description }).run().lastInsertRowid
+  create({ title, description, status, startDate, dueDate, color }: CreateEpicParams) {
+    return db.insert(epics).values({ title, description, status, startDate, dueDate, color }).run()
+      .lastInsertRowid
   },
 
   /** epic 수정 */

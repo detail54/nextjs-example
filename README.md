@@ -19,6 +19,11 @@
 9. [Provider 패턴](#9-provider-패턴)
 10. [프론트엔드 코드 패턴](#10-프론트엔드-코드-패턴)
 11. [주요 기능 로직](#11-주요-기능-로직)
+    - [11-1. 칸반 드래그 앤 드롭](#11-1-칸반-드래그-앤-드롭)
+    - [11-2. 공지사항 페이지네이션](#11-2-공지사항-페이지네이션)
+    - [11-3. 전역 모달 시스템](#11-3-전역-모달-시스템)
+    - [11-4. 타임라인 (Gantt)](#11-4-타임라인-gantt)
+    - [11-5. 권한 기반 UI 표시](#11-5-권한-기반-ui-표시)
 12. [구현 예정 페이지](#12-구현-예정-페이지)
 
 ---
@@ -235,7 +240,7 @@ nextjs-example/
 │
 ├── app/                        # Next.js App Router
 │   ├── (main)/                 # 인증 후 메인 레이아웃 그룹
-│   │   ├── layout.tsx          # LNB + 콘텐츠 레이아웃
+│   │   │   ├── layout.tsx          # LNB + 콘텐츠 + PanelProvider 레이아웃
 │   │   ├── board/page.tsx
 │   │   ├── calendar/page.tsx
 │   │   ├── timeline/page.tsx
@@ -279,8 +284,10 @@ nextjs-example/
 │   │   ├── api/
 │   │   ├── components/
 │   │   └── hooks/
+│   ├── timeline/
+│   │   ├── components/         # TimelinePage, TimelineEpicRow, TimelineTaskInlineCreate
+│   │   └── utils/              # timelineUtils (날짜→픽셀 변환, 월 목록 등)
 │   ├── calendar/components/    # 미구현
-│   ├── timeline/components/    # 미구현
 │   ├── my-page/components/     # 미구현
 │   └── notice-manage/components/ # 미구현
 │
@@ -288,13 +295,15 @@ nextjs-example/
 │   ├── button/                 # BasicButton, IconButton, LinkButton, TextButton
 │   ├── input/                  # BasicInput
 │   ├── modal/                  # Modal, BasicModal, ConfirmModal, ModalProvider
+│   ├── panel/                  # 전역 패널 시스템
+│   │   ├── side-panel/         # SidePanel, EpicSidePanel, TaskSidePanel
+│   │   └── PanelProvider.tsx   # EpicSidePanel + TaskSidePanel 마운트
 │   ├── list/                   # DataList, DataListSkeleton
 │   ├── pagination/             # Pagination
 │   ├── select/                 # SelectBox
-│   ├── dropdown/               # DropdownMenu
+│   ├── dropdown/               # DropdownMenu (portal 방식)
 │   ├── datepicker/             # DatePicker
 │   ├── inline-edit/            # InlineEdit
-│   ├── side-panel/             # SidePanel
 │   ├── lnb/                    # 사이드 내비게이션
 │   └── icon/                   # Icon 래퍼
 │
@@ -318,9 +327,10 @@ nextjs-example/
 │   └── messages/               # 서버 응답 메시지 상수
 │
 ├── stores/                     # Zustand 전역 상태
-│   ├── useBasicModalStore.ts
-│   ├── useConfirmModalStore.ts
-│   └── useBoardPanelStore.ts
+│   ├── useBasicModalStore.ts   # BasicModal 상태
+│   ├── useConfirmModalStore.ts # ConfirmModal 상태
+│   ├── useEpicPanelStore.ts    # 에픽 등록/수정 패널 상태
+│   └── useTaskPanelStore.ts    # 태스크 상세 패널 상태
 │
 ├── context/                    # 앱 전체 상수/설정
 │   ├── apiPaths.ts             # API 경로 상수
@@ -995,11 +1005,12 @@ export default function RootLayout({ children }) {
 
 각 Provider의 역할:
 
-| Provider          | 역할                                                                              | 파일                                 |
-| ----------------- | --------------------------------------------------------------------------------- | ------------------------------------ |
-| `<Providers>`     | React Query의 `QueryClient` 인스턴스를 앱 전체에 공급 + 모든 Provider 포함        | `lib/Providers.tsx`                  |
-| `<ModalProvider>` | 모든 모달(현재 BasicModal, ConfirmModal)을 Providers.tsx에 배치하여 루트에 마운트 | `components/modal/ModalProvider.tsx` |
-| `<Toaster>`       | Sonner 토스트 알림을 루트에 마운트                                                | `app/layout.tsx`                     |
+| Provider          | 위치                   | 역할                                                                 | 파일                                 |
+| ----------------- | ---------------------- | -------------------------------------------------------------------- | ------------------------------------ |
+| `<Providers>`     | `app/layout.tsx`       | React Query `QueryClient` 공급 + ModalProvider 포함                  | `lib/Providers.tsx`                  |
+| `<ModalProvider>` | `lib/Providers.tsx`    | BasicModal, ConfirmModal을 루트에 마운트                             | `components/modal/ModalProvider.tsx` |
+| `<PanelProvider>` | `app/(main)/layout.tsx`| EpicSidePanel, TaskSidePanel을 flex 형제로 마운트 (페이지 밀림 효과) | `components/panel/PanelProvider.tsx` |
+| `<Toaster>`       | `app/layout.tsx`       | Sonner 토스트 알림 루트 마운트                                       | `app/layout.tsx`                     |
 
 ---
 
@@ -1098,7 +1109,60 @@ export default function ModalProvider() {
 
 ---
 
-### 9-5. 'use client' 와 Provider의 관계
+### 9-5. PanelProvider — 전역 사이드 패널
+
+사이드 패널은 모달과 달리 **페이지를 밀어내는 효과**가 있습니다.
+이를 위해 `PanelProvider`는 `<main>` 태그와 **flex 형제**로 배치됩니다.
+
+```tsx
+// app/(main)/layout.tsx
+
+export default function MainLayout({ children }) {
+  return (
+    <div className='flex h-screen bg-secondary-950'>
+      <Lnb />
+      <main className='flex-1 overflow-auto'>{children}</main>
+      <PanelProvider />  {/* ← main과 나란히 배치 */}
+    </div>
+  )
+}
+```
+
+패널이 열리면 SidePanel의 너비가 0 → 지정 너비로 transition되며, flex 레이아웃 덕분에 `<main>`이 자연스럽게 좁아집니다.
+
+```tsx
+// components/panel/PanelProvider.tsx
+
+export default function PanelProvider() {
+  return (
+    <>
+      <EpicSidePanel />  {/* useEpicPanelStore 구독 */}
+      <TaskSidePanel />  {/* useTaskPanelStore 구독 */}
+    </>
+  )
+}
+```
+
+각 패널 컴포넌트는 자신의 스토어만 구독하며, 스토어에 상태가 생기면 SidePanel을 열고 해당 콘텐츠를 렌더링합니다.
+
+```
+[어떤 컴포넌트]
+  openEpicCreate()
+       ↓
+  useEpicPanelStore 상태 변경 (panel = { type: 'epicCreate' })
+       ↓
+  [EpicSidePanel] 구독 중이므로 자동 리렌더 → 패널 열림
+       ↓
+  <main>이 밀려서 좁아지는 애니메이션 발생
+```
+
+패널 너비는 드래그로 조절 가능하며, 조절된 너비는 각 스토어의 `panelWidth`에 저장됩니다.
+
+> 모달처럼 루트에 올리지 않는 이유: `Providers.tsx`에 넣으면 flex 레이아웃 바깥에 위치해 페이지 밀림 효과가 동작하지 않기 때문입니다.
+
+---
+
+### 9-6. 'use client' 와 Provider의 관계
 
 Next.js App Router에서 컴포넌트는 기본적으로 **Server Component**입니다.
 하지만 Provider는 React의 `useState`, `createContext` 등 **브라우저에서만 동작하는 기능**을 사용하므로
@@ -1488,7 +1552,45 @@ openBasicModal({
 })
 ```
 
-### 11-4. 권한 기반 UI 표시
+### 11-4. 타임라인 (Gantt)
+
+**파일**: `features/timeline/`
+
+Jira 스타일의 타임라인 뷰입니다. 왼쪽에 에픽/태스크 목록, 오른쪽에 월별 수평 그리드와 Gantt 바를 표시합니다.
+
+**핵심 유틸리티** (`features/timeline/utils/timelineUtils.ts`):
+
+```ts
+// 현재 월 기준 12개월 전 ~ 24개월 후, 총 37개월 표시
+const MONTH_WIDTH = 120  // 월당 픽셀 너비
+const MONTHS_BEFORE = 12
+
+// 날짜 문자열(YYYY-MM-DD) → 타임라인 내 X 픽셀 좌표
+function dateToX(dateStr: string): number {
+  const monthDiff = /* 기준월로부터 개월 수 */
+  const dayRatio = dayInMonth / daysInMonth
+  return (monthDiff + dayRatio) * MONTH_WIDTH
+}
+
+// 에픽/태스크의 바 위치(left, width) 계산 — 범위 밖은 클리핑
+function calcBarPosition(startDate, dueDate): { left: number; width: number } | null
+```
+
+**초기 스크롤 위치**: 현재 월이 2번째 컬럼에 오도록 마운트 시 `scrollLeft`를 설정합니다.
+
+```ts
+useEffect(() => {
+  scrollRef.current.scrollLeft = (MONTHS_BEFORE - 1) * MONTH_WIDTH
+}, [])
+```
+
+**sticky 레이아웃**: 단일 스크롤 컨테이너에서 CSS sticky로 좌측 열(`sticky left-0`)과 헤더(`sticky top-0`)를 고정합니다.
+
+**인라인 태스크 생성**: 드롭다운 "하위 작업 등록" 클릭 시 사이드 패널 대신 에픽 행 하단에 인라인 입력 UI를 표시합니다.
+
+---
+
+### 11-5. 권한 기반 UI 표시
 
 `useAuth()` 훅으로 현재 사용자의 역할을 확인해 UI를 조건부 렌더링합니다.
 
@@ -1537,12 +1639,6 @@ LNB 메뉴도 같은 방식으로 권한별로 필터링합니다:
 ### 캘린더 (`/calendar`)
 
 **파일**: `features/calendar/components/CalendarPage.tsx`
-
----
-
-### 타임라인 (`/timeline`)
-
-**파일**: `features/timeline/components/TimelinePage.tsx`
 
 ---
 

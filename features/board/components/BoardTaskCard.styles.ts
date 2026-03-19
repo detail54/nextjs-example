@@ -25,6 +25,6 @@ export const taskCardStyles = {
   // 카드 하단 메타 정보
   meta: cva('flex items-center justify-between mt-2')(),
 
-  // priority 배지
-  priority: cva('text-xs text-secondary-500 font-mono')(),
+  // priority 배지 - 항상 우측 정렬
+  priority: cva('text-xs text-secondary-500 font-mono ml-auto')(),
 }

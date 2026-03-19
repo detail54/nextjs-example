@@ -14,7 +14,7 @@ export const boardPageStyles = {
   title: cva('text-2xl font-bold text-white')(),
 
   // 에픽 목록 컨테이너
-  epicList: cva('flex flex-col gap-4')(),
+  epicList: cva('flex flex-col gap-12')(),
 
   // 빈 상태 메시지
   empty: cva('text-secondary-400 text-center py-16')(),

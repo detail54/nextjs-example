@@ -17,6 +17,7 @@ sqlite.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     role TEXT DEFAULT 'USER',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -95,6 +96,11 @@ sqlite.exec(`
   CREATE INDEX IF NOT EXISTS idx_notices_published_at ON notices(published_at);
 `)
 
+// 기존 DB에 email 컬럼이 없을 경우 추가 (마이그레이션 대체)
+try {
+  sqlite.exec(`ALTER TABLE users ADD COLUMN email TEXT NOT NULL DEFAULT ''`)
+} catch {}
+
 // 기존 DB에 start_date 컬럼이 없을 경우 추가 (마이그레이션 대체)
 try {
   sqlite.exec(`ALTER TABLE epics ADD COLUMN start_date TEXT`)
@@ -114,17 +120,27 @@ try {
 export const db = drizzle(sqlite, { schema })
 
 // admin 계정 초기 생성
-let adminId: number | undefined = db
-  .select({ id: schema.users.id })
+const adminUser = db
+  .select({ id: schema.users.id, email: schema.users.email })
   .from(schema.users)
   .where(eq(schema.users.username, 'admin'))
-  .get()?.id
+  .get()
+
+// 기존 admin 계정에 email이 없으면 추가
+if (adminUser && !adminUser.email) {
+  db.update(schema.users)
+    .set({ email: 'admin@taskflow.com' })
+    .where(eq(schema.users.username, 'admin'))
+    .run()
+}
+
+let adminId: number | undefined = adminUser?.id
 
 if (!adminId) {
   const hashed = bcrypt.hashSync('admin123', 10)
   const result = db
     .insert(schema.users)
-    .values({ username: 'admin', password: hashed, role: 'ADMIN' })
+    .values({ username: 'admin', email: 'admin@taskflow.com', password: hashed, role: 'ADMIN' })
     .run()
   adminId = Number(result.lastInsertRowid)
   console.log('✔ admin 계정 생성 (admin / admin123)')

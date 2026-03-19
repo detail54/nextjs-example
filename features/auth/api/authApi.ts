@@ -2,7 +2,7 @@ import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
 import { AUTH_MSG } from '@/context/messages/authMsg'
 import { type BasicResponse } from '@/server/db/type'
-import { type LoginRequest, type LoginResponse, type MeResponse, type RegisterRequest, type CheckUsernameResponse } from './type'
+import { type LoginRequest, type LoginResponse, type MeResponse, type RegisterRequest, type CheckUsernameResponse, type CheckEmailResponse } from './type'
 
 // 로그인
 export async function loginApi(data: LoginRequest): Promise<BasicResponse<LoginResponse>> {
@@ -37,6 +37,22 @@ export async function registerApi(data: RegisterRequest): Promise<BasicResponse<
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message ?? AUTH_MSG.REGISTER_FAILED)
+    }
+    throw error
+  }
+}
+
+// email 중복 확인
+export async function checkEmailApi(email: string): Promise<BasicResponse<CheckEmailResponse>> {
+  try {
+    const response = await axios.post<BasicResponse<CheckEmailResponse>>(
+      API_PATHS.AUTH.CHECK_EMAIL,
+      { email },
+    )
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message ?? AUTH_MSG.EMAIL_CHECK_FAILED)
     }
     throw error
   }

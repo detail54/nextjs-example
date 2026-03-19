@@ -50,6 +50,14 @@ export const AUTH_MSG = {
   PASSWORD_MISMATCH: '비밀번호가 일치하지 않습니다',
   PASSWORD_MATCH: '비밀번호가 일치합니다',
 
+  // 이메일
+  EMAIL_LABEL: '이메일',
+  EMAIL_PLACEHOLDER: '이메일을 입력하세요',
+  EMAIL_AVAILABLE: '사용 가능한 이메일입니다',
+  EMAIL_TAKEN: '이미 사용 중인 이메일입니다',
+  EMAIL_CHECK_REQUIRED: '이메일 중복 확인을 해주세요',
+  EMAIL_CHECK_FAILED: '이메일 중복 확인에 실패했습니다',
+
   // 중복 확인
   CHECK_USERNAME: '중복 확인',
   CHECKING_USERNAME: '확인 중...',

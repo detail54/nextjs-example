@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { SquareCheckBig, User, Lock } from 'lucide-react'
+import { SquareCheckBig, User, Mail, Lock } from 'lucide-react'
 import BasicButton from '@/components/button/BasicButton'
 import BasicInput from '@/components/input/BasicInput'
 import LinkButton from '@/components/button/LinkButton'
@@ -11,25 +11,39 @@ import { AUTH_MSG } from '@/context/messages/authMsg'
 import { APP_PATHS } from '@/context/appPaths'
 import { useRegister } from '../hooks/useRegister'
 import { useCheckUsername } from '../hooks/useCheckUsername'
+import { useCheckEmail } from '../hooks/useCheckEmail'
 import { registerFormStyles as s } from './AuthRegisterForm.styles'
 
 export default function AuthRegisterForm() {
   // 입력 상태
   const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
 
-  // 중복 확인 결과 (null: 미확인, true: 사용 가능, false: 중복)
+  // username 중복 확인 결과 (null: 미확인, true: 사용 가능, false: 중복)
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null)
   // 마지막으로 중복 확인한 username (입력 변경 시 재확인 요구)
   const [checkedUsername, setCheckedUsername] = useState('')
 
+  // email 중복 확인 결과 (null: 미확인, true: 사용 가능, false: 중복)
+  const [emailAvailable, setEmailAvailable] = useState<boolean | null>(null)
+  // 마지막으로 중복 확인한 email (입력 변경 시 재확인 요구)
+  const [checkedEmail, setCheckedEmail] = useState('')
+
   const router = useRouter()
 
-  const { mutate: checkUsername, isPending: isChecking } = useCheckUsername({
+  const { mutate: checkUsername, isPending: isCheckingUsername } = useCheckUsername({
     onSuccess: (available) => {
       setUsernameAvailable(available)
       setCheckedUsername(username)
+    },
+  })
+
+  const { mutate: checkEmail, isPending: isCheckingEmail } = useCheckEmail({
+    onSuccess: (available) => {
+      setEmailAvailable(available)
+      setCheckedEmail(email)
     },
   })
 
@@ -45,28 +59,40 @@ export default function AuthRegisterForm() {
     setCheckedUsername('')
   }
 
-  // 중복 확인 핸들러
+  // email 입력 변경 시 중복 확인 초기화
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value)
+    setEmailAvailable(null)
+    setCheckedEmail('')
+  }
+
+  // username 중복 확인 핸들러
   const handleCheckUsername = () => {
     if (!username.trim()) return
     checkUsername(username)
   }
 
-  // 비밀번호 일치 여부 (두 필드 모두 입력된 경우에만 표시)
-  const passwordMatch =
-    password && passwordConfirm ? password === passwordConfirm : null
+  // email 중복 확인 핸들러
+  const handleCheckEmail = () => {
+    if (!email.trim()) return
+    checkEmail(email)
+  }
 
-  // 중복 확인 완료 여부 (확인한 username과 현재 입력값이 동일해야 함)
+  // 비밀번호 일치 여부 (두 필드 모두 입력된 경우에만 표시)
+  const passwordMatch = password && passwordConfirm ? password === passwordConfirm : null
+
+  // 중복 확인 완료 여부
   const isUsernameChecked = usernameAvailable === true && checkedUsername === username
+  const isEmailChecked = emailAvailable === true && checkedEmail === email
 
   // 등록 버튼 활성화 조건
-  const isSubmitEnabled =
-    isUsernameChecked && passwordMatch === true && !isRegistering
+  const isSubmitEnabled = isUsernameChecked && isEmailChecked && passwordMatch === true && !isRegistering
 
   // 등록 제출 핸들러
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!isSubmitEnabled) return
-    register({ username, password })
+    register({ username, email, password })
   }
 
   return (
@@ -118,8 +144,8 @@ export default function AuthRegisterForm() {
             {/* 아이디 입력 + 중복 확인 */}
             <div className={s.fieldWrapper}>
               <label className={s.label}>{AUTH_MSG.USERNAME_LABEL}</label>
-              <div className={s.usernameRow}>
-                <div className={s.usernameInputWrapper}>
+              <div className={s.checkRow}>
+                <div className={s.checkInputWrapper}>
                   <span className={s.inputIcon}>
                     <Icon icon={User} size='sm' />
                   </span>
@@ -135,17 +161,47 @@ export default function AuthRegisterForm() {
                   type='button'
                   variant='outline'
                   size='md'
-                  disabled={!username.trim() || isChecking}
+                  disabled={!username.trim() || isCheckingUsername}
                   onClick={handleCheckUsername}
                 >
-                  {isChecking ? AUTH_MSG.CHECKING_USERNAME : AUTH_MSG.CHECK_USERNAME}
+                  {isCheckingUsername ? AUTH_MSG.CHECKING_USERNAME : AUTH_MSG.CHECK_USERNAME}
                 </BasicButton>
               </div>
-              {/* 중복 확인 결과 메시지 */}
+              {/* username 중복 확인 결과 메시지 */}
               <p className={s.statusText(usernameAvailable)}>
-                {usernameAvailable === true
-                  ? AUTH_MSG.USERNAME_AVAILABLE
-                  : AUTH_MSG.USERNAME_TAKEN}
+                {usernameAvailable === true ? AUTH_MSG.USERNAME_AVAILABLE : AUTH_MSG.USERNAME_TAKEN}
+              </p>
+            </div>
+
+            {/* 이메일 입력 + 중복 확인 */}
+            <div className={s.fieldWrapper}>
+              <label className={s.label}>{AUTH_MSG.EMAIL_LABEL}</label>
+              <div className={s.checkRow}>
+                <div className={s.checkInputWrapper}>
+                  <span className={s.inputIcon}>
+                    <Icon icon={Mail} size='sm' />
+                  </span>
+                  <BasicInput
+                    type='email'
+                    value={email}
+                    placeholder={AUTH_MSG.EMAIL_PLACEHOLDER}
+                    className='pl-10'
+                    onChange={handleEmailChange}
+                  />
+                </div>
+                <BasicButton
+                  type='button'
+                  variant='outline'
+                  size='md'
+                  disabled={!email.trim() || isCheckingEmail}
+                  onClick={handleCheckEmail}
+                >
+                  {isCheckingEmail ? AUTH_MSG.CHECKING_USERNAME : AUTH_MSG.CHECK_USERNAME}
+                </BasicButton>
+              </div>
+              {/* email 중복 확인 결과 메시지 */}
+              <p className={s.statusText(emailAvailable)}>
+                {emailAvailable === true ? AUTH_MSG.EMAIL_AVAILABLE : AUTH_MSG.EMAIL_TAKEN}
               </p>
             </div>
 

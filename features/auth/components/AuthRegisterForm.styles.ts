@@ -39,9 +39,9 @@ export const registerFormStyles = {
   inputIconWrapper: 'relative',
   inputIcon: 'absolute left-3 top-1/2 -translate-y-1/2 text-secondary-400 pointer-events-none',
 
-  // username 필드 - 중복 확인 버튼 포함
-  usernameRow: 'flex gap-2',
-  usernameInputWrapper: 'relative flex-1',
+  // 중복 확인 버튼 포함 필드 (username, email 공용)
+  checkRow: 'flex gap-2',
+  checkInputWrapper: 'relative flex-1',
 
   // 중복 확인 상태 메시지
   statusText: (available: boolean | null) => {

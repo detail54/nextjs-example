@@ -14,9 +14,14 @@ export const authRepository = {
     return db.select().from(users).where(eq(users.username, username)).get()
   },
 
+  /** email로 유저 단건 조회 */
+  findByEmail(email: string) {
+    return db.select().from(users).where(eq(users.email, email)).get()
+  },
+
   /** 유저 생성 */
-  create({ username, password }: CreateUserParams) {
-    return db.insert(users).values({ username, password, role: 'USER' }).run()
+  create({ username, email, password }: CreateUserParams) {
+    return db.insert(users).values({ username, email, password, role: 'USER' }).run()
   },
 
   /** username 변경 */

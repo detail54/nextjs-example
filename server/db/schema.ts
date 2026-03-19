@@ -5,6 +5,7 @@ import { sql } from 'drizzle-orm'
 export const users = sqliteTable('users', {
   id: integer('id').primaryKey({ autoIncrement: true }), // 사용자 고유 ID (자동 증가)
   username: text('username').notNull().unique(), // 로그인 아이디 (중복 불가)
+  email: text('email').notNull().unique(), // 이메일 (중복 불가)
   password: text('password').notNull(), // 해시된 비밀번호
   role: text('role', { enum: ['USER', 'ADMIN'] }) // 권한: 일반 사용자 / 관리자
     .default('USER')

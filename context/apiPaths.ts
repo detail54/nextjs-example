@@ -7,6 +7,7 @@ export const API_PATHS = {
     ME: '/api/auth/me',
     REGISTER: '/api/auth/register',
     CHECK_USERNAME: '/api/auth/check-username',
+    CHECK_EMAIL: '/api/auth/check-email',
   },
   NOTICE: {
     LIST: '/api/notice',

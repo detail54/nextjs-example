@@ -24,10 +24,16 @@ export type MeResponse = {
 // 계정 등록 요청 타입
 export type RegisterRequest = {
   username: string
+  email: string
   password: string
 }
 
 // username 중복 확인 응답 타입
 export type CheckUsernameResponse = {
+  available: boolean
+}
+
+// email 중복 확인 응답 타입
+export type CheckEmailResponse = {
   available: boolean
 }

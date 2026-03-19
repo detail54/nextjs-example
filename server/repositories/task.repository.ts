@@ -30,9 +30,24 @@ export const taskRepository = {
     return db.insert(tasks).values({ epicId, title, description }).run().lastInsertRowid
   },
 
-  /** task 생성 (priority 직접 지정) */
-  createWithPriority({ epicId, title, priority }: { epicId: number; title: string; priority: number }) {
-    return db.insert(tasks).values({ epicId, title, priority }).run().lastInsertRowid
+  /** task 생성 (priority 직접 지정, 시작일/마감일 선택) */
+  createWithPriority({
+    epicId,
+    title,
+    priority,
+    startDate,
+    dueDate,
+  }: {
+    epicId: number
+    title: string
+    priority: number
+    startDate?: string | null
+    dueDate?: string | null
+  }) {
+    return db
+      .insert(tasks)
+      .values({ epicId, title, priority, startDate: startDate ?? null, dueDate: dueDate ?? null })
+      .run().lastInsertRowid
   },
 
   /** task 상태 변경 */

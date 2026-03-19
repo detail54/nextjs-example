@@ -9,3 +9,26 @@ html,
 body {
   height: 100%;
 }
+
+/* 전역 스크롤바 스타일 - 다크 테마에 맞게 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #64748b; /* secondary-500 */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; /* secondary-400 */
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

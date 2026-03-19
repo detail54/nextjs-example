@@ -22,7 +22,11 @@ export async function POST(request: NextRequest, context: RouteContext) {
   }
 
   const body = await request.json()
-  const { title } = body as { title: string }
+  const { title, startDate, dueDate } = body as {
+    title: string
+    startDate?: string | null
+    dueDate?: string | null
+  }
 
   if (!title?.trim()) {
     return NextResponse.json<BasicResponse<null>>(
@@ -37,7 +41,13 @@ export async function POST(request: NextRequest, context: RouteContext) {
   const maxPriority = todoTasks.length > 0 ? Math.max(...todoTasks.map((t) => t.priority)) : 0
   const newPriority = maxPriority + 1000
 
-  const id = taskRepository.createWithPriority({ epicId, title: title.trim(), priority: newPriority })
+  const id = taskRepository.createWithPriority({
+    epicId,
+    title: title.trim(),
+    priority: newPriority,
+    startDate: startDate ?? null,
+    dueDate: dueDate ?? null,
+  })
 
   return NextResponse.json<BasicResponse<{ id: number }>>(
     { success: true, data: { id: Number(id) } },

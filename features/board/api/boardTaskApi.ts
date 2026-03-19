@@ -4,6 +4,8 @@ import type { BasicResponse, TaskStatus } from '@/server/db/type'
 
 export type CreateTaskRequest = {
   title: string
+  startDate?: string | null
+  dueDate?: string | null
 }
 
 export type UpdateTaskRequest = {

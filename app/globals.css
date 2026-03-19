@@ -11,24 +11,33 @@ body {
 }
 
 /* 전역 스크롤바 스타일 - 다크 테마에 맞게 */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
+@layer base {
+  /* 표준 CSS (Chrome 121+, Firefox) */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #64748b transparent; /* secondary-500 */
+  }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
+  /* WebKit 구형 호환 */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: #64748b; /* secondary-500 */
-  border-radius: 9999px;
-}
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8; /* secondary-400 */
-}
+  ::-webkit-scrollbar-thumb {
+    background: #64748b; /* secondary-500 */
+    border-radius: 9999px;
+  }
 
-::-webkit-scrollbar-corner {
-  background: transparent;
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; /* secondary-400 */
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }

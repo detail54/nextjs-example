@@ -4,9 +4,9 @@ export const timelineEpicRowStyles = {
   // 에픽 행 래퍼
   epicRow: cva('flex border-b border-secondary-600 group/epic-row'),
 
-  // 왼쪽 에픽 정보 영역 (sticky) - 열림 variant 없음, 항상 동일
+  // 왼쪽 에픽 정보 영역 (sticky) - 토글버튼 + 타이틀그룹 가로 정렬
   epicLeft: cva(
-    'flex items-center gap-1 px-2 border-r border-secondary-700 bg-secondary-900 sticky left-0 z-10',
+    'flex items-center gap-1 px-2 border-r border-secondary-700 bg-secondary-900 sticky left-0 z-10 overflow-hidden',
   )(),
 
   // 화살표 토글 버튼
@@ -15,8 +15,28 @@ export const timelineEpicRowStyles = {
       ' text-secondary-400 hover:text-white hover:bg-secondary-700 transition-colors duration-150',
   )(),
 
+  // 에픽 아이콘+제목+더보기 묶음 (flex-1 차지, 세로 스택)
+  epicTitleGroup: cva('flex-1 min-w-0 flex flex-col justify-center gap-0.5')(),
+
+  // 아이콘 + 제목 + 더보기 가로 행
+  epicTitleRow: cva('flex items-center gap-1 min-w-0')(),
+
   // 에픽 제목
   epicTitle: cva('flex-1 min-w-0 text-sm font-semibold text-white truncate')(),
+
+  // 진행도 바 컨테이너
+  progressBar: cva('flex w-full h-1 rounded-full overflow-hidden bg-secondary-700')(),
+
+  // 진행도 바 세그먼트 (status variant)
+  progressSegment: cva('h-full', {
+    variants: {
+      status: {
+        done: 'bg-success-500',
+        in_progress: 'bg-primary-500',
+        todo: 'bg-secondary-500',
+      },
+    },
+  }),
 
   // ⋯ 더보기 버튼 래퍼 (hover 시 표시)
   moreWrapper: cva(

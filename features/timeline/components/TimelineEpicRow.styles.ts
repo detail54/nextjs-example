@@ -6,7 +6,7 @@ export const timelineEpicRowStyles = {
 
   // 왼쪽 에픽 정보 영역 (sticky) - 토글버튼 + 타이틀그룹 가로 정렬
   epicLeft: cva(
-    'flex items-center gap-1 px-2 border-r border-secondary-700 bg-secondary-900 sticky left-0 z-10 overflow-hidden',
+    'flex items-center gap-1 px-2 border-r-2 border-secondary-600 bg-secondary-900 sticky left-0 z-10 overflow-hidden',
   )(),
 
   // 화살표 토글 버튼
@@ -78,7 +78,7 @@ export const timelineEpicRowStyles = {
 
   // 왼쪽 태스크 정보 영역 (sticky, 들여쓰기)
   taskLeft: cva(
-    'flex items-center gap-2 pl-14 pr-2 border-r border-secondary-700/60' +
+    'flex items-center gap-2 pl-14 pr-2 border-r-2 border-secondary-600/70' +
       ' bg-secondary-900/95 sticky left-0 z-10',
   )(),
 

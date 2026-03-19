@@ -19,9 +19,14 @@ export const timelinePageStyles = {
   // 헤더 행 (sticky top)
   headerRow: cva('flex sticky top-0 z-20 bg-secondary-900 border-b border-secondary-700')(),
 
-  // 헤더 왼쪽 코너 (sticky top + left)
+  // 헤더 왼쪽 코너 (sticky top + left, 리사이즈 핸들 포함)
   headerCorner: cva(
-    'flex items-center px-4 border-r border-secondary-700 bg-secondary-900 sticky left-0 z-30 flex-shrink-0',
+    'relative flex items-center px-4 border-r-2 border-secondary-600 bg-secondary-900 sticky left-0 z-30 flex-shrink-0',
+  )(),
+
+  // 구분선 리사이즈 핸들 (헤더 코너 우측 끝에 위치)
+  resizeHandle: cva(
+    'absolute right-0 top-0 bottom-0 w-3 cursor-col-resize translate-x-1/2 z-10',
   )(),
 
   // 헤더 코너 텍스트
@@ -46,7 +51,7 @@ export const timelinePageStyles = {
 
   // 빈 상태 왼쪽 (sticky)
   emptyLeft: cva(
-    'flex items-center justify-center px-4 border-r border-secondary-700' +
+    'flex items-center justify-center px-4 border-r-2 border-secondary-600' +
       ' bg-secondary-900 sticky left-0 z-10 flex-shrink-0',
   )(),
 
@@ -58,7 +63,7 @@ export const timelinePageStyles = {
 
   // 에픽 등록 버튼 왼쪽 (sticky)
   addEpicLeft: cva(
-    'flex items-center px-3 py-2 border-r border-secondary-700 bg-secondary-900 sticky left-0 z-10 flex-shrink-0',
+    'flex items-center px-3 py-2 border-r-2 border-secondary-600 bg-secondary-900 sticky left-0 z-10 flex-shrink-0',
   )(),
 
   // 에픽 등록 버튼

@@ -43,7 +43,11 @@ export default function TimelineTaskInlineCreate({
     if (!title.trim() || isPending) return
     createTask(
       { title: title.trim() },
-      { onSuccess: () => { onSuccess() } },
+      {
+        onSuccess: () => {
+          onSuccess()
+        },
+      },
     )
   }
 
@@ -59,7 +63,13 @@ export default function TimelineTaskInlineCreate({
     <div
       ref={wrapperRef}
       className='flex items-center gap-2 pl-14 pr-2 border-b border-secondary-600/60 bg-secondary-800 sticky left-0 z-10'
-      style={{ width: 280, minWidth: 280, height: 40 }}
+      style={
+        {
+          width: 'var(--left-width)',
+          minWidth: 'var(--left-width)',
+          height: 40,
+        } as React.CSSProperties
+      }
     >
       <input
         ref={inputRef}

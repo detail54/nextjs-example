@@ -43,7 +43,7 @@ export default function TimelineColorPopover({
   return createPortal(
     <div
       ref={ref}
-      className='fixed z-[10000] rounded-lg bg-secondary-800 border border-secondary-600 shadow-xl p-3 w-[332px]'
+      className='fixed z-10000 rounded-lg bg-secondary-800 border border-secondary-600 shadow-xl p-3 w-[332px]'
       style={{ left: position.x, top: position.y, transform: 'translate(-50%, -110%)' }}
     >
       <ColorPicker value={value} onChange={handleColorChange} />

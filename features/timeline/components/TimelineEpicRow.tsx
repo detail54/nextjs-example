@@ -58,10 +58,11 @@ function sortByPriority(tasks: BoardTask[]): BoardTask[] {
 
 interface TimelineEpicRowProps {
   epic: EpicWithTasks
+  onResizeStart: (e: React.MouseEvent) => void
 }
 
 // 에픽 행 + 하위 태스크 행 (드래그 정렬 포함) 컴포넌트
-export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
+export default function TimelineEpicRow({ epic, onResizeStart }: TimelineEpicRowProps) {
   // 태스크 펼침 여부
   const [isOpen, setIsOpen] = useState(false)
   // 인라인 태스크 생성 입력 표시 여부
@@ -180,7 +181,18 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
       {/* 에픽 행 */}
       <div className={timelineEpicRowStyles.epicRow()} style={{ height: EPIC_ROW_HEIGHT }}>
         {/* 왼쪽: 에픽 정보 (sticky) */}
-        <div className={timelineEpicRowStyles.epicLeft} style={{ width: 280, minWidth: 280 }}>
+        <div
+          className={`relative ${timelineEpicRowStyles.epicLeft}`}
+          style={
+            { width: 'var(--left-width)', minWidth: 'var(--left-width)' } as React.CSSProperties
+          }
+        >
+          {/* 구분선 드래그 핸들 */}
+          <div
+            className='absolute right-0 top-0 bottom-0 w-3 cursor-col-resize translate-x-1/2 z-10'
+            onMouseDown={onResizeStart}
+          />
+
           {/* 하위 태스크 토글 버튼 */}
           <button
             type='button'
@@ -326,14 +338,24 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
         >
           <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
             {tasks.map((task) => (
-              <TimelineTaskRow key={task.id} task={task} onClickDetail={openTaskDetail} />
+              <TimelineTaskRow
+                key={task.id}
+                task={task}
+                onResizeStart={onResizeStart}
+                onClickDetail={openTaskDetail}
+              />
             ))}
           </SortableContext>
 
           {/* 드래그 중 오버레이 (좌측 열만 표시) */}
           <DragOverlay zIndex={9999}>
             {activeTask ? (
-              <TimelineTaskRow task={activeTask} overlay onClickDetail={() => {}} />
+              <TimelineTaskRow
+                task={activeTask}
+                onResizeStart={onResizeStart}
+                overlay
+                onClickDetail={() => {}}
+              />
             ) : null}
           </DragOverlay>
         </DndContext>

@@ -25,6 +25,7 @@ const TOTAL_WIDTH = TOTAL_MONTHS * MONTH_WIDTH
 
 interface TimelineTaskRowProps {
   task: BoardTask
+  onResizeStart: (e: React.MouseEvent) => void
   // DragOverlay용 렌더링 여부 (true이면 useSortable 없이 단순 렌더링)
   overlay?: boolean
   onClickDetail: (task: BoardTask) => void
@@ -33,6 +34,7 @@ interface TimelineTaskRowProps {
 // 드래그 가능한 태스크 행 컴포넌트
 export default function TimelineTaskRow({
   task,
+  onResizeStart,
   overlay = false,
   onClickDetail,
 }: TimelineTaskRowProps) {
@@ -47,9 +49,7 @@ export default function TimelineTaskRow({
 
   const taskBar = calcBarPosition(task.startDate, task.dueDate)
 
-  const style = overlay
-    ? undefined
-    : { transform: CSS.Transform.toString(transform), transition }
+  const style = overlay ? undefined : { transform: CSS.Transform.toString(transform), transition }
 
   return (
     <div
@@ -59,9 +59,15 @@ export default function TimelineTaskRow({
     >
       {/* 왼쪽: 태스크 정보 (sticky) */}
       <div
-        className={`${timelineEpicRowStyles.taskLeft} ${isDragging ? 'opacity-50' : ''}`}
-        style={{ width: 280, minWidth: 280 }}
+        className={`relative ${timelineEpicRowStyles.taskLeft} ${isDragging ? 'opacity-50' : ''}`}
+        style={{ width: 'var(--left-width)', minWidth: 'var(--left-width)' } as React.CSSProperties}
       >
+        {/* 구분선 드래그 핸들 */}
+        <div
+          className='absolute right-0 top-0 bottom-0 w-3 cursor-col-resize translate-x-1/2 z-10'
+          onMouseDown={onResizeStart}
+        />
+
         {/* 드래그 핸들 (호버 시 표시) */}
         <div
           {...(overlay ? {} : { ...attributes, ...listeners })}
@@ -95,10 +101,7 @@ export default function TimelineTaskRow({
               />
             )}
             {i > 0 && (
-              <div
-                className={timelineEpicRowStyles.monthLine}
-                style={{ left: i * MONTH_WIDTH }}
-              />
+              <div className={timelineEpicRowStyles.monthLine} style={{ left: i * MONTH_WIDTH }} />
             )}
           </div>
         ))}

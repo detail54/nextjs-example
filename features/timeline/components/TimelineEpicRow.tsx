@@ -10,6 +10,7 @@ import { useAuth } from '@/features/auth/hooks/useAuth'
 import type { EpicWithTasks } from '@/features/board/api/type'
 import DropdownMenu from '@/components/dropdown/DropdownMenu'
 import Icon from '@/components/icon/Icon'
+import TimelineTaskInlineCreate from './TimelineTaskInlineCreate'
 import {
   MONTH_WIDTH,
   TOTAL_MONTHS,
@@ -34,9 +35,11 @@ interface TimelineEpicRowProps {
 export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
   // 태스크 펼침 여부
   const [isOpen, setIsOpen] = useState(false)
+  // 인라인 태스크 생성 입력 표시 여부
+  const [isCreating, setIsCreating] = useState(false)
 
   const { isAdmin } = useAuth()
-  const { openEpicEdit, openTaskCreate, openTaskDetail } = useTimelinePanelStore()
+  const { openEpicEdit, openTaskDetail } = useTimelinePanelStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { mutate: deleteEpic } = useEpicDelete()
 
@@ -53,7 +56,11 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
     })
   }
 
-  const handleTaskCreate = () => openTaskCreate(epic.id)
+  // 하위 작업 등록: 펼치고 인라인 입력 표시
+  const handleTaskCreate = () => {
+    setIsOpen(true)
+    setIsCreating(true)
+  }
 
   // 관리자 전용 드롭다운 메뉴 항목
   const dropdownItems = [
@@ -70,10 +77,7 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
       {/* 에픽 행 */}
       <div className={timelineEpicRowStyles.epicRow()} style={{ height: EPIC_ROW_HEIGHT }}>
         {/* 왼쪽: 에픽 정보 (sticky) */}
-        <div
-          className={timelineEpicRowStyles.epicLeft}
-          style={{ width: 280, minWidth: 280 }}
-        >
+        <div className={timelineEpicRowStyles.epicLeft} style={{ width: 280, minWidth: 280 }}>
           {/* 하위 태스크 토글 버튼 */}
           <button
             type='button'
@@ -114,14 +118,13 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
           {/* 월 구분선 및 현재 월 하이라이트 */}
           {MONTHS.map((m, i) => (
             <div key={i}>
-              {/* 현재 월 배경 */}
               {m.isCurrent && (
                 <div
                   className={timelineEpicRowStyles.currentMonthBg}
                   style={{ left: i * MONTH_WIDTH, width: MONTH_WIDTH }}
                 />
               )}
-              {/* 월 구분 세로선 (i=0은 왼쪽 컬럼 border-r과 겹치므로 skip) */}
+              {/* i=0은 왼쪽 컬럼 border-r과 겹치므로 skip */}
               {i > 0 && (
                 <div
                   className={timelineEpicRowStyles.monthLine}
@@ -164,13 +167,12 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
               className={timelineEpicRowStyles.taskRow()}
               style={{ height: TASK_ROW_HEIGHT }}
             >
-              {/* 왼쪽: 태스크 정보 (sticky, 들여쓰기) - 클릭 시 상세 패널 열기 */}
+              {/* 왼쪽: 태스크 정보 (sticky) - 클릭 시 상세 패널 열기 */}
               <div
                 className={`${timelineEpicRowStyles.taskLeft} cursor-pointer hover:bg-secondary-800/50`}
                 style={{ width: 280, minWidth: 280 }}
                 onClick={() => openTaskDetail(task)}
               >
-                {/* 태스크 아이콘 + 제목 */}
                 <CheckSquare size={12} className='shrink-0 text-secondary-400' />
                 <span className={timelineEpicRowStyles.taskTitle}>{task.title}</span>
               </div>
@@ -180,7 +182,6 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
                 className={timelineEpicRowStyles.taskRight}
                 style={{ width: TOTAL_WIDTH, height: TASK_ROW_HEIGHT }}
               >
-                {/* 월 구분선 */}
                 {MONTHS.map((m, i) => (
                   <div key={i}>
                     {m.isCurrent && (
@@ -189,7 +190,6 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
                         style={{ left: i * MONTH_WIDTH, width: MONTH_WIDTH }}
                       />
                     )}
-                    {/* i=0은 왼쪽 컬럼 border-r과 겹치므로 skip */}
                     {i > 0 && (
                       <div
                         className={timelineEpicRowStyles.monthLine}
@@ -198,13 +198,9 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
                     )}
                   </div>
                 ))}
-
-                {/* 오늘 표시선 */}
                 {TODAY_X >= 0 && TODAY_X <= TOTAL_WIDTH && (
                   <div className={timelineEpicRowStyles.todayLine} style={{ left: TODAY_X }} />
                 )}
-
-                {/* 태스크 바 */}
                 {taskBar && (
                   <div
                     className={timelineEpicRowStyles.taskBar}
@@ -222,6 +218,19 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
             </div>
           )
         })}
+
+      {/* 인라인 태스크 생성 입력 (펼쳐진 상태에서 하위 작업 등록 클릭 시) */}
+      {isOpen && isCreating && (
+        <div className='flex'>
+          <TimelineTaskInlineCreate
+            epicId={epic.id}
+            onSuccess={() => setIsCreating(false)}
+            onCancel={() => setIsCreating(false)}
+          />
+          {/* 오른쪽 빈 영역 */}
+          <div style={{ width: TOTAL_WIDTH, height: TASK_ROW_HEIGHT }} />
+        </div>
+      )}
     </>
   )
 }

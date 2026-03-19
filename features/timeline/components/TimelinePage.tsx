@@ -10,7 +10,6 @@ import { useAuth } from '@/features/auth/hooks/useAuth'
 import BoardEpicForm from '@/features/board/components/BoardEpicForm'
 import BoardTaskDetail from '@/features/board/components/BoardTaskDetail'
 import TimelineEpicRow from './TimelineEpicRow'
-import TimelineTaskCreateForm from './TimelineTaskCreateForm'
 import SidePanel from '@/components/side-panel/SidePanel'
 import { MONTH_WIDTH, MONTHS_BEFORE, TOTAL_MONTHS, LEFT_WIDTH, getMonthList } from '../utils/timelineUtils'
 import { timelinePageStyles } from './TimelinePage.styles'
@@ -52,11 +51,9 @@ export default function TimelinePage() {
       ? TIMELINE_MSG.EPIC_REGISTER_TITLE
       : panel.type === 'epicEdit'
         ? TIMELINE_MSG.EPIC_EDIT_TITLE
-        : panel.type === 'taskCreate'
-          ? TIMELINE_MSG.TASK_CREATE_TITLE
-          : panel.type === 'taskDetail'
-            ? BOARD_MSG.TASK_PANEL_TITLE
-            : ''
+        : panel.type === 'taskDetail'
+          ? BOARD_MSG.TASK_PANEL_TITLE
+          : ''
 
   return (
     <div className={timelinePageStyles.container}>
@@ -162,8 +159,6 @@ export default function TimelinePage() {
           <BoardEpicForm onSuccess={closePanel} />
         ) : panel.type === 'epicEdit' ? (
           <BoardEpicForm epic={panel.epic} onSuccess={closePanel} />
-        ) : panel.type === 'taskCreate' ? (
-          <TimelineTaskCreateForm epicId={panel.epicId} onSuccess={closePanel} />
         ) : panel.type === 'taskDetail' ? (
           <BoardTaskDetail task={panel.task} />
         ) : null}

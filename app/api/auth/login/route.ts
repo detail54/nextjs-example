@@ -1,15 +1,15 @@
-import { authService } from '@/server/services/auth.service'
+import { authService } from '@/server/auth/auth.service'
 import { type LoginRequest, type LoginResponse } from '@/features/auth/api/type'
-import { type BasicResponse } from '@/server/db/type'
+import { type BasicResponse } from '@/server/core/db/type'
 import {
   ACCESS_TOKEN_COOKIE,
   REFRESH_TOKEN_COOKIE,
   ACCESS_TOKEN_MAX_AGE,
   REFRESH_TOKEN_MAX_AGE,
-} from '@/server/lib/jwt'
+} from '@/server/auth/jwt'
 import { AUTH_MSG } from '@/context/messages/authMsg'
-import { logger } from '@/server/lib/logger'
-import { withLogger } from '@/server/lib/withLogger'
+import { logger } from '@/server/core/lib/logger'
+import { withLogger } from '@/server/core/lib/withLogger'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = withLogger(async (request: NextRequest) => {

@@ -1,10 +1,9 @@
-import { authRepository } from '@/server/repositories/auth.repository'
+import { authService } from '@/server/auth/auth.service'
 import { type RegisterRequest } from '@/features/auth/api/type'
-import { type BasicResponse } from '@/server/db/type'
+import { type BasicResponse } from '@/server/core/db/type'
 import { AUTH_MSG } from '@/context/messages/authMsg'
-import { logger } from '@/server/lib/logger'
-import { withLogger } from '@/server/lib/withLogger'
-import bcrypt from 'bcryptjs'
+import { logger } from '@/server/core/lib/logger'
+import { withLogger } from '@/server/core/lib/withLogger'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = withLogger(async (request: NextRequest) => {
@@ -12,31 +11,14 @@ export const POST = withLogger(async (request: NextRequest) => {
     const body: RegisterRequest = await request.json()
     const { username, email, password } = body
 
-    // username 중복 확인
-    const existingByUsername = authRepository.findByUsername(username)
-    if (existingByUsername) {
-      logger.auth({ event: 'REGISTER_FAIL', username, reason: 'username taken' })
+    const result = await authService.register(username, email, password)
+    if (!result.ok) {
       return NextResponse.json<BasicResponse<null>>(
-        { success: false, data: null as never, message: AUTH_MSG.USERNAME_TAKEN },
-        { status: 409 },
+        { success: false, data: null as never, message: result.message },
+        { status: result.status },
       )
     }
 
-    // email 중복 확인
-    const existingByEmail = authRepository.findByEmail(email)
-    if (existingByEmail) {
-      logger.auth({ event: 'REGISTER_FAIL', username, reason: 'email taken' })
-      return NextResponse.json<BasicResponse<null>>(
-        { success: false, data: null as never, message: AUTH_MSG.EMAIL_TAKEN },
-        { status: 409 },
-      )
-    }
-
-    // 비밀번호 해싱 후 계정 생성
-    const hashedPassword = await bcrypt.hash(password, 10)
-    authRepository.create({ username, email, password: hashedPassword })
-
-    logger.auth({ event: 'REGISTER_SUCCESS', username })
     return NextResponse.json<BasicResponse<null>>({ success: true, data: null as never })
   } catch (err) {
     logger.error('POST /api/auth/register', err)

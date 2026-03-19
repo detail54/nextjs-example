@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { jwtVerify, SignJWT } from 'jose'
-import type { UserRole } from '@/server/db/type'
+import type { UserRole } from '@/server/core/db/type'
 import { MENU_LIST } from '@/context/menuConfig'
 import { APP_PATHS } from '@/context/appPaths'
-import { logger } from '@/server/lib/logger'
+import { logger } from '@/server/core/lib/logger'
 
 const ACCESS_COOKIE = process.env.ACCESS_TOKEN_COOKIE_NAME!
 const REFRESH_COOKIE = process.env.REFRESH_TOKEN_COOKIE_NAME!

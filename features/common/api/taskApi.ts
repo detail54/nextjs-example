@@ -9,7 +9,7 @@ export async function createTask(
   params: CreateTaskRequest,
 ): Promise<BasicResponse<{ id: number }>> {
   const { data } = await axios.post<BasicResponse<{ id: number }>>(
-    API_PATHS.BOARD.TASK_CREATE(epicId),
+    API_PATHS.TASKS.CREATE(epicId),
     params,
   )
   return data
@@ -20,17 +20,17 @@ export async function updateTask(
   id: number,
   params: UpdateTaskRequest,
 ): Promise<BasicResponse<null>> {
-  const { data } = await axios.put<BasicResponse<null>>(API_PATHS.BOARD.TASK_UPDATE(id), params)
+  const { data } = await axios.put<BasicResponse<null>>(API_PATHS.TASKS.UPDATE(id), params)
   return data
 }
 
 // 태스크 삭제
 export async function deleteTask(id: number): Promise<BasicResponse<null>> {
-  const { data } = await axios.delete<BasicResponse<null>>(API_PATHS.BOARD.TASK_DELETE(id))
+  const { data } = await axios.delete<BasicResponse<null>>(API_PATHS.TASKS.DELETE(id))
   return data
 }
 
 // 태스크 이동 (status + priority 업데이트)
 export async function moveTask({ id, status, priority }: TaskMoveParams): Promise<void> {
-  await axios.patch<BasicResponse<null>>(API_PATHS.BOARD.TASK_MOVE(id), { status, priority })
+  await axios.patch<BasicResponse<null>>(API_PATHS.TASKS.MOVE(id), { status, priority })
 }

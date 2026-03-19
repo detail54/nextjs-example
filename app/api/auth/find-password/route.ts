@@ -1,9 +1,9 @@
-import { authRepository } from '@/server/repositories/auth.repository'
+import { authService } from '@/server/auth/auth.service'
 import { type FindPasswordRequest, type FindPasswordResponse } from '@/features/auth/api/type'
-import { type BasicResponse } from '@/server/db/type'
+import { type BasicResponse } from '@/server/core/db/type'
 import { AUTH_MSG } from '@/context/messages/authMsg'
-import { logger } from '@/server/lib/logger'
-import { withLogger } from '@/server/lib/withLogger'
+import { logger } from '@/server/core/lib/logger'
+import { withLogger } from '@/server/core/lib/withLogger'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = withLogger(async (request: NextRequest) => {
@@ -11,17 +11,14 @@ export const POST = withLogger(async (request: NextRequest) => {
     const body: FindPasswordRequest = await request.json()
     const { username, email } = body
 
-    // 아이디 + 이메일 동시 일치 검증
-    const user = authRepository.findByUsernameAndEmail(username, email)
-    if (!user) {
-      logger.auth({ event: 'UNAUTHORIZED', username, reason: 'username or email not matched' })
+    const result = authService.findPassword(username, email)
+    if (!result.ok) {
       return NextResponse.json<BasicResponse<FindPasswordResponse>>(
-        { success: false, data: null as never, message: AUTH_MSG.FIND_PASSWORD_NOT_FOUND },
-        { status: 404 },
+        { success: false, data: null as never, message: result.message },
+        { status: result.status },
       )
     }
 
-    logger.auth({ event: 'LOGIN_SUCCESS', username })
     return NextResponse.json<BasicResponse<FindPasswordResponse>>({
       success: true,
       data: { valid: true },

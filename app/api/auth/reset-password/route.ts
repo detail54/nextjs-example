@@ -1,10 +1,9 @@
-import { authRepository } from '@/server/repositories/auth.repository'
+import { authService } from '@/server/auth/auth.service'
 import { type ResetPasswordRequest } from '@/features/auth/api/type'
-import { type BasicResponse } from '@/server/db/type'
+import { type BasicResponse } from '@/server/core/db/type'
 import { AUTH_MSG } from '@/context/messages/authMsg'
-import { logger } from '@/server/lib/logger'
-import { withLogger } from '@/server/lib/withLogger'
-import bcrypt from 'bcryptjs'
+import { logger } from '@/server/core/lib/logger'
+import { withLogger } from '@/server/core/lib/withLogger'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = withLogger(async (request: NextRequest) => {
@@ -12,21 +11,14 @@ export const POST = withLogger(async (request: NextRequest) => {
     const body: ResetPasswordRequest = await request.json()
     const { username, email, password } = body
 
-    // 재설정 전 아이디 + 이메일 재검증
-    const user = authRepository.findByUsernameAndEmail(username, email)
-    if (!user) {
-      logger.auth({ event: 'UNAUTHORIZED', username, reason: 'username or email not matched' })
+    const result = await authService.resetPassword(username, email, password)
+    if (!result.ok) {
       return NextResponse.json<BasicResponse<null>>(
-        { success: false, data: null as never, message: AUTH_MSG.FIND_PASSWORD_NOT_FOUND },
-        { status: 404 },
+        { success: false, data: null as never, message: result.message },
+        { status: result.status },
       )
     }
 
-    // 비밀번호 해싱 후 업데이트
-    const hashedPassword = await bcrypt.hash(password, 10)
-    authRepository.updatePassword({ userId: user.id, password: hashedPassword })
-
-    logger.auth({ event: 'LOGIN_SUCCESS', username })
     return NextResponse.json<BasicResponse<null>>({ success: true, data: null as never })
   } catch (err) {
     logger.error('POST /api/auth/reset-password', err)

@@ -15,14 +15,16 @@ export const API_PATHS = {
   NOTICE: {
     LIST: '/api/notice',
   },
-  BOARD: {
-    LIST: '/api/board',
-    TASK_MOVE: (id: number) => `/api/board/tasks/${id}`,
-    EPIC_CREATE: '/api/board/epics',
-    TASK_CREATE: (epicId: number) => `/api/board/epics/${epicId}/tasks`,
-    TASK_UPDATE: (id: number) => `/api/board/tasks/${id}`,
-    TASK_DELETE: (id: number) => `/api/board/tasks/${id}`,
-    EPIC_UPDATE: (id: number) => `/api/board/epics/${id}`,
-    EPIC_DELETE: (id: number) => `/api/board/epics/${id}`,
+  EPICS: {
+    LIST: '/api/epics',
+    CREATE: '/api/epics',
+    UPDATE: (id: number) => `/api/epics/${id}`,
+    DELETE: (id: number) => `/api/epics/${id}`,
+  },
+  TASKS: {
+    CREATE: (epicId: number) => `/api/epics/${epicId}/tasks`,
+    UPDATE: (id: number) => `/api/tasks/${id}`,
+    DELETE: (id: number) => `/api/tasks/${id}`,
+    MOVE: (id: number) => `/api/tasks/${id}`,
   },
 } as const

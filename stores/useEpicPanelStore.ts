@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import type { EpicWithTasks } from '@/features/board/api/type'
+import type { EpicWithTasks } from '@/features/common/api/type'
 
 // 패널 기본/최소/최대 너비
 export const DEFAULT_EPIC_PANEL_WIDTH = 480

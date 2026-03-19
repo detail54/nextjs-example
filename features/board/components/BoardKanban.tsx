@@ -13,7 +13,7 @@ import {
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import type { TaskStatus } from '@/server/db/type'
-import type { EpicWithTasks, BoardTask, KanbanColumns } from '../api/type'
+import type { EpicWithTasks, BoardTask, KanbanColumns } from '@/features/common/api/type'
 import { useTaskMove } from '../hooks/useTask'
 import BoardKanbanColumn from './BoardKanbanColumn'
 import BoardTaskCard from './BoardTaskCard'

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useEpicCreate, useEpicUpdate } from '../hooks/useEpic'
-import type { EpicWithTasks } from '../api/type'
+import type { EpicWithTasks } from '@/features/common/api/type'
 import type { EpicStatus } from '@/server/db/type'
 import type { SelectOption } from '@/components/select/SelectBox'
 import BasicInput from '@/components/input/BasicInput'

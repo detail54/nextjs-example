@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createTask, updateTask, deleteTask } from '../api/boardTaskApi'
-import { moveTask } from '../api/boardApi'
-import { boardKeys } from '../api/queryKeys'
-import type { CreateTaskRequest, UpdateTaskRequest } from '../api/boardTaskApi'
-import type { TaskMoveParams } from '../api/type'
+import { createTask, updateTask, deleteTask, moveTask } from '@/features/common/api/taskApi'
+import { epicKeys } from '@/features/common/api/queryKeys'
+import type { CreateTaskRequest, UpdateTaskRequest, TaskMoveParams } from '@/features/common/api/type'
 
 type UpdateTaskVariables = UpdateTaskRequest & { id: number }
 
@@ -15,7 +13,7 @@ export function useTaskCreate(epicId: number) {
     mutationFn: (params: CreateTaskRequest) => createTask(epicId, params),
     onSuccess: () => {
       // 보드 전체 초기화 (새 태스크 반영)
-      queryClient.invalidateQueries({ queryKey: boardKeys.list() })
+      queryClient.invalidateQueries({ queryKey: epicKeys.list() })
     },
   })
 }
@@ -29,7 +27,7 @@ export function useTaskUpdate() {
       updateTask(id, { title, description, status, startDate, dueDate, color }),
     onSuccess: () => {
       // 보드 쿼리 초기화 (칸반 카드 제목 등 반영)
-      queryClient.invalidateQueries({ queryKey: boardKeys.list() })
+      queryClient.invalidateQueries({ queryKey: epicKeys.list() })
     },
   })
 }
@@ -42,7 +40,7 @@ export function useTaskDelete() {
     mutationFn: (id: number) => deleteTask(id),
     onSuccess: () => {
       // 보드 전체 초기화 (삭제된 태스크 반영)
-      queryClient.invalidateQueries({ queryKey: boardKeys.list() })
+      queryClient.invalidateQueries({ queryKey: epicKeys.list() })
     },
   })
 }
@@ -55,7 +53,7 @@ export function useTaskMove() {
     mutationFn: (params: TaskMoveParams) => moveTask(params),
     onSuccess: () => {
       // 보드 데이터 재조회
-      queryClient.invalidateQueries({ queryKey: boardKeys.list() })
+      queryClient.invalidateQueries({ queryKey: epicKeys.list() })
     },
   })
 }

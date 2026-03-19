@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { createEpic, updateEpic, deleteEpic } from '../api/boardEpicApi'
-import { boardKeys } from '../api/queryKeys'
+import { createEpic, updateEpic, deleteEpic } from '@/features/common/api/epicApi'
+import { epicKeys } from '@/features/common/api/queryKeys'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
-import type { CreateEpicRequest, UpdateEpicRequest } from '../api/boardEpicApi'
+import type { CreateEpicRequest, UpdateEpicRequest } from '@/features/common/api/type'
 
 // 에픽 생성 뮤테이션
 export function useEpicCreate() {
@@ -13,7 +13,7 @@ export function useEpicCreate() {
     mutationFn: (params: CreateEpicRequest) => createEpic(params),
     onSuccess: () => {
       // 보드 목록 전체 초기화 (새 에픽 반영)
-      queryClient.invalidateQueries({ queryKey: boardKeys.list() })
+      queryClient.invalidateQueries({ queryKey: epicKeys.list() })
     },
   })
 }
@@ -25,7 +25,7 @@ export function useEpicUpdate() {
   return useMutation({
     mutationFn: (params: UpdateEpicRequest) => updateEpic(params),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: boardKeys.list() })
+      queryClient.invalidateQueries({ queryKey: epicKeys.list() })
       toast.success(BOARD_MSG.EPIC_UPDATE_SUCCESS)
     },
   })
@@ -38,7 +38,7 @@ export function useEpicDelete() {
   return useMutation({
     mutationFn: (id: number) => deleteEpic(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: boardKeys.list() })
+      queryClient.invalidateQueries({ queryKey: epicKeys.list() })
     },
   })
 }

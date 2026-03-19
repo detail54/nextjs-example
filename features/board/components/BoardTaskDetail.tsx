@@ -12,7 +12,7 @@ import { useTaskUpdate, useTaskDelete } from '../hooks/useTask'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
 import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
 import { useAuth } from '@/features/auth/hooks/useAuth'
-import type { BoardTask } from '../api/type'
+import type { BoardTask } from '@/features/common/api/type'
 import type { TaskStatus } from '@/server/db/type'
 import { boardTaskDetailStyles, TASK_STATUS_LABEL } from './BoardTaskDetail.styles'
 

@@ -4,7 +4,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
 import DueDateBadge from '@/components/due-date-badge/DueDateBadge'
-import type { BoardTask } from '../api/type'
+import type { BoardTask } from '@/features/common/api/type'
 import { taskCardStyles } from './BoardTaskCard.styles'
 
 type Props = {

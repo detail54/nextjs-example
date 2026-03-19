@@ -2,7 +2,19 @@ import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
 import { AUTH_MSG } from '@/context/messages/authMsg'
 import { type BasicResponse } from '@/server/db/type'
-import { type LoginRequest, type LoginResponse, type MeResponse, type RegisterRequest, type CheckUsernameResponse, type CheckEmailResponse } from './type'
+import {
+  type LoginRequest,
+  type LoginResponse,
+  type MeResponse,
+  type RegisterRequest,
+  type CheckUsernameResponse,
+  type CheckEmailResponse,
+  type FindUsernameRequest,
+  type FindUsernameResponse,
+  type FindPasswordRequest,
+  type FindPasswordResponse,
+  type ResetPasswordRequest,
+} from './type'
 
 // 로그인
 export async function loginApi(data: LoginRequest): Promise<BasicResponse<LoginResponse>> {
@@ -53,6 +65,55 @@ export async function checkEmailApi(email: string): Promise<BasicResponse<CheckE
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message ?? AUTH_MSG.EMAIL_CHECK_FAILED)
+    }
+    throw error
+  }
+}
+
+// 아이디 찾기 (이메일로 조회)
+export async function findUsernameApi(
+  data: FindUsernameRequest,
+): Promise<BasicResponse<FindUsernameResponse>> {
+  try {
+    const response = await axios.post<BasicResponse<FindUsernameResponse>>(
+      API_PATHS.AUTH.FIND_USERNAME,
+      data,
+    )
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message ?? AUTH_MSG.FIND_USERNAME_FAILED)
+    }
+    throw error
+  }
+}
+
+// 비밀번호 찾기 - 아이디 + 이메일 일치 검증
+export async function findPasswordApi(
+  data: FindPasswordRequest,
+): Promise<BasicResponse<FindPasswordResponse>> {
+  try {
+    const response = await axios.post<BasicResponse<FindPasswordResponse>>(
+      API_PATHS.AUTH.FIND_PASSWORD,
+      data,
+    )
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message ?? AUTH_MSG.FIND_PASSWORD_FAILED)
+    }
+    throw error
+  }
+}
+
+// 비밀번호 재설정
+export async function resetPasswordApi(data: ResetPasswordRequest): Promise<BasicResponse<null>> {
+  try {
+    const response = await axios.post<BasicResponse<null>>(API_PATHS.AUTH.RESET_PASSWORD, data)
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message ?? AUTH_MSG.RESET_PASSWORD_FAILED)
     }
     throw error
   }

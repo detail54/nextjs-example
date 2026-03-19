@@ -37,3 +37,29 @@ export type CheckUsernameResponse = {
 export type CheckEmailResponse = {
   available: boolean
 }
+
+// 아이디 찾기 요청/응답 타입
+export type FindUsernameRequest = {
+  email: string
+}
+
+export type FindUsernameResponse = {
+  username: string
+}
+
+// 비밀번호 찾기 - 아이디+이메일 검증 요청/응답 타입
+export type FindPasswordRequest = {
+  username: string
+  email: string
+}
+
+export type FindPasswordResponse = {
+  valid: boolean
+}
+
+// 비밀번호 재설정 요청 타입
+export type ResetPasswordRequest = {
+  username: string
+  email: string
+  password: string
+}

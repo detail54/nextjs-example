@@ -58,6 +58,35 @@ export const AUTH_MSG = {
   EMAIL_CHECK_REQUIRED: '이메일 중복 확인을 해주세요',
   EMAIL_CHECK_FAILED: '이메일 중복 확인에 실패했습니다',
 
+  // 아이디 찾기
+  FIND_USERNAME_TITLE: '아이디 찾기',
+  FIND_USERNAME_SUBTITLE: '가입 시 등록한 이메일을 입력하세요',
+  FIND_USERNAME_BUTTON: '아이디 찾기',
+  FIND_USERNAME_LOADING: '조회 중...',
+  FIND_USERNAME_RESULT_TITLE: '아이디 찾기 결과',
+  FIND_USERNAME_RESULT_DESC: '입력하신 이메일로 등록된 아이디입니다',
+  FIND_USERNAME_NOT_FOUND: '입력하신 이메일로 등록된 아이디가 없습니다. 이메일을 확인해주세요.',
+  FIND_USERNAME_FAILED: '아이디 찾기에 실패했습니다',
+  GO_TO_FIND_PASSWORD: '비밀번호 찾기',
+
+  // 비밀번호 찾기
+  FIND_PASSWORD_TITLE: '비밀번호 찾기',
+  FIND_PASSWORD_SUBTITLE: '아이디와 이메일을 입력하세요',
+  FIND_PASSWORD_BUTTON: '확인',
+  FIND_PASSWORD_LOADING: '확인 중...',
+  FIND_PASSWORD_NOT_FOUND: '아이디 또는 이메일이 일치하지 않습니다',
+  FIND_PASSWORD_FAILED: '비밀번호 찾기에 실패했습니다',
+
+  // 비밀번호 재설정
+  RESET_PASSWORD_TITLE: '새 비밀번호 설정',
+  RESET_PASSWORD_SUBTITLE: '새로운 비밀번호를 입력하세요',
+  NEW_PASSWORD_LABEL: '새 비밀번호',
+  NEW_PASSWORD_PLACEHOLDER: '새 비밀번호를 입력하세요',
+  RESET_PASSWORD_BUTTON: '변경하기',
+  RESET_PASSWORD_LOADING: '변경 중...',
+  RESET_PASSWORD_SUCCESS: '비밀번호가 변경되었습니다',
+  RESET_PASSWORD_FAILED: '비밀번호 변경에 실패했습니다',
+
   // 중복 확인
   CHECK_USERNAME: '중복 확인',
   CHECKING_USERNAME: '확인 중...',

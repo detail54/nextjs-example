@@ -4,6 +4,8 @@ export const APP_PATHS = {
   AUTH: {
     LOGIN: '/auth/login',
     REGISTER: '/auth/register',
+    FIND_USERNAME: '/auth/find-username',
+    FIND_PASSWORD: '/auth/find-password',
   },
   BOARD: {
     ROOT: '/board',

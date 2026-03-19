@@ -1,6 +1,6 @@
 import { db } from '@/server/db/db'
 import { users } from '@/server/db/schema'
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 import type {
   CreateUserParams,
   UpdateUsernameParams,
@@ -17,6 +17,15 @@ export const authRepository = {
   /** email로 유저 단건 조회 */
   findByEmail(email: string) {
     return db.select().from(users).where(eq(users.email, email)).get()
+  },
+
+  /** username + email 동시 일치 조회 (비밀번호 찾기 검증용) */
+  findByUsernameAndEmail(username: string, email: string) {
+    return db
+      .select()
+      .from(users)
+      .where(and(eq(users.username, username), eq(users.email, email)))
+      .get()
   },
 
   /** 유저 생성 */

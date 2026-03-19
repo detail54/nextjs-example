@@ -129,11 +129,11 @@ export default function AuthLoginForm() {
               {AUTH_MSG.ADD_ACCOUNT}
             </LinkButton>
             <span className={s.divider}>·</span>
-            <LinkButton buttonType='text' href='/auth/find-username'>
+            <LinkButton buttonType='text' href={APP_PATHS.AUTH.FIND_USERNAME}>
               {AUTH_MSG.FIND_USERNAME}
             </LinkButton>
             <span className={s.divider}>·</span>
-            <LinkButton buttonType='text' href='/auth/find-password'>
+            <LinkButton buttonType='text' href={APP_PATHS.AUTH.FIND_PASSWORD}>
               {AUTH_MSG.FIND_PASSWORD}
             </LinkButton>
           </div>

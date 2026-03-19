@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { dropdownMenuStyles } from './DropdownMenu.styles'
 
 export type DropdownMenuItem = {
@@ -19,29 +20,50 @@ type DropdownMenuProps = {
 }
 
 // 트리거 버튼 클릭 시 드롭다운 메뉴 표시 컴포넌트
+// portal로 body에 렌더링해 overflow 클리핑 방지
 export default function DropdownMenu({ trigger, items, triggerClassName }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+  // 메뉴 fixed 위치 (트리거 기준 계산)
+  const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({})
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  // 트리거 위치 기반으로 메뉴 위치 계산
+  const calcMenuStyle = () => {
+    if (!triggerRef.current) return
+    const rect = triggerRef.current.getBoundingClientRect()
+    setMenuStyle({
+      position: 'fixed',
+      top: rect.bottom + 4,
+      right: window.innerWidth - rect.right,
+      zIndex: 9999,
+    })
+  }
 
   // 외부 클릭 시 닫기
   useEffect(() => {
     if (!isOpen) return
     const handleMouseDown = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setIsOpen(false)
-      }
+      if (
+        triggerRef.current?.contains(e.target as Node) ||
+        menuRef.current?.contains(e.target as Node)
+      )
+        return
+      setIsOpen(false)
     }
     document.addEventListener('mousedown', handleMouseDown)
     return () => document.removeEventListener('mousedown', handleMouseDown)
   }, [isOpen])
 
   return (
-    <div ref={containerRef} className={dropdownMenuStyles.container}>
+    <div className={dropdownMenuStyles.container}>
       <button
+        ref={triggerRef}
         type='button'
         className={triggerClassName ?? dropdownMenuStyles.trigger}
         onClick={(e) => {
           e.stopPropagation()
+          calcMenuStyle()
           setIsOpen((prev) => !prev)
         }}
         aria-haspopup='true'
@@ -50,25 +72,27 @@ export default function DropdownMenu({ trigger, items, triggerClassName }: Dropd
         {trigger}
       </button>
 
-      {isOpen && (
-        <div className={dropdownMenuStyles.menu} role='menu'>
-          {items.map((item) => (
-            <button
-              key={item.label}
-              type='button'
-              role='menuitem'
-              className={dropdownMenuStyles.item({ danger: item.danger })}
-              onClick={(e) => {
-                e.stopPropagation()
-                setIsOpen(false)
-                item.onClick()
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      )}
+      {isOpen &&
+        createPortal(
+          <div ref={menuRef} style={menuStyle} className={dropdownMenuStyles.menu} role='menu'>
+            {items.map((item) => (
+              <button
+                key={item.label}
+                type='button'
+                role='menuitem'
+                className={dropdownMenuStyles.item({ danger: item.danger })}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsOpen(false)
+                  item.onClick()
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>,
+          document.body,
+        )}
     </div>
   )
 }

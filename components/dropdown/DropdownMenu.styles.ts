@@ -10,9 +10,9 @@ export const dropdownMenuStyles = {
       ' hover:bg-secondary-600 hover:text-white transition-colors duration-150',
   )(),
 
-  // 드롭다운 메뉴 패널
+  // 드롭다운 메뉴 패널 (portal로 body에 렌더링 - 위치는 inline style로 제어)
   menu: cva(
-    'absolute right-0 top-full z-50 mt-1 min-w-[100px] overflow-hidden' +
+    'min-w-[100px] overflow-hidden' +
       ' rounded-md border border-secondary-600 bg-secondary-800 shadow-lg',
   )(),
 

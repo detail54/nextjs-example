@@ -58,6 +58,30 @@ export function getTodayX(): number {
   return dateToX(dateStr)
 }
 
+// 날짜 문자열(YYYY-MM-DD) → YYYY.MM.DD 포맷
+function formatDate(dateStr: string): string {
+  return dateStr.replace(/-/g, '.')
+}
+
+// 두 날짜 간 총 일수 (당일 포함)
+export function calcDays(startDate: string, dueDate: string): number {
+  const start = new Date(startDate)
+  const end = new Date(dueDate)
+  return Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1
+}
+
+// 바 툴팁 텍스트 생성 (기간 + 총 일수)
+export function formatBarTooltip(
+  startDate: string | null | undefined,
+  dueDate: string | null | undefined,
+): string {
+  const start = startDate ? formatDate(startDate) : null
+  const end = dueDate ? formatDate(dueDate) : null
+  const range = start && end ? `${start} ~ ${end}` : start ? `${start} ~` : `~ ${end}`
+  const days = startDate && dueDate ? ` · ${calcDays(startDate, dueDate)}일` : ''
+  return `${range}${days}`
+}
+
 // 바(bar) 위치 계산 - 타임라인 범위 내로 클리핑
 export function calcBarPosition(
   startDate: string | null,

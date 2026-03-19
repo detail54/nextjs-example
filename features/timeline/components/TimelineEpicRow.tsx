@@ -11,6 +11,7 @@ import { useAuth } from '@/features/auth/hooks/useAuth'
 import type { EpicWithTasks } from '@/features/board/api/type'
 import DropdownMenu from '@/components/dropdown/DropdownMenu'
 import Icon from '@/components/icon/Icon'
+import Tooltip from '@/components/tooltip/Tooltip'
 import TimelineTaskInlineCreate from './TimelineTaskInlineCreate'
 import {
   MONTH_WIDTH,
@@ -20,6 +21,7 @@ import {
   calcBarPosition,
   getTodayX,
   getMonthList,
+  formatBarTooltip,
 } from '../utils/timelineUtils'
 import { timelineEpicRowStyles } from './TimelineEpicRow.styles'
 
@@ -143,17 +145,19 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
 
           {/* 에픽 바 */}
           {epicBar && (
-            <div
-              className={timelineEpicRowStyles.epicBar({ status: epic.status })}
-              style={{
-                left: epicBar.left,
-                width: epicBar.width,
-                top: 10,
-                height: EPIC_ROW_HEIGHT - 20,
-              }}
-            >
-              <span className={timelineEpicRowStyles.epicBarText}>{epic.title}</span>
-            </div>
+            <Tooltip content={formatBarTooltip(epic.startDate, epic.dueDate)}>
+              <div
+                className={timelineEpicRowStyles.epicBar({ status: epic.status })}
+                style={{
+                  left: epicBar.left,
+                  width: epicBar.width,
+                  top: 10,
+                  height: EPIC_ROW_HEIGHT - 20,
+                }}
+              >
+                <span className={timelineEpicRowStyles.epicBarText}>{epic.title}</span>
+              </div>
+            </Tooltip>
           )}
         </div>
       </div>
@@ -204,17 +208,19 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
                   <div className={timelineEpicRowStyles.todayLine} style={{ left: TODAY_X }} />
                 )}
                 {taskBar && (
-                  <div
-                    className={timelineEpicRowStyles.taskBar}
-                    style={{
-                      left: taskBar.left,
-                      width: taskBar.width,
-                      top: 8,
-                      height: TASK_ROW_HEIGHT - 16,
-                    }}
-                  >
-                    <span className={timelineEpicRowStyles.taskBarText}>{task.title}</span>
-                  </div>
+                  <Tooltip content={formatBarTooltip(task.startDate, task.dueDate)}>
+                    <div
+                      className={timelineEpicRowStyles.taskBar}
+                      style={{
+                        left: taskBar.left,
+                        width: taskBar.width,
+                        top: 8,
+                        height: TASK_ROW_HEIGHT - 16,
+                      }}
+                    >
+                      <span className={timelineEpicRowStyles.taskBarText}>{task.title}</span>
+                    </div>
+                  </Tooltip>
                 )}
               </div>
             </div>

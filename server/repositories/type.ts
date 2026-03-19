@@ -15,6 +15,7 @@ export type UpdateEpicParams = {
   status?: EpicStatus
   startDate?: string | null
   dueDate?: string | null
+  color?: string | null
 }
 
 // ─── Task ─────────────────────────────────────────────────────────
@@ -32,6 +33,7 @@ export type UpdateTaskParams = {
   status?: TaskStatus
   startDate?: string | null
   dueDate?: string | null
+  color?: string | null
 }
 
 export type UpdateTaskStatusParams = {

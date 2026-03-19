@@ -16,7 +16,7 @@ import { TIMELINE_MSG } from '@/context/messages/timelineMsg'
 import { useEpicPanelStore } from '@/stores/useEpicPanelStore'
 import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
-import { useEpicDelete } from '@/features/board/hooks/useEpic'
+import { useEpicDelete, useEpicUpdate } from '@/features/board/hooks/useEpic'
 import { useTaskMove } from '@/features/board/hooks/useTask'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import type { EpicWithTasks, BoardTask } from '@/features/board/api/type'
@@ -25,6 +25,7 @@ import Icon from '@/components/icon/Icon'
 import Tooltip from '@/components/tooltip/Tooltip'
 import TimelineTaskInlineCreate from './TimelineTaskInlineCreate'
 import TimelineTaskRow from './TimelineTaskRow'
+import TimelineColorPopover from './TimelineColorPopover'
 import {
   MONTH_WIDTH,
   TOTAL_MONTHS,
@@ -80,11 +81,15 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
     }
   }
 
+  // 에픽 바 색상 팝오버 상태
+  const [epicColorPopover, setEpicColorPopover] = useState<{ x: number; y: number } | null>(null)
+
   const { isAdmin } = useAuth()
   const { openEpicEdit } = useEpicPanelStore()
   const { openTaskDetail } = useTaskPanelStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { mutate: deleteEpic } = useEpicDelete()
+  const { mutate: updateEpic } = useEpicUpdate()
   const { mutate: moveTask } = useTaskMove()
 
   const handleEdit = () => openEpicEdit(epic)
@@ -143,7 +148,11 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
       reordered[newIndex] = { ...reordered[newIndex], priority: newPriority }
 
       setTasks(reordered)
-      moveTask({ id: active.id as number, status: reordered[newIndex].status, priority: newPriority })
+      moveTask({
+        id: active.id as number,
+        status: reordered[newIndex].status,
+        priority: newPriority,
+      })
     },
     [tasks, moveTask],
   )
@@ -158,8 +167,12 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
 
   // 하위 태스크 상태별 카운트
   const totalTasks = epic.tasks.length
-  const donePct = totalTasks ? Math.round((epic.tasks.filter((t) => t.status === 'done').length / totalTasks) * 100) : 0
-  const inProgressPct = totalTasks ? Math.round((epic.tasks.filter((t) => t.status === 'in_progress').length / totalTasks) * 100) : 0
+  const donePct = totalTasks
+    ? Math.round((epic.tasks.filter((t) => t.status === 'done').length / totalTasks) * 100)
+    : 0
+  const inProgressPct = totalTasks
+    ? Math.round((epic.tasks.filter((t) => t.status === 'in_progress').length / totalTasks) * 100)
+    : 0
   const todoPct = totalTasks ? 100 - donePct - inProgressPct : 0
 
   return (
@@ -260,17 +273,45 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
           {epicBar && (
             <Tooltip content={formatBarTooltip(epic.startDate, epic.dueDate)}>
               <div
-                className={timelineEpicRowStyles.epicBar({ status: epic.status })}
+                className={timelineEpicRowStyles.epicBar({
+                  status: epic.color ? undefined : epic.status,
+                })}
                 style={{
                   left: epicBar.left,
                   width: epicBar.width,
                   top: 10,
                   height: EPIC_ROW_HEIGHT - 20,
+                  ...(epic.color ? { backgroundColor: epic.color } : {}),
+                  cursor: 'pointer',
+                }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setEpicColorPopover({ x: e.clientX, y: e.clientY })
                 }}
               >
                 <span className={timelineEpicRowStyles.epicBarText}>{epic.title}</span>
               </div>
             </Tooltip>
+          )}
+
+          {/* 에픽 바 색상 팝오버 */}
+          {epicColorPopover && (
+            <TimelineColorPopover
+              position={epicColorPopover}
+              value={epic.color}
+              onChange={(color) => {
+                updateEpic({
+                  id: epic.id,
+                  title: epic.title,
+                  description: epic.description ?? undefined,
+                  status: epic.status,
+                  startDate: epic.startDate,
+                  dueDate: epic.dueDate,
+                  color,
+                })
+              }}
+              onClose={() => setEpicColorPopover(null)}
+            />
           )}
         </div>
       </div>

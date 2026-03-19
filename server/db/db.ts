@@ -103,6 +103,14 @@ try {
   sqlite.exec(`ALTER TABLE tasks ADD COLUMN start_date TEXT`)
 } catch {}
 
+// 기존 DB에 color 컬럼이 없을 경우 추가 (마이그레이션 대체)
+try {
+  sqlite.exec(`ALTER TABLE epics ADD COLUMN color TEXT`)
+} catch {}
+try {
+  sqlite.exec(`ALTER TABLE tasks ADD COLUMN color TEXT`)
+} catch {}
+
 export const db = drizzle(sqlite, { schema })
 
 // admin 계정 초기 생성

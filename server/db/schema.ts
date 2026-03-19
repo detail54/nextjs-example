@@ -24,6 +24,7 @@ export const epics = sqliteTable('epics', {
     .notNull(),
   startDate: text('start_date'), // 시작일 (선택, ISO 8601 문자열)
   dueDate: text('due_date'), // 마감일 (선택, ISO 8601 문자열)
+  color: text('color'), // 표시 색상 (선택, hex 문자열)
   createdAt: text('created_at') // 생성일시
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -56,6 +57,7 @@ export const tasks = sqliteTable('tasks', {
   priority: integer('priority').default(0).notNull(), // 우선순위 (숫자가 클수록 높음)
   startDate: text('start_date'), // 시작일 (선택, ISO 8601 문자열)
   dueDate: text('due_date'), // 마감일 (선택, ISO 8601 문자열)
+  color: text('color'), // 표시 색상 (선택, hex 문자열)
   createdAt: text('created_at') // 생성일시
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

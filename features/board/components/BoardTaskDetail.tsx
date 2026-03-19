@@ -5,6 +5,7 @@ import { BOARD_MSG } from '@/context/messages/boardMsg'
 import InlineEdit from '@/components/inline-edit/InlineEdit'
 import SelectBox from '@/components/select/SelectBox'
 import DatePicker from '@/components/datepicker/DatePicker'
+import ColorPicker from '@/components/colorpicker/ColorPicker'
 import { useTaskUpdate } from '../hooks/useTask'
 import type { BoardTask } from '../api/type'
 import type { TaskStatus } from '@/server/db/type'
@@ -99,6 +100,20 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
     })
   }
 
+  const handleColorChange = (color: string | null) => {
+    // 낙관적 업데이트: 즉시 반영
+    setLocalTask((prev) => ({ ...prev, color }))
+    update({
+      id: task.id,
+      title: localTask.title,
+      description: localTask.description ?? undefined,
+      status: localTask.status,
+      startDate: localTask.startDate,
+      dueDate: localTask.dueDate,
+      color,
+    })
+  }
+
   return (
     <div className={boardTaskDetailStyles.wrapper}>
       {/* 제목 */}
@@ -131,6 +146,12 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
       <div className={boardTaskDetailStyles.section}>
         <p className={boardTaskDetailStyles.sectionLabel}>{BOARD_MSG.TASK_DUE_DATE_LABEL}</p>
         <DatePicker value={localTask.dueDate ?? ''} onChange={handleDueDateChange} />
+      </div>
+
+      {/* 색상 선택 */}
+      <div className={boardTaskDetailStyles.section}>
+        <p className={boardTaskDetailStyles.sectionLabel}>{BOARD_MSG.TASK_COLOR_LABEL}</p>
+        <ColorPicker value={localTask.color} onChange={handleColorChange} />
       </div>
 
       {/* 설명 */}

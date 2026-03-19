@@ -22,12 +22,13 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   }
 
   const body = await request.json()
-  const { title, description, status, startDate, dueDate } = body as {
+  const { title, description, status, startDate, dueDate, color } = body as {
     title: string
     description?: string
     status?: EpicStatus
     startDate?: string | null
     dueDate?: string | null
+    color?: string | null
   }
 
   if (!title?.trim()) {
@@ -44,6 +45,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     status,
     startDate,
     dueDate,
+    color,
   })
 
   return NextResponse.json<BasicResponse<null>>({ success: true, data: null })

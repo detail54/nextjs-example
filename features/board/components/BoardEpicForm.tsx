@@ -10,6 +10,7 @@ import BasicInput from '@/components/input/BasicInput'
 import BasicButton from '@/components/button/BasicButton'
 import SelectBox from '@/components/select/SelectBox'
 import DatePicker from '@/components/datepicker/DatePicker'
+import ColorPicker from '@/components/colorpicker/ColorPicker'
 import { boardEpicFormStyles } from './BoardEpicForm.styles'
 
 // 에픽 상태 옵션 목록
@@ -37,6 +38,8 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
   const [startDate, setStartDate] = useState(epic?.startDate ?? '')
   // 마감일 (수정 모드 전용, YYYY-MM-DD 형식)
   const [dueDate, setDueDate] = useState(epic?.dueDate ?? '')
+  // 색상 (수정 모드 전용, hex 문자열)
+  const [color, setColor] = useState<string | null>(epic?.color ?? null)
 
   const { mutate: createEpic, isPending: isCreating } = useEpicCreate()
   const { mutate: updateEpic, isPending: isUpdating } = useEpicUpdate()
@@ -57,6 +60,7 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
           status,
           startDate: startDate || null,
           dueDate: dueDate || null,
+          color,
         },
         { onSuccess: () => onSuccess?.() },
       )
@@ -126,6 +130,12 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
           <div className={boardEpicFormStyles.field}>
             <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_DUE_DATE_LABEL}</label>
             <DatePicker value={dueDate} onChange={setDueDate} />
+          </div>
+
+          {/* 색상 선택 */}
+          <div className={boardEpicFormStyles.field}>
+            <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_COLOR_LABEL}</label>
+            <ColorPicker value={color} onChange={setColor} />
           </div>
         </>
       )}

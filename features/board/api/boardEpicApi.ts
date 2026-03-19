@@ -14,6 +14,7 @@ export type UpdateEpicRequest = {
   status?: EpicStatus
   startDate?: string | null
   dueDate?: string | null
+  color?: string | null
 }
 
 // 에픽 생성 API

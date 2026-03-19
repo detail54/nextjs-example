@@ -1,10 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { CheckSquare, GripVertical } from 'lucide-react'
 import type { BoardTask } from '@/features/board/api/type'
 import Tooltip from '@/components/tooltip/Tooltip'
+import { useTaskUpdate } from '@/features/board/hooks/useTask'
+import TimelineColorPopover from './TimelineColorPopover'
 import {
   MONTH_WIDTH,
   TOTAL_MONTHS,
@@ -37,6 +40,10 @@ export default function TimelineTaskRow({
     id: task.id,
     disabled: overlay,
   })
+
+  // 태스크 바 색상 팝오버 상태
+  const [taskColorPopover, setTaskColorPopover] = useState<{ x: number; y: number } | null>(null)
+  const { mutate: updateTask } = useTaskUpdate()
 
   const taskBar = calcBarPosition(task.startDate, task.dueDate)
 
@@ -107,11 +114,37 @@ export default function TimelineTaskRow({
                 width: taskBar.width,
                 top: 8,
                 height: TASK_ROW_HEIGHT - 16,
+                ...(task.color ? { backgroundColor: task.color } : {}),
+                cursor: 'pointer',
+              }}
+              onClick={(e) => {
+                e.stopPropagation()
+                setTaskColorPopover({ x: e.clientX, y: e.clientY })
               }}
             >
               <span className={timelineEpicRowStyles.taskBarText}>{task.title}</span>
             </div>
           </Tooltip>
+        )}
+
+        {/* 태스크 바 색상 팝오버 */}
+        {taskColorPopover && (
+          <TimelineColorPopover
+            position={taskColorPopover}
+            value={task.color}
+            onChange={(color) => {
+              updateTask({
+                id: task.id,
+                title: task.title,
+                description: task.description ?? undefined,
+                status: task.status,
+                startDate: task.startDate,
+                dueDate: task.dueDate,
+                color,
+              })
+            }}
+            onClose={() => setTaskColorPopover(null)}
+          />
         )}
       </div>
     </div>

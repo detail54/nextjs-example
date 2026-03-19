@@ -46,6 +46,11 @@ export const BOARD_MSG = {
   DUE_DATE_URGENT_TOOLTIP: '마감 3일 이내',
   DUE_DATE_WARNING_TOOLTIP: '마감 1주일 이내',
 
+  // 색상 선택
+  EPIC_COLOR_LABEL: '색상',
+  TASK_COLOR_LABEL: '색상',
+  COLOR_RESET: '기본',
+
   // 에픽 수정 완료 토스트
   EPIC_UPDATE_SUCCESS: '에픽이 수정되었습니다.',
 

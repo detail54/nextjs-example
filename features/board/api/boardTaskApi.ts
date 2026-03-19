@@ -14,6 +14,7 @@ export type UpdateTaskRequest = {
   status?: TaskStatus
   startDate?: string | null
   dueDate?: string | null
+  color?: string | null
 }
 
 // 태스크 내용 수정 API (title + description)

@@ -29,24 +29,24 @@
 
 ### 필수 기초
 
-| 분류 | 학습 주제 |
-|------|-----------|
-| **JavaScript** | ES6+ 문법, 비동기(async/await, Promise), 구조분해, 모듈(import/export) |
-| **TypeScript** | 기본 타입, 제너릭, 인터페이스/타입 alias, `as const`, 타입 추론 |
-| **React** | 컴포넌트, useState / useEffect, props, 커스텀 훅, Context |
-| **Next.js** | App Router, Server/Client Component, Route Handlers(API 라우트), 레이아웃 |
-| **HTTP** | REST API, 상태 코드(200/401/403/500), 쿠키, 헤더 |
+| 분류           | 학습 주제                                                                 |
+| -------------- | ------------------------------------------------------------------------- |
+| **JavaScript** | ES6+ 문법, 비동기(async/await, Promise), 구조분해, 모듈(import/export)    |
+| **TypeScript** | 기본 타입, 제너릭, 인터페이스/타입 alias, `as const`, 타입 추론           |
+| **React**      | 컴포넌트, useState / useEffect, props, 커스텀 훅, Context                 |
+| **Next.js**    | App Router, Server/Client Component, Route Handlers(API 라우트), 레이아웃 |
+| **HTTP**       | REST API, 상태 코드(200/401/403/500), 쿠키, 헤더                          |
 
 ### 중급 개념 (프로젝트에서 사용)
 
-| 분류 | 학습 주제 |
-|------|-----------|
-| **React Query** | useQuery, useMutation, queryKey, invalidateQueries, staleTime |
-| **Zustand** | create, devtools middleware, 전역 상태 |
-| **JWT** | Access Token / Refresh Token 구조, HttpOnly 쿠키 |
-| **ORM (Drizzle)** | 스키마 정의, select / insert / update / delete |
-| **CVA** | class-variance-authority를 이용한 스타일 변형 |
-| **DnD Kit** | DndContext, useSensor, DragOverlay |
+| 분류              | 학습 주제                                                     |
+| ----------------- | ------------------------------------------------------------- |
+| **React Query**   | useQuery, useMutation, queryKey, invalidateQueries, staleTime |
+| **Zustand**       | create, devtools middleware, 전역 상태                        |
+| **JWT**           | Access Token / Refresh Token 구조, HttpOnly 쿠키              |
+| **ORM (Drizzle)** | 스키마 정의, select / insert / update / delete                |
+| **CVA**           | class-variance-authority를 이용한 스타일 변형                 |
+| **DnD Kit**       | DndContext, useSensor, DragOverlay                            |
 
 ---
 
@@ -54,28 +54,28 @@
 
 ### 프론트엔드
 
-| 라이브러리 | 용도 |
-|-----------|------|
-| Next.js 16 (App Router) | 풀스택 프레임워크 |
-| React 19 | UI 렌더링 |
-| TailwindCSS 4 | 유틸리티 기반 스타일링 |
-| class-variance-authority (CVA) | 컴포넌트 variant 스타일 관리 |
-| TanStack React Query 5 | 서버 상태(비동기 데이터) 관리 |
-| Zustand 5 | 클라이언트 전역 상태 관리 |
-| Axios | HTTP 클라이언트 |
-| dnd-kit | 드래그 앤 드롭 |
-| Sonner | 토스트 알림 |
-| Lucide React | 아이콘 |
+| 라이브러리                     | 용도                          |
+| ------------------------------ | ----------------------------- |
+| Next.js 16 (App Router)        | 풀스택 프레임워크             |
+| React 19                       | UI 렌더링                     |
+| TailwindCSS 4                  | 유틸리티 기반 스타일링        |
+| class-variance-authority (CVA) | 컴포넌트 variant 스타일 관리  |
+| TanStack React Query 5         | 서버 상태(비동기 데이터) 관리 |
+| Zustand 5                      | 클라이언트 전역 상태 관리     |
+| Axios                          | HTTP 클라이언트               |
+| dnd-kit                        | 드래그 앤 드롭                |
+| Sonner                         | 토스트 알림                   |
+| Lucide React                   | 아이콘                        |
 
 ### 백엔드
 
-| 라이브러리 | 용도 |
-|-----------|------|
-| Next.js Route Handlers | API 엔드포인트 |
-| better-sqlite3 | SQLite 드라이버 |
-| Drizzle ORM | TypeScript-first ORM |
-| jose | JWT 발급 / 검증 |
-| bcryptjs | 비밀번호 해싱 |
+| 라이브러리             | 용도                 |
+| ---------------------- | -------------------- |
+| Next.js Route Handlers | API 엔드포인트       |
+| better-sqlite3         | SQLite 드라이버      |
+| Drizzle ORM            | TypeScript-first ORM |
+| jose                   | JWT 발급 / 검증      |
+| bcryptjs               | 비밀번호 해싱        |
 
 ---
 
@@ -121,17 +121,17 @@ echo '[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
 source ~/.zshrc
 ```
 
-**Node.js 20 설치:**
+**Node.js 25 설치:**
 
 ```bash
-nvm install 20
-nvm use 20
+nvm install 25
+nvm use 25
 ```
 
 설치 확인:
 
 ```bash
-node --version   # v20.x.x 출력되면 성공
+node --version   # v25.x.x 출력되면 성공
 ```
 
 ---
@@ -182,9 +182,11 @@ REFRESH_TOKEN_COOKIE_NAME=refresh_token
 ```
 
 > **SECRET 값 생성 팁**: 터미널에서 아래 명령어로 랜덤 문자열을 만들 수 있습니다.
+>
 > ```bash
 > openssl rand -base64 32
 > ```
+>
 > 실행할 때마다 다른 값이 나옵니다. ACCESS용, REFRESH용 각각 한 번씩 실행해서 사용하세요.
 
 ---
@@ -195,6 +197,9 @@ REFRESH_TOKEN_COOKIE_NAME=refresh_token
 # 패키지 설치
 pnpm install
 
+# pnpm better-sqlite3 빌드 warning 메세지 출력시
+npm build better-sqlite3
+
 # 개발 서버 실행
 pnpm dev
 ```
@@ -202,6 +207,7 @@ pnpm dev
 브라우저에서 `http://localhost:3000`으로 접속합니다.
 
 서버가 처음 시작되면 다음이 자동으로 처리됩니다.
+
 - `db.sqlite` 파일 생성
 - 테이블 생성
 - 기본 계정(`admin`) 생성
@@ -216,8 +222,8 @@ pnpm dev
 
 **기본 계정**
 
-| 아이디 | 비밀번호 | 권한 |
-|--------|----------|------|
+| 아이디 | 비밀번호 | 권한  |
+| ------ | -------- | ----- |
 | admin  | admin123 | ADMIN |
 
 ---
@@ -257,7 +263,7 @@ nextjs-example/
 │   ├── login-required/page.tsx # 미로그인 접근 안내
 │   ├── session-expired/page.tsx# 세션 만료 안내
 │   ├── unauthorized/page.tsx   # 권한 없음 안내
-│   ├── layout.tsx              # 루트 레이아웃 (Providers, Modal, Toaster)
+│   ├── layout.tsx              # 루트 레이아웃 (Providers, Toaster)
 │   └── page.tsx                # 홈 (랜딩 페이지)
 │
 ├── features/                   # 기능별 모듈 (프론트엔드의 핵심)
@@ -324,7 +330,7 @@ nextjs-example/
 │   └── messages/               # UI 메시지 상수
 │
 ├── lib/
-│   ├── Providers.tsx           # QueryClientProvider 래퍼
+│   ├── Providers.tsx           # QueryClientProvider + ModalProvider 래퍼
 │   └── queryClient.ts          # QueryClient 설정
 │
 └── db.sqlite                   # SQLite 데이터베이스 파일 (자동 생성)
@@ -445,7 +451,9 @@ CREATE TABLE notices (
 
 export const tasks = sqliteTable('tasks', {
   id: integer('id').primaryKey({ autoIncrement: true }),
-  epicId: integer('epic_id').notNull().references(() => epics.id),
+  epicId: integer('epic_id')
+    .notNull()
+    .references(() => epics.id),
   title: text('title').notNull(),
   status: text('status', { enum: ['todo', 'in_progress', 'done'] })
     .default('todo')
@@ -515,9 +523,9 @@ type PageResponse<T> = {
   success: boolean
   data: T[]
   pagination: {
-    page: number       // 현재 페이지 (1-based)
-    pageSize: number   // 페이지당 항목 수
-    total: number      // 전체 항목 수
+    page: number // 현재 페이지 (1-based)
+    pageSize: number // 페이지당 항목 수
+    total: number // 전체 항목 수
     totalPages: number // 전체 페이지 수
   }
 }
@@ -592,7 +600,6 @@ export function withAuth(handler: AuthedHandler, options: WithAuthOptions = {}) 
 
       // 4. 핸들러 실행 (user 정보 전달)
       return await handler(request, { user })
-
     } catch (error) {
       if (error instanceof AuthError) {
         return NextResponse.json(
@@ -619,7 +626,7 @@ export const DELETE = withAuth(
     // user.role === 'ADMIN' 보장됨
     // ...
   },
-  { roles: ['ADMIN'] } // 이 옵션만 추가하면 됨
+  { roles: ['ADMIN'] }, // 이 옵션만 추가하면 됨
 )
 ```
 
@@ -667,10 +674,10 @@ function maskSensitive(body: unknown): unknown {
 이 프로젝트는 **JWT (JSON Web Token)** 기반의 인증을 사용합니다.
 토큰을 **HttpOnly 쿠키**에 저장해 JavaScript에서 직접 접근할 수 없게 하여 XSS 공격을 방지합니다.
 
-| 토큰 종류 | 수명 | 용도 |
-|----------|------|------|
-| Access Token | 15분 | API 요청 인증 |
-| Refresh Token | 7일 | Access Token 재발급 |
+| 토큰 종류     | 수명 | 용도                |
+| ------------- | ---- | ------------------- |
+| Access Token  | 15분 | API 요청 인증       |
+| Refresh Token | 7일  | Access Token 재발급 |
 
 ### 7-2. 로그인 흐름
 
@@ -698,13 +705,19 @@ export const POST = withLogger(async (request: NextRequest) => {
   // 1. DB 조회
   const user = authRepository.findByUsername(username)
   if (!user) {
-    return NextResponse.json({ success: false, message: '아이디 또는 비밀번호가 올바르지 않습니다.' }, { status: 401 })
+    return NextResponse.json(
+      { success: false, message: '아이디 또는 비밀번호가 올바르지 않습니다.' },
+      { status: 401 },
+    )
   }
 
   // 2. 비밀번호 검증 (평문 vs 해시 비교)
   const isValid = await bcrypt.compare(password, user.password)
   if (!isValid) {
-    return NextResponse.json({ success: false, message: '아이디 또는 비밀번호가 올바르지 않습니다.' }, { status: 401 })
+    return NextResponse.json(
+      { success: false, message: '아이디 또는 비밀번호가 올바르지 않습니다.' },
+      { status: 401 },
+    )
   }
 
   // 3. 두 토큰 동시 발급
@@ -719,13 +732,13 @@ export const POST = withLogger(async (request: NextRequest) => {
     httpOnly: true,
     secure: isProd,
     sameSite: 'lax',
-    maxAge: 15 * 60,           // 15분
+    maxAge: 15 * 60, // 15분
   })
   response.cookies.set(REFRESH_TOKEN_COOKIE, refreshToken, {
     httpOnly: true,
     secure: isProd,
     sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60,  // 7일
+    maxAge: 7 * 24 * 60 * 60, // 7일
   })
 })
 ```
@@ -787,7 +800,7 @@ export async function signAccessToken(payload: JwtUserPayload): Promise<string> 
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('15m')
-    .sign(ACCESS_SECRET)  // 환경변수의 SECRET으로 서명
+    .sign(ACCESS_SECRET) // 환경변수의 SECRET으로 서명
 }
 
 // Access Token 검증 — 만료(TOKEN_EXPIRED) vs 변조(INVALID_TOKEN) 구분
@@ -797,9 +810,9 @@ export async function verifyAccessToken(token: string): Promise<JwtUserPayload> 
     return payload as unknown as JwtUserPayload
   } catch (error) {
     if (error instanceof joseErrors.JWTExpired) {
-      throw new AuthError(AuthErrorCode.TOKEN_EXPIRED)  // 만료됨 → 갱신 시도 가능
+      throw new AuthError(AuthErrorCode.TOKEN_EXPIRED) // 만료됨 → 갱신 시도 가능
     }
-    throw new AuthError(AuthErrorCode.INVALID_TOKEN)    // 변조됨 → 로그아웃 필요
+    throw new AuthError(AuthErrorCode.INVALID_TOKEN) // 변조됨 → 로그아웃 필요
   }
 }
 ```
@@ -816,7 +829,7 @@ export function useSession() {
     queryKey: authKeys.session(),
     queryFn: meApi,
     staleTime: Infinity, // 세션 정보는 만료되지 않음 (명시적 invalidate로만 갱신)
-    retry: false,        // 401 에러 시 재시도 없이 즉시 null 처리
+    retry: false, // 401 에러 시 재시도 없이 즉시 null 처리
     select: (res) => res.data,
   })
 }
@@ -838,7 +851,7 @@ export const AuthErrorCode = {
   UNAUTHORIZED: { code: 'UNAUTHORIZED', status: 401 }, // 토큰 없음
   TOKEN_EXPIRED: { code: 'TOKEN_EXPIRED', status: 401 }, // 토큰 만료
   INVALID_TOKEN: { code: 'INVALID_TOKEN', status: 401 }, // 토큰 변조
-  FORBIDDEN:     { code: 'FORBIDDEN',     status: 403 }, // 권한 없음
+  FORBIDDEN: { code: 'FORBIDDEN', status: 403 }, // 권한 없음
 } as const
 
 export class AuthError extends Error {
@@ -930,11 +943,11 @@ export function useLogin({ onSuccess } = {}) {
 
 ### 8-4. 에러 안내 페이지
 
-| 경로 | 상황 | 파일 |
-|------|------|------|
-| `/login-required` | 미로그인 상태로 보호 경로 접근 | `app/login-required/page.tsx` |
-| `/session-expired` | Refresh Token 만료 | `app/session-expired/page.tsx` |
-| `/unauthorized` | 권한(role) 없이 접근 | `app/unauthorized/page.tsx` |
+| 경로               | 상황                           | 파일                           |
+| ------------------ | ------------------------------ | ------------------------------ |
+| `/login-required`  | 미로그인 상태로 보호 경로 접근 | `app/login-required/page.tsx`  |
+| `/session-expired` | Refresh Token 만료             | `app/session-expired/page.tsx` |
+| `/unauthorized`    | 권한(role) 없이 접근           | `app/unauthorized/page.tsx`    |
 
 ---
 
@@ -968,10 +981,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang='ko'>
       <body>
-        <Providers>          {/* ① React Query Provider */}
+        <Providers>
+          {' '}
+          {/* ① React Query Provider + 전역 모달 */}
           {children}
-          <ModalProvider />  {/* ② 전역 모달 렌더러 */}
-          <Toaster />        {/* ③ 토스트 알림 */}
+          <Toaster /> {/* ② 토스트 알림 */}
         </Providers>
       </body>
     </html>
@@ -981,11 +995,11 @@ export default function RootLayout({ children }) {
 
 각 Provider의 역할:
 
-| Provider | 역할 | 파일 |
-|----------|------|------|
-| `<Providers>` | React Query의 `QueryClient` 인스턴스를 앱 전체에 공급 | `lib/Providers.tsx` |
-| `<ModalProvider>` | 전역 모달(BasicModal, ConfirmModal)을 루트에 마운트 | `components/modal/ModalProvider.tsx` |
-| `<Toaster>` | Sonner 토스트 알림을 루트에 마운트 | `app/layout.tsx` |
+| Provider          | 역할                                                                              | 파일                                 |
+| ----------------- | --------------------------------------------------------------------------------- | ------------------------------------ |
+| `<Providers>`     | React Query의 `QueryClient` 인스턴스를 앱 전체에 공급 + 모든 Provider 포함        | `lib/Providers.tsx`                  |
+| `<ModalProvider>` | 모든 모달(현재 BasicModal, ConfirmModal)을 Providers.tsx에 배치하여 루트에 마운트 | `components/modal/ModalProvider.tsx` |
+| `<Toaster>`       | Sonner 토스트 알림을 루트에 마운트                                                | `app/layout.tsx`                     |
 
 ---
 
@@ -997,7 +1011,7 @@ React Query는 서버에서 받은 데이터를 **캐시**로 관리합니다.
 ```tsx
 // lib/Providers.tsx
 
-'use client'  // Provider는 클라이언트 컴포넌트여야 함
+'use client' // Provider는 클라이언트 컴포넌트여야 함
 
 export default function Providers({ children }) {
   // useState로 감싸는 이유:
@@ -1007,7 +1021,7 @@ export default function Providers({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} />  {/* 개발 환경 전용 디버그 툴 */}
+      <ReactQueryDevtools initialIsOpen={false} /> {/* 개발 환경 전용 디버그 툴 */}
     </QueryClientProvider>
   )
 }
@@ -1020,8 +1034,8 @@ export function createQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000,  // 1분간 캐시를 fresh로 유지 (불필요한 재요청 방지)
-        retry: 1,              // 실패 시 1번 재시도
+        staleTime: 60 * 1000, // 1분간 캐시를 fresh로 유지 (불필요한 재요청 방지)
+        retry: 1, // 실패 시 1번 재시도
       },
     },
   })
@@ -1062,8 +1076,8 @@ Error: No QueryClient set, use QueryClientProvider to set one
 export default function ModalProvider() {
   return (
     <>
-      <ConfirmModal />  {/* useConfirmModalStore 구독 */}
-      <BasicModal />    {/* useBasicModalStore 구독 */}
+      <ConfirmModal /> {/* useConfirmModalStore 구독 */}
+      <BasicModal /> {/* useBasicModalStore 구독 */}
     </>
   )
 }
@@ -1091,7 +1105,7 @@ Next.js App Router에서 컴포넌트는 기본적으로 **Server Component**입
 반드시 파일 맨 위에 `'use client'`를 선언해야 합니다.
 
 ```tsx
-'use client'  // ← 이게 없으면 에러 발생
+'use client' // ← 이게 없으면 에러 발생
 
 import { QueryClientProvider } from '@tanstack/react-query'
 
@@ -1235,11 +1249,11 @@ export const buttonStyle = cva(
   {
     variants: {
       variant: {
-        primary:   'bg-primary-600 text-white hover:bg-primary-700',
+        primary: 'bg-primary-600 text-white hover:bg-primary-700',
         secondary: 'bg-secondary-100 text-secondary-700',
-        danger:    'bg-danger-600 text-white hover:bg-danger-700',
-        ghost:     'text-secondary-600 hover:bg-secondary-100',
-        outline:   'border border-secondary-300 text-secondary-700',
+        danger: 'bg-danger-600 text-white hover:bg-danger-700',
+        ghost: 'text-secondary-600 hover:bg-secondary-100',
+        outline: 'border border-secondary-300 text-secondary-700',
       },
       size: {
         sm: 'text-xs px-3 py-1.5',
@@ -1251,7 +1265,7 @@ export const buttonStyle = cva(
       variant: 'primary',
       size: 'md',
     },
-  }
+  },
 )
 ```
 
@@ -1259,9 +1273,7 @@ export const buttonStyle = cva(
 // components/button/BasicButton.tsx
 
 export default function BasicButton({ variant, size, className, ...props }: BasicButtonProps) {
-  return (
-    <button className={buttonStyle({ variant, size, className })} {...props} />
-  )
+  return <button className={buttonStyle({ variant, size, className })} {...props} />
 }
 ```
 
@@ -1280,10 +1292,10 @@ export default function BasicButton({ variant, size, className, ...props }: Basi
 
 export const boardPageStyles = {
   container: 'flex h-full overflow-hidden',
-  content:   'flex-1 flex flex-col overflow-auto p-6',
-  header:    'flex items-center justify-between mb-6',
-  title:     'text-xl font-semibold text-secondary-100',
-  empty:     'text-secondary-400 text-sm',
+  content: 'flex-1 flex flex-col overflow-auto p-6',
+  header: 'flex items-center justify-between mb-6',
+  title: 'text-xl font-semibold text-secondary-100',
+  empty: 'text-secondary-400 text-sm',
 }
 ```
 
@@ -1392,9 +1404,9 @@ export const API_PATHS = {
 ```ts
 // 앞뒤 태스크의 priority 중간값을 새 priority로 사용
 function calcPriority(prev: BoardTask | undefined, next: BoardTask | undefined): number {
-  if (!prev && next) return next.priority - 1000   // 맨 앞에 삽입
-  if (prev && !next) return prev.priority + 1000   // 맨 뒤에 삽입
-  if (prev && next) return Math.floor((prev.priority + next.priority) / 2)  // 중간 삽입
+  if (!prev && next) return next.priority - 1000 // 맨 앞에 삽입
+  if (prev && !next) return prev.priority + 1000 // 맨 뒤에 삽입
+  if (prev && next) return Math.floor((prev.priority + next.priority) / 2) // 중간 삽입
   return 0
 }
 ```
@@ -1457,12 +1469,13 @@ useQuery({
 ```
 
 ```tsx
-// app/layout.tsx
+// lib/Providers.tsx
 
-<Providers>
+<QueryClientProvider client={queryClient}>
   {children}
-  <ModalProvider />   {/* 여기서 한 번만 렌더링 */}
-</Providers>
+  <ModalProvider /> {/* 여기서 한 번만 렌더링 */}
+  <ReactQueryDevtools initialIsOpen={false} />
+</QueryClientProvider>
 ```
 
 ```tsx
@@ -1483,7 +1496,7 @@ openBasicModal({
 // features/auth/hooks/useAuth.ts
 
 export function useAuth() {
-  const { data } = useSession()  // /api/auth/me 결과
+  const { data } = useSession() // /api/auth/me 결과
   return {
     role: data?.role,
     isAdmin: data?.role === 'ADMIN',
@@ -1495,11 +1508,9 @@ export function useAuth() {
 // 관리자만 에픽 등록 버튼 표시
 const { isAdmin } = useAuth()
 
-{isAdmin && (
-  <BasicButton onClick={handleOpenEpicForm}>
-    에픽 등록
-  </BasicButton>
-)}
+{
+  isAdmin && <BasicButton onClick={handleOpenEpicForm}>에픽 등록</BasicButton>
+}
 ```
 
 LNB 메뉴도 같은 방식으로 권한별로 필터링합니다:
@@ -1553,8 +1564,8 @@ LNB 메뉴도 같은 방식으로 권한별로 필터링합니다:
 
 ### 기본 계정
 
-| 아이디 | 비밀번호 | 권한 |
-|--------|----------|------|
+| 아이디 | 비밀번호 | 권한  |
+| ------ | -------- | ----- |
 | admin  | admin123 | ADMIN |
 
 ### 주요 명령어

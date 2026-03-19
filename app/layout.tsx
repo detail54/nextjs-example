@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 import Providers from '@/lib/Providers'
-import ModalProvider from '@/components/modal/ModalProvider'
 import { PAGE_TITLES } from '@/context/pageTitles'
 import './globals.css'
 
@@ -20,8 +19,6 @@ export default function RootLayout({
       <body>
         <Providers>
           {children}
-          {/* 전역 모달 - useConfirmModalStore / useBasicModalStore로 제어 */}
-          <ModalProvider />
           {/* Sonner 토스트 - primary 테마에 맞춰 커스텀 */}
           <Toaster
             position='top-right'

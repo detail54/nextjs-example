@@ -12,6 +12,7 @@ export type UpdateEpicRequest = {
   title: string
   description?: string
   status?: EpicStatus
+  startDate?: string | null
   dueDate?: string | null
 }
 

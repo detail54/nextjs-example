@@ -15,6 +15,7 @@ export const BOARD_MSG = {
   // 태스크 상세 패널
   TASK_PANEL_TITLE: '태스크 상세',
   TASK_STATUS_LABEL: '상태',
+  TASK_START_DATE_LABEL: '시작일',
   TASK_DUE_DATE_LABEL: '마감일',
   TASK_DESCRIPTION_LABEL: '설명',
   TASK_TITLE_EMPTY: '제목 없음',
@@ -34,10 +35,16 @@ export const BOARD_MSG = {
   EPIC_STATUS_ACTIVE: '활성',
   EPIC_STATUS_INACTIVE: '비활성',
   EPIC_STATUS_COMPLETED: '완료',
+  EPIC_START_DATE_LABEL: '시작일',
   EPIC_DUE_DATE_LABEL: '마감일',
   EPIC_MORE_BUTTON: '더보기',
   EPIC_EDIT: '수정',
   EPIC_DELETE: '삭제',
+
+  // 마감일 긴급도 툴팁
+  DUE_DATE_OVERDUE_TOOLTIP: '마감일이 지났습니다',
+  DUE_DATE_URGENT_TOOLTIP: '마감 3일 이내',
+  DUE_DATE_WARNING_TOOLTIP: '마감 1주일 이내',
 
   // 에픽 수정 완료 토스트
   EPIC_UPDATE_SUCCESS: '에픽이 수정되었습니다.',

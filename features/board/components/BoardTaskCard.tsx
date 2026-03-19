@@ -3,6 +3,7 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useBoardPanelStore } from '@/stores/useBoardPanelStore'
+import DueDateBadge from '@/components/due-date-badge/DueDateBadge'
 import type { BoardTask } from '../api/type'
 import { taskCardStyles } from './BoardTaskCard.styles'
 
@@ -42,7 +43,7 @@ export default function BoardTaskCard({ task, overlay = false }: Props) {
 
       {/* 메타 정보 */}
       <div className={taskCardStyles.meta}>
-        <span className={taskCardStyles.dueDate}>{task.dueDate ?? ''}</span>
+        <DueDateBadge dueDate={task.dueDate} isDone={task.status === 'done'} />
         <span className={taskCardStyles.priority}>P{task.priority}</span>
       </div>
     </div>

@@ -10,6 +10,7 @@ export type UpdateTaskRequest = {
   title: string
   description?: string
   status?: TaskStatus
+  startDate?: string | null
   dueDate?: string | null
 }
 

@@ -22,6 +22,7 @@ export const epics = sqliteTable('epics', {
   status: text('status', { enum: ['active', 'inactive', 'completed'] }) // 진행 상태: 진행중 / 비활성 / 완료
     .default('active')
     .notNull(),
+  startDate: text('start_date'), // 시작일 (선택, ISO 8601 문자열)
   dueDate: text('due_date'), // 마감일 (선택, ISO 8601 문자열)
   createdAt: text('created_at') // 생성일시
     .default(sql`CURRENT_TIMESTAMP`)
@@ -53,6 +54,7 @@ export const tasks = sqliteTable('tasks', {
     .default('todo')
     .notNull(),
   priority: integer('priority').default(0).notNull(), // 우선순위 (숫자가 클수록 높음)
+  startDate: text('start_date'), // 시작일 (선택, ISO 8601 문자열)
   dueDate: text('due_date'), // 마감일 (선택, ISO 8601 문자열)
   createdAt: text('created_at') // 생성일시
     .default(sql`CURRENT_TIMESTAMP`)

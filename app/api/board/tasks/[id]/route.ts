@@ -45,10 +45,11 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   }
 
   const body = await request.json()
-  const { title, description, status, dueDate } = body as {
+  const { title, description, status, startDate, dueDate } = body as {
     title: string
     description?: string
     status?: TaskStatus
+    startDate?: string | null
     dueDate?: string | null
   }
 
@@ -59,7 +60,14 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     )
   }
 
-  taskRepository.update({ id: taskId, title: title.trim(), description: description?.trim(), status, dueDate })
+  taskRepository.update({
+    id: taskId,
+    title: title.trim(),
+    description: description?.trim(),
+    status,
+    startDate,
+    dueDate,
+  })
 
   return NextResponse.json<BasicResponse<null>>({ success: true, data: null })
 }

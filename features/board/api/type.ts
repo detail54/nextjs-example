@@ -7,6 +7,7 @@ export type BoardTask = {
   description: string | null
   status: TaskStatus
   priority: number
+  startDate: string | null
   dueDate: string | null
 }
 
@@ -15,6 +16,7 @@ export type EpicWithTasks = {
   title: string
   description: string | null
   status: EpicStatus
+  startDate: string | null
   dueDate: string | null
   tasks: BoardTask[]
 }

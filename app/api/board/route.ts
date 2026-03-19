@@ -16,6 +16,7 @@ export const GET = withAuth(async (_request: NextRequest) => {
       title: epic.title,
       description: epic.description,
       status: epic.status,
+      startDate: epic.startDate,
       dueDate: epic.dueDate,
       tasks: tasks.map((task) => ({
         id: task.id,
@@ -24,6 +25,7 @@ export const GET = withAuth(async (_request: NextRequest) => {
         description: task.description,
         status: task.status,
         priority: task.priority,
+        startDate: task.startDate,
         dueDate: task.dueDate,
       })),
     }

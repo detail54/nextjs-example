@@ -20,10 +20,10 @@ export const epicRepository = {
   },
 
   /** epic 수정 */
-  update({ id, title, description, status, dueDate }: UpdateEpicParams) {
+  update({ id, title, description, status, startDate, dueDate }: UpdateEpicParams) {
     return db
       .update(epics)
-      .set({ title, description, status, dueDate, updatedAt: sql`CURRENT_TIMESTAMP` })
+      .set({ title, description, status, startDate, dueDate, updatedAt: sql`CURRENT_TIMESTAMP` })
       .where(eq(epics.id, id))
       .run()
   },

@@ -33,6 +33,8 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
   const [description, setDescription] = useState(epic?.description ?? '')
   // 상태 (수정 모드 전용)
   const [status, setStatus] = useState<EpicStatus>(epic?.status ?? 'active')
+  // 시작일 (수정 모드 전용, YYYY-MM-DD 형식)
+  const [startDate, setStartDate] = useState(epic?.startDate ?? '')
   // 마감일 (수정 모드 전용, YYYY-MM-DD 형식)
   const [dueDate, setDueDate] = useState(epic?.dueDate ?? '')
 
@@ -53,6 +55,7 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
           title: title.trim(),
           description: description.trim() || undefined,
           status,
+          startDate: startDate || null,
           dueDate: dueDate || null,
         },
         { onSuccess: () => onSuccess?.() },
@@ -111,6 +114,12 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
               options={EPIC_STATUS_OPTIONS}
               onChange={(val) => setStatus(val as EpicStatus)}
             />
+          </div>
+
+          {/* 시작일 선택 */}
+          <div className={boardEpicFormStyles.field}>
+            <label className={boardEpicFormStyles.label}>{BOARD_MSG.EPIC_START_DATE_LABEL}</label>
+            <DatePicker value={startDate} onChange={setStartDate} />
           </div>
 
           {/* 마감일 선택 */}

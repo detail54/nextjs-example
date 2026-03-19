@@ -27,6 +27,7 @@ sqlite.exec(`
     title TEXT NOT NULL,
     description TEXT,
     status TEXT DEFAULT 'active',
+    start_date TEXT,
     due_date TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -47,6 +48,7 @@ sqlite.exec(`
     description TEXT,
     status TEXT DEFAULT 'todo',
     priority INTEGER DEFAULT 0,
+    start_date TEXT,
     due_date TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -92,6 +94,14 @@ sqlite.exec(`
   CREATE INDEX IF NOT EXISTS idx_notices_is_published ON notices(is_published);
   CREATE INDEX IF NOT EXISTS idx_notices_published_at ON notices(published_at);
 `)
+
+// 기존 DB에 start_date 컬럼이 없을 경우 추가 (마이그레이션 대체)
+try {
+  sqlite.exec(`ALTER TABLE epics ADD COLUMN start_date TEXT`)
+} catch {}
+try {
+  sqlite.exec(`ALTER TABLE tasks ADD COLUMN start_date TEXT`)
+} catch {}
 
 export const db = drizzle(sqlite, { schema })
 

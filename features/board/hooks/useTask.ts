@@ -25,8 +25,8 @@ export function useTaskUpdate() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, title, description, status, dueDate }: UpdateTaskVariables) =>
-      updateTask(id, { title, description, status, dueDate }),
+    mutationFn: ({ id, title, description, status, startDate, dueDate }: UpdateTaskVariables) =>
+      updateTask(id, { title, description, status, startDate, dueDate }),
     onSuccess: () => {
       // 보드 쿼리 초기화 (칸반 카드 제목 등 반영)
       queryClient.invalidateQueries({ queryKey: boardKeys.list() })

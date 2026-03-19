@@ -13,6 +13,7 @@ export type UpdateEpicParams = {
   title: string
   description?: string
   status?: EpicStatus
+  startDate?: string | null
   dueDate?: string | null
 }
 
@@ -29,6 +30,7 @@ export type UpdateTaskParams = {
   title: string
   description?: string
   status?: TaskStatus
+  startDate?: string | null
   dueDate?: string | null
 }
 

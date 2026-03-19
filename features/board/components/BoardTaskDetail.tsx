@@ -42,6 +42,7 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
       title,
       description: localTask.description ?? undefined,
       status: localTask.status,
+      startDate: localTask.startDate,
       dueDate: localTask.dueDate,
     })
   }
@@ -54,6 +55,7 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
       title: localTask.title,
       description,
       status: localTask.status,
+      startDate: localTask.startDate,
       dueDate: localTask.dueDate,
     })
   }
@@ -66,6 +68,20 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
       title: localTask.title,
       description: localTask.description ?? undefined,
       status,
+      startDate: localTask.startDate,
+      dueDate: localTask.dueDate,
+    })
+  }
+
+  const handleStartDateChange = (startDate: string) => {
+    // 낙관적 업데이트: 즉시 반영
+    setLocalTask((prev) => ({ ...prev, startDate: startDate || null }))
+    update({
+      id: task.id,
+      title: localTask.title,
+      description: localTask.description ?? undefined,
+      status: localTask.status,
+      startDate: startDate || null,
       dueDate: localTask.dueDate,
     })
   }
@@ -78,6 +94,7 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
       title: localTask.title,
       description: localTask.description ?? undefined,
       status: localTask.status,
+      startDate: localTask.startDate,
       dueDate: dueDate || null,
     })
   }
@@ -102,6 +119,12 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
           options={TASK_STATUS_OPTIONS}
           onChange={(val) => handleStatusChange(val as TaskStatus)}
         />
+      </div>
+
+      {/* 시작일 선택 */}
+      <div className={boardTaskDetailStyles.section}>
+        <p className={boardTaskDetailStyles.sectionLabel}>{BOARD_MSG.TASK_START_DATE_LABEL}</p>
+        <DatePicker value={localTask.startDate ?? ''} onChange={handleStartDateChange} />
       </div>
 
       {/* 마감일 선택 */}

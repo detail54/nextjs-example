@@ -22,10 +22,11 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   }
 
   const body = await request.json()
-  const { title, description, status, dueDate } = body as {
+  const { title, description, status, startDate, dueDate } = body as {
     title: string
     description?: string
     status?: EpicStatus
+    startDate?: string | null
     dueDate?: string | null
   }
 
@@ -41,6 +42,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     title: title.trim(),
     description: description?.trim(),
     status,
+    startDate,
     dueDate,
   })
 

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
-import { useBoardPanelStore } from '@/stores/useBoardPanelStore'
+import { useEpicPanelStore } from '@/stores/useEpicPanelStore'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
 import { useEpicDelete } from '../hooks/useEpic'
 import { useAuth } from '@/features/auth/hooks/useAuth'
@@ -23,13 +23,11 @@ export default function BoardEpicAccordion({ epic }: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
   const { isAdmin } = useAuth()
-  const { setEditingEpic } = useBoardPanelStore()
+  const { openEpicEdit } = useEpicPanelStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { mutate: deleteEpic } = useEpicDelete()
 
-  const handleEdit = () => {
-    setEditingEpic(epic)
-  }
+  const handleEdit = () => openEpicEdit(epic)
 
   const handleDeleteClick = () => {
     openConfirmModal({

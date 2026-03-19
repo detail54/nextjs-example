@@ -1,23 +1,14 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Plus } from 'lucide-react'
 import { TIMELINE_MSG } from '@/context/messages/timelineMsg'
-import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useBoardQuery } from '@/features/board/hooks/useBoardQuery'
-import { useTimelinePanelStore } from '@/stores/useTimelinePanelStore'
+import { useEpicPanelStore } from '@/stores/useEpicPanelStore'
 import { useAuth } from '@/features/auth/hooks/useAuth'
-import BoardEpicForm from '@/features/board/components/BoardEpicForm'
-import BoardTaskDetail from '@/features/board/components/BoardTaskDetail'
 import TimelineEpicRow from './TimelineEpicRow'
-import SidePanel from '@/components/side-panel/SidePanel'
 import { MONTH_WIDTH, MONTHS_BEFORE, TOTAL_MONTHS, LEFT_WIDTH, getMonthList } from '../utils/timelineUtils'
 import { timelinePageStyles } from './TimelinePage.styles'
-
-// 패널 기본/최소/최대 너비
-const DEFAULT_PANEL_WIDTH = 480
-const MIN_PANEL_WIDTH = 320
-const MAX_PANEL_WIDTH = 800
 
 // 타임라인 월 목록 (컴포넌트 외부에서 1번 계산)
 const MONTHS = getMonthList()
@@ -27,6 +18,7 @@ const TOTAL_WIDTH = TOTAL_MONTHS * MONTH_WIDTH
 export default function TimelinePage() {
   const { data: epics = [], isLoading } = useBoardQuery()
   const { isAdmin } = useAuth()
+  const { openEpicCreate } = useEpicPanelStore()
 
   // 타임라인 스크롤 컨테이너 ref
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -37,23 +29,6 @@ export default function TimelinePage() {
       scrollRef.current.scrollLeft = (MONTHS_BEFORE - 1) * MONTH_WIDTH
     }
   }, [])
-
-  // 패널 현재 너비
-  const [panelWidth, setPanelWidth] = useState(DEFAULT_PANEL_WIDTH)
-
-  // 패널 상태 (none | epicCreate | epicEdit | taskCreate | taskDetail)
-  const { panel, openEpicCreate, closePanel } = useTimelinePanelStore()
-
-  // 패널 열림 여부 및 타이틀 결정
-  const isPanelOpen = panel.type !== 'none'
-  const panelTitle =
-    panel.type === 'epicCreate'
-      ? TIMELINE_MSG.EPIC_REGISTER_TITLE
-      : panel.type === 'epicEdit'
-        ? TIMELINE_MSG.EPIC_EDIT_TITLE
-        : panel.type === 'taskDetail'
-          ? BOARD_MSG.TASK_PANEL_TITLE
-          : ''
 
   return (
     <div className={timelinePageStyles.container}>
@@ -113,7 +88,7 @@ export default function TimelinePage() {
                   className={timelinePageStyles.emptyLeft}
                   style={{ width: LEFT_WIDTH, minWidth: LEFT_WIDTH, height: 80 }}
                 >
-                  <span className={timelinePageStyles.emptyText}>{BOARD_MSG.EMPTY_EPICS}</span>
+                  <span className={timelinePageStyles.emptyText}>{TIMELINE_MSG.EMPTY_EPICS}</span>
                 </div>
                 <div style={{ width: TOTAL_WIDTH }} />
               </div>
@@ -144,25 +119,6 @@ export default function TimelinePage() {
           </div>
         </div>
       </div>
-
-      {/* 우측 슬라이드 패널 (에픽 등록 / 에픽 수정 / 하위 작업 등록 공용) */}
-      <SidePanel
-        isOpen={isPanelOpen}
-        onClose={closePanel}
-        title={panelTitle}
-        panelWidth={panelWidth}
-        onWidthChange={setPanelWidth}
-        minWidth={MIN_PANEL_WIDTH}
-        maxWidth={MAX_PANEL_WIDTH}
-      >
-        {panel.type === 'epicCreate' ? (
-          <BoardEpicForm onSuccess={closePanel} />
-        ) : panel.type === 'epicEdit' ? (
-          <BoardEpicForm epic={panel.epic} onSuccess={closePanel} />
-        ) : panel.type === 'taskDetail' ? (
-          <BoardTaskDetail task={panel.task} />
-        ) : null}
-      </SidePanel>
     </div>
   )
 }

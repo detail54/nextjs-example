@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { CheckSquare, ChevronRight, Layers, MoreHorizontal } from 'lucide-react'
 import { TIMELINE_MSG } from '@/context/messages/timelineMsg'
-import { useTimelinePanelStore } from '@/stores/useTimelinePanelStore'
+import { useEpicPanelStore } from '@/stores/useEpicPanelStore'
+import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
 import { useEpicDelete } from '@/features/board/hooks/useEpic'
 import { useAuth } from '@/features/auth/hooks/useAuth'
@@ -39,7 +40,8 @@ export default function TimelineEpicRow({ epic }: TimelineEpicRowProps) {
   const [isCreating, setIsCreating] = useState(false)
 
   const { isAdmin } = useAuth()
-  const { openEpicEdit, openTaskDetail } = useTimelinePanelStore()
+  const { openEpicEdit } = useEpicPanelStore()
+  const { openTaskDetail } = useTaskPanelStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { mutate: deleteEpic } = useEpicDelete()
 

@@ -2,7 +2,7 @@
 
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useBoardPanelStore } from '@/stores/useBoardPanelStore'
+import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
 import DueDateBadge from '@/components/due-date-badge/DueDateBadge'
 import type { BoardTask } from '../api/type'
 import { taskCardStyles } from './BoardTaskCard.styles'
@@ -15,7 +15,7 @@ type Props = {
 
 // 드래그 가능한 task 카드
 export default function BoardTaskCard({ task, overlay = false }: Props) {
-  const { setSelectedTask } = useBoardPanelStore()
+  const { openTaskDetail } = useTaskPanelStore()
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: task.id,
@@ -35,7 +35,7 @@ export default function BoardTaskCard({ task, overlay = false }: Props) {
       ref={overlay ? undefined : setNodeRef}
       style={style}
       className={taskCardStyles.card({ isDragging: !overlay && isDragging, isOverlay: overlay })}
-      onClick={overlay ? undefined : () => setSelectedTask(task)}
+      onClick={overlay ? undefined : () => openTaskDetail(task)}
       {...(overlay ? {} : { ...attributes, ...listeners })}
     >
       {/* 제목 */}

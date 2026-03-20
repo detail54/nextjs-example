@@ -13,7 +13,7 @@ import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
 import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import type { BoardTask } from '@/features/common/api/type'
-import type { TaskStatus } from '@/server/db/type'
+import type { TaskStatus } from '@/server/core/db/type'
 import { boardTaskDetailStyles, TASK_STATUS_LABEL } from './BoardTaskDetail.styles'
 
 // 상태 SelectBox 옵션 목록

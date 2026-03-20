@@ -1,4 +1,4 @@
-import type { TaskStatus, EpicStatus } from '@/server/db/type'
+import type { TaskStatus, EpicStatus } from '@/server/core/db/type'
 
 // ── 태스크 ──────────────────────────────────────────
 

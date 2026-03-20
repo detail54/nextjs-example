@@ -1,4 +1,4 @@
-import type { UserRole } from '@/server/db/type'
+import type { UserRole } from '@/server/core/db/type'
 import { LNB_MSG } from '@/context/messages/lnbMsg'
 import { APP_PATHS } from './appPaths'
 

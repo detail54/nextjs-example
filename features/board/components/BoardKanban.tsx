@@ -12,7 +12,7 @@ import {
   type DragEndEvent,
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import type { TaskStatus } from '@/server/db/type'
+import type { TaskStatus } from '@/server/core/db/type'
 import type { EpicWithTasks, BoardTask, KanbanColumns } from '@/features/common/api/type'
 import { TASK_STATUS } from '@/context/constants'
 import { useTaskMove } from '../hooks/useTask'

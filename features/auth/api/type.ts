@@ -1,4 +1,4 @@
-import { type UserRole } from '@/server/db/type'
+import { type UserRole } from '@/server/core/db/type'
 
 // 로그인 요청 타입
 export type LoginRequest = {

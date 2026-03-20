@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
-import type { BasicResponse } from '@/server/db/type'
+import type { BasicResponse } from '@/server/core/db/type'
 import type { CreateTaskRequest, UpdateTaskRequest, TaskMoveParams } from './type'
 
 // 태스크 생성 (todo 컬럼 맨 마지막에 추가)

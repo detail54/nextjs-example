@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
-import type { BasicResponse, ListResponse } from '@/server/db/type'
+import type { BasicResponse, ListResponse } from '@/server/core/db/type'
 import type { EpicWithTasks, CreateEpicRequest, UpdateEpicRequest } from './type'
 
 // 에픽 전체 목록 조회 (태스크 포함)

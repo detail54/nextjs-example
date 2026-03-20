@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
 import { AUTH_MSG } from '@/context/messages/authMsg'
-import { type BasicResponse } from '@/server/db/type'
+import { type BasicResponse } from '@/server/core/db/type'
 import {
   type LoginRequest,
   type LoginResponse,

@@ -6,6 +6,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Plus } from 'lucide-react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
 import type { TaskStatus } from '@/server/db/type'
+import { TASK_STATUS } from '@/context/constants'
 import type { BoardTask } from '@/features/common/api/type'
 import BoardTaskCard from './BoardTaskCard'
 import BoardTaskCreateInput from './BoardTaskCreateInput'
@@ -54,7 +55,7 @@ export default function BoardKanbanColumn({ status, tasks, epicId }: Props) {
       </SortableContext>
 
       {/* todo 컬럼 하단 - 인라인 생성 UI */}
-      {status === 'todo' && (
+      {status === TASK_STATUS.TODO && (
         <div className={kanbanColumnStyles.footer}>
           {isCreating ? (
             <BoardTaskCreateInput

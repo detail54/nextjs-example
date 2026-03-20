@@ -4,6 +4,8 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { createPortal } from 'react-dom'
 import { CALENDAR_MSG } from '@/context/messages/calendarMsg'
+import { COMMON_MSG } from '@/context/messages/commonMsg'
+import { EPIC_STATUS } from '@/context/constants'
 import { useBoardQuery } from '@/features/board/hooks/useBoardQuery'
 import { useEpicUpdate } from '@/features/board/hooks/useEpic'
 import type { EpicWithTasks } from '@/features/common/api/type'
@@ -27,9 +29,9 @@ const BAR_GAP = 4
 
 // 에픽 상태별 기본 배경색 (커스텀 색상 없을 때)
 const STATUS_COLORS: Record<string, string> = {
-  active: '#7c3aed', // primary-600
-  inactive: '#64748b', // secondary-500
-  completed: '#059669', // success-600
+  [EPIC_STATUS.ACTIVE]: '#7c3aed', // primary-600
+  [EPIC_STATUS.INACTIVE]: '#64748b', // secondary-500
+  [EPIC_STATUS.COMPLETED]: '#059669', // success-600
 }
 
 // ---- 날짜 유틸 ----
@@ -168,7 +170,7 @@ function getEpicsForDay(placements: EpicPlacement[], dayCol: number): EpicWithTa
 
 // 에픽 배경색 반환 (커스텀 > 상태 기본색)
 function getEpicColor(epic: EpicWithTasks): string {
-  return epic.color || STATUS_COLORS[epic.status] || STATUS_COLORS.active
+  return epic.color || STATUS_COLORS[epic.status] || STATUS_COLORS[EPIC_STATUS.ACTIVE]
 }
 
 // 날짜 숫자 셀 className 계산
@@ -359,7 +361,7 @@ export default function CalendarPage() {
   // 더보기 버튼 클릭 → 해당 날의 전체 에픽 팝오버 열기
   const handleMoreClick = useCallback(
     (dayEpics: EpicWithTasks[], day: Date, x: number, y: number) => {
-      const dateLabel = `${day.getFullYear()}년 ${day.getMonth() + 1}월 ${day.getDate()}일`
+      const dateLabel = `${day.getFullYear()}${COMMON_MSG.DATE_YEAR_SUFFIX} ${day.getMonth() + 1}${COMMON_MSG.DATE_MONTH_SUFFIX} ${day.getDate()}${COMMON_MSG.DATE_DAY_SUFFIX}`
       setMorePopover({ epics: dayEpics, x, y, dateLabel })
     },
     [],
@@ -383,7 +385,7 @@ export default function CalendarPage() {
               <ChevronLeft size={16} />
             </button>
             <span className={s.monthLabel}>
-              {year}년 {String(month + 1).padStart(2, '0')}월
+              {year}{COMMON_MSG.DATE_YEAR_SUFFIX} {String(month + 1).padStart(2, '0')}{COMMON_MSG.DATE_MONTH_SUFFIX}
             </span>
             <button
               type='button'

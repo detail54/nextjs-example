@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Check } from 'lucide-react'
 import Icon from '@/components/icon/Icon'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
+import { COMMON_MSG } from '@/context/messages/commonMsg'
 import { useTaskCreate } from '../hooks/useTask'
 import { boardTaskCreateInputStyles } from './BoardTaskCreateInput.styles'
 
@@ -87,7 +88,7 @@ export default function BoardTaskCreateInput({
           className={boardTaskCreateInputStyles.saveButton}
           onClick={handleSave}
           disabled={!title.trim() || isPending}
-          aria-label='저장'
+          aria-label={COMMON_MSG.SAVE}
         >
           <Icon icon={Check} size='sm' />
         </button>

@@ -13,6 +13,7 @@ import {
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { ChevronRight, Layers, MoreHorizontal } from 'lucide-react'
 import { TIMELINE_MSG } from '@/context/messages/timelineMsg'
+import { TASK_STATUS } from '@/context/constants'
 import { COMMON_MSG } from '@/context/messages/commonMsg'
 import { useEpicPanelStore } from '@/stores/useEpicPanelStore'
 import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
@@ -170,10 +171,10 @@ export default function TimelineEpicRow({ epic, onResizeStart }: TimelineEpicRow
   // 하위 태스크 상태별 카운트
   const totalTasks = epic.tasks.length
   const donePct = totalTasks
-    ? Math.round((epic.tasks.filter((t) => t.status === 'done').length / totalTasks) * 100)
+    ? Math.round((epic.tasks.filter((t) => t.status === TASK_STATUS.DONE).length / totalTasks) * 100)
     : 0
   const inProgressPct = totalTasks
-    ? Math.round((epic.tasks.filter((t) => t.status === 'in_progress').length / totalTasks) * 100)
+    ? Math.round((epic.tasks.filter((t) => t.status === TASK_STATUS.IN_PROGRESS).length / totalTasks) * 100)
     : 0
   const todoPct = totalTasks ? 100 - donePct - inProgressPct : 0
 

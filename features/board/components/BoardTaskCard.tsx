@@ -6,6 +6,7 @@ import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
 import DueDateBadge from '@/components/due-date-badge/DueDateBadge'
 import type { BoardTask } from '@/features/common/api/type'
 import { taskCardStyles } from './BoardTaskCard.styles'
+import { TASK_STATUS } from '@/context/constants'
 
 type Props = {
   task: BoardTask
@@ -43,7 +44,7 @@ export default function BoardTaskCard({ task, overlay = false }: Props) {
 
       {/* 메타 정보 */}
       <div className={taskCardStyles.meta}>
-        <DueDateBadge dueDate={task.dueDate} isDone={task.status === 'done'} />
+        <DueDateBadge dueDate={task.dueDate} isDone={task.status === TASK_STATUS.DONE} />
         <span className={taskCardStyles.priority}>P{task.priority}</span>
       </div>
     </div>

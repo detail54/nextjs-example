@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { paginationContainerStyle, pageButtonStyle, ellipsisStyle } from './Pagination.styles'
 import type { PaginationProps } from './type'
+import { COMMON_MSG } from '@/context/messages/commonMsg'
 
 // 표시할 페이지 번호 목록 계산 (ellipsis는 null로 표현)
 function getPageNumbers(current: number, total: number): (number | null)[] {
@@ -41,7 +42,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
         className={pageButtonStyle()}
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        aria-label='이전 페이지'
+        aria-label={COMMON_MSG.PAGINATION_PREV}
       >
         <ChevronLeft size={16} />
       </button>
@@ -57,7 +58,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
             key={page}
             className={pageButtonStyle({ active: page === currentPage })}
             onClick={() => onPageChange(page)}
-            aria-label={`${page}페이지`}
+            aria-label={`${page}${COMMON_MSG.PAGINATION_PAGE_SUFFIX}`}
             aria-current={page === currentPage ? 'page' : undefined}
           >
             {page}
@@ -70,7 +71,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
         className={pageButtonStyle()}
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        aria-label='다음 페이지'
+        aria-label={COMMON_MSG.PAGINATION_NEXT}
       >
         <ChevronRight size={16} />
       </button>

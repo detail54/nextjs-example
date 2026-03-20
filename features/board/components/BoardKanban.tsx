@@ -14,17 +14,22 @@ import {
 import { arrayMove } from '@dnd-kit/sortable'
 import type { TaskStatus } from '@/server/db/type'
 import type { EpicWithTasks, BoardTask, KanbanColumns } from '@/features/common/api/type'
+import { TASK_STATUS } from '@/context/constants'
 import { useTaskMove } from '../hooks/useTask'
 import BoardKanbanColumn from './BoardKanbanColumn'
 import BoardTaskCard from './BoardTaskCard'
 import { kanbanStyles } from './BoardKanban.styles'
 
 // 상태 목록 (렌더링 순서)
-const STATUSES: TaskStatus[] = ['todo', 'in_progress', 'done']
+const STATUSES: TaskStatus[] = [TASK_STATUS.TODO, TASK_STATUS.IN_PROGRESS, TASK_STATUS.DONE]
 
 // query 데이터 → 컬럼별 분류 초기화
 function buildColumns(tasks: BoardTask[]): KanbanColumns {
-  const columns: KanbanColumns = { todo: [], in_progress: [], done: [] }
+  const columns: KanbanColumns = {
+    [TASK_STATUS.TODO]: [],
+    [TASK_STATUS.IN_PROGRESS]: [],
+    [TASK_STATUS.DONE]: [],
+  }
   for (const task of tasks) {
     columns[task.status].push(task)
   }

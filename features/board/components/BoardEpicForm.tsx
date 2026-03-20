@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
+import { EPIC_STATUS } from '@/context/constants'
 import { useEpicCreate, useEpicUpdate } from '../hooks/useEpic'
 import type { EpicWithTasks } from '@/features/common/api/type'
 import type { EpicStatus } from '@/server/db/type'
@@ -15,9 +16,9 @@ import { boardEpicFormStyles } from './BoardEpicForm.styles'
 
 // 에픽 상태 옵션 목록
 const EPIC_STATUS_OPTIONS: SelectOption[] = [
-  { value: 'active', label: BOARD_MSG.EPIC_STATUS_ACTIVE },
-  { value: 'inactive', label: BOARD_MSG.EPIC_STATUS_INACTIVE },
-  { value: 'completed', label: BOARD_MSG.EPIC_STATUS_COMPLETED },
+  { value: EPIC_STATUS.ACTIVE, label: BOARD_MSG.EPIC_STATUS_ACTIVE },
+  { value: EPIC_STATUS.INACTIVE, label: BOARD_MSG.EPIC_STATUS_INACTIVE },
+  { value: EPIC_STATUS.COMPLETED, label: BOARD_MSG.EPIC_STATUS_COMPLETED },
 ]
 
 interface BoardEpicFormProps {
@@ -33,7 +34,7 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
   // 설명
   const [description, setDescription] = useState(epic?.description ?? '')
   // 상태
-  const [status, setStatus] = useState<EpicStatus>(epic?.status ?? 'active')
+  const [status, setStatus] = useState<EpicStatus>(epic?.status ?? EPIC_STATUS.ACTIVE)
   // 시작일 (YYYY-MM-DD 형식)
   const [startDate, setStartDate] = useState(epic?.startDate ?? '')
   // 마감일 (YYYY-MM-DD 형식)
@@ -78,7 +79,7 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
           onSuccess: () => {
             setTitle('')
             setDescription('')
-            setStatus('active')
+            setStatus(EPIC_STATUS.ACTIVE)
             setStartDate('')
             setDueDate('')
             setColor(null)

@@ -24,4 +24,12 @@ export const COMMON_MSG = {
   DATE_YEAR_SUFFIX: '년',
   DATE_MONTH_SUFFIX: '월',
   DATE_DAY_SUFFIX: '일',
+
+  // 공통 액션
+  SAVE: '저장',
+
+  // 페이지네이션
+  PAGINATION_PREV: '이전 페이지',
+  PAGINATION_NEXT: '다음 페이지',
+  PAGINATION_PAGE_SUFFIX: '페이지',
 } as const

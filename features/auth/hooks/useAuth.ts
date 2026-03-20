@@ -2,6 +2,7 @@
 
 import { UseAuthOptions } from './type'
 import { useSession } from './useSession'
+import { USER_ROLE } from '@/context/constants'
 
 // 현재 유저가 ADMIN 역할인지 확인하는 훅
 export function useAuth(): UseAuthOptions {
@@ -9,6 +10,6 @@ export function useAuth(): UseAuthOptions {
 
   return {
     role: data?.role,
-    isAdmin: data?.role === 'ADMIN',
+    isAdmin: data?.role === USER_ROLE.ADMIN,
   }
 }

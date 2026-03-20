@@ -69,6 +69,27 @@ export const lnbMenuStyle = cva(
   ['flex-1 flex flex-col', 'px-2 py-3 gap-1', 'overflow-y-auto overflow-x-hidden'].join(' '),
 )
 
+// 관리자 섹션 구분선 스타일
+export const lnbDividerStyle = cva(
+  ['border-t border-secondary-700', 'mx-2 my-1'].join(' '),
+)
+
+// 관리자 섹션 라벨 스타일 (접힘 시 숨김)
+export const lnbSectionLabelStyle = cva(
+  ['px-3 pt-2 pb-1', 'text-xs font-medium text-secondary-500 uppercase tracking-wider whitespace-nowrap', 'transition-all duration-300'].join(' '),
+  {
+    variants: {
+      collapsed: {
+        true: 'opacity-0 w-0 h-0 overflow-hidden py-0',
+        false: 'opacity-100',
+      },
+    },
+    defaultVariants: {
+      collapsed: false,
+    },
+  },
+)
+
 // 하단 영역 스타일
 export const lnbBottomStyle = cva(
   ['flex flex-col shrink-0', 'px-2 py-3 gap-1', 'border-t border-secondary-700'].join(' '),

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { jwtVerify, SignJWT } from 'jose'
 import type { UserRole } from '@/server/core/db/type'
-import { MENU_LIST } from '@/context/menuConfig'
+import { COMMON_MENU_LIST, ADMIN_MENU_LIST } from '@/context/menuConfig'
 import { APP_PATHS } from '@/context/appPaths'
 import { logger } from '@/server/core/lib/logger'
 
@@ -52,9 +52,12 @@ async function rotateAccessToken(
   return { newToken, payload: data }
 }
 
+// 공통 + 어드민 메뉴 전체 목록 (경로 권한 체크용)
+const ALL_MENU_LIST = [...COMMON_MENU_LIST, ...ADMIN_MENU_LIST]
+
 // 경로별 역할 권한 체크
 function hasRoleAccess(pathname: string, role: UserRole): boolean {
-  const menuItem = MENU_LIST.find((item) => pathname.startsWith(item.path))
+  const menuItem = ALL_MENU_LIST.find((item) => pathname.startsWith(item.path))
   return !menuItem || menuItem.roles.length === 0 || menuItem.roles.includes(role)
 }
 

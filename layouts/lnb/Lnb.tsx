@@ -7,6 +7,7 @@ import {
   GitBranch,
   Bell,
   BellRing,
+  Users,
   UserCircle,
   LogOut,
   ChevronLeft,
@@ -26,12 +27,15 @@ import {
   lnbLogoTextStyle,
   lnbMenuStyle,
   lnbBottomStyle,
+  lnbDividerStyle,
+  lnbSectionLabelStyle,
 } from './Lnb.styles'
-import { MENU_LIST } from '@/context/menuConfig'
+import { COMMON_MENU_LIST, ADMIN_MENU_LIST } from '@/context/menuConfig'
 import { LNB_MSG } from '@/context/messages/lnbMsg'
 import { APP_PATHS } from '@/context/appPaths'
 import { useSession } from '@/features/auth/hooks/useSession'
 import { useLogout } from '@/features/auth/hooks/useLogout'
+import { USER_ROLE } from '@/context/constants'
 
 // iconName → LucideIcon 매핑
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -40,6 +44,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   GitBranch,
   Bell,
   BellRing,
+  Users,
   UserCircle,
   LogOut,
 }
@@ -53,10 +58,8 @@ export function Lnb() {
   const { mutate: logout } = useLogout()
   const { openConfirmModal } = useConfirmModalStore()
 
-  // 현재 역할로 접근 가능한 메뉴만 필터링 (roles 빈 배열이면 모든 역할 허용)
-  const filteredMenuList = MENU_LIST.filter(
-    (item) => item.roles.length === 0 || (session?.role && item.roles.includes(session.role)),
-  )
+  // 현재 유저가 어드민인지 여부
+  const isAdmin = session?.role === USER_ROLE.ADMIN
 
   return (
     <div className={lnbWrapperStyle()}>
@@ -79,7 +82,8 @@ export function Lnb() {
 
         {/* 상단 메뉴 목록 */}
         <nav className={lnbMenuStyle()}>
-          {filteredMenuList.map((item) => (
+          {/* 공통 메뉴 */}
+          {COMMON_MENU_LIST.map((item) => (
             <LnbMenuItem
               key={item.id}
               label={item.label}
@@ -87,10 +91,28 @@ export function Lnb() {
               icon={ICON_MAP[item.iconName]}
               isActive={pathname === item.path || pathname.startsWith(item.path + '/')}
               isCollapsed={isCollapsed}
-              // 역할 제한이 있는 메뉴는 관리자 배지 표시
-              showAdminBadge={item.roles.length > 0}
             />
           ))}
+
+          {/* 관리자 전용 메뉴 섹션 */}
+          {isAdmin && (
+            <>
+              <div className={lnbDividerStyle()} />
+              <span className={lnbSectionLabelStyle({ collapsed: isCollapsed })}>
+                {LNB_MSG.ADMIN_SECTION}
+              </span>
+              {ADMIN_MENU_LIST.map((item) => (
+                <LnbMenuItem
+                  key={item.id}
+                  label={item.label}
+                  path={item.path}
+                  icon={ICON_MAP[item.iconName]}
+                  isActive={pathname === item.path || pathname.startsWith(item.path + '/')}
+                  isCollapsed={isCollapsed}
+                />
+              ))}
+            </>
+          )}
         </nav>
 
         {/* 하단 메뉴 (마이페이지 + 로그아웃) */}

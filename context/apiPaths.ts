@@ -21,6 +21,10 @@ export const API_PATHS = {
     UPDATE: (id: number) => `/api/epics/${id}`,
     DELETE: (id: number) => `/api/epics/${id}`,
   },
+  USERS: {
+    LIST: '/api/users',
+    UPDATE_ROLE: (id: number) => `/api/users/${id}/role`,
+  },
   TASKS: {
     CREATE: (epicId: number) => `/api/epics/${epicId}/tasks`,
     UPDATE: (id: number) => `/api/tasks/${id}`,

@@ -35,9 +35,9 @@ export const selectBoxStyles = {
     defaultVariants: { open: false },
   }),
 
-  // 드롭다운 패널
+  // 드롭다운 패널 (portal 렌더링 - position은 인라인으로 주입)
   menu: cva([
-    'absolute left-0 top-full z-50 mt-1 min-w-full overflow-hidden',
+    'z-[9999] overflow-hidden',
     'rounded-md border border-secondary-600 bg-secondary-800 shadow-lg',
   ].join(' '))(),
 

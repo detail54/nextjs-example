@@ -23,42 +23,53 @@ export type BottomMenuItem = {
   roles: UserRole[]
 }
 
-// 상단 메뉴 목록 (권한별 접근 제어)
-export const MENU_LIST: MenuItem[] = [
+// 공통 메뉴 목록 (모든 인증된 사용자)
+export const COMMON_MENU_LIST: MenuItem[] = [
   {
     id: 'board',
     label: LNB_MSG.BOARD,
     path: APP_PATHS.BOARD.ROOT,
     iconName: 'LayoutDashboard',
-    roles: [], // 모든 인증된 사용자
+    roles: [],
   },
   {
     id: 'calendar',
     label: LNB_MSG.CALENDAR,
     path: APP_PATHS.CALENDAR.ROOT,
     iconName: 'Calendar',
-    roles: [], // 모든 인증된 사용자
+    roles: [],
   },
   {
     id: 'timeline',
     label: LNB_MSG.TIMELINE,
     path: APP_PATHS.TIMELINE.ROOT,
     iconName: 'GitBranch',
-    roles: [], // 모든 인증된 사용자
+    roles: [],
   },
   {
     id: 'notice',
     label: LNB_MSG.NOTICE,
     path: APP_PATHS.NOTICE.ROOT,
     iconName: 'Bell',
-    roles: [], // 모든 인증된 사용자
+    roles: [],
   },
+]
+
+// 관리자 전용 메뉴 목록
+export const ADMIN_MENU_LIST: MenuItem[] = [
   {
     id: 'notice-manage',
     label: LNB_MSG.NOTICE_MANAGE,
     path: APP_PATHS.NOTICE_MANAGE.ROOT,
     iconName: 'BellRing',
-    roles: ['ADMIN'], // 관리자만 접근 가능
+    roles: ['ADMIN'],
+  },
+  {
+    id: 'user-manage',
+    label: LNB_MSG.USER_MANAGE,
+    path: APP_PATHS.USER_MANAGE.ROOT,
+    iconName: 'Users',
+    roles: ['ADMIN'],
   },
 ]
 

@@ -6,6 +6,8 @@ export const LNB_MSG = {
   TIMELINE: '타임라인',
   NOTICE: '공지사항',
   NOTICE_MANAGE: '공지 관리',
+  USER_MANAGE: '사용자 관리',
+  ADMIN_SECTION: '관리자',
   MY_PAGE: '마이페이지',
   LOGOUT: '로그아웃',
   COLLAPSE: '메뉴 접기',

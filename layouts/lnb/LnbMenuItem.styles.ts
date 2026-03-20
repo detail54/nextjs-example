@@ -25,11 +25,6 @@ export const lnbItemStyle = cva(
 // 아이콘 고정 크기 래퍼 (접힘 시에도 아이콘은 유지)
 export const lnbItemIconStyle = cva(['shrink-0'].join(' '))
 
-// 관리자 전용 배지 스타일
-export const lnbAdminBadgeStyle = cva(
-  ['inline-flex items-center ml-1.5', 'text-primary-400'].join(' '),
-)
-
 // 메뉴 라벨 스타일
 export const lnbItemLabelStyle = cva(
   ['transition-all duration-300 overflow-hidden'].join(' '),

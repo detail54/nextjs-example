@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { ChevronDown } from 'lucide-react'
 import { selectBoxStyles } from './SelectBox.styles'
 
@@ -23,9 +24,25 @@ type SelectBoxProps = {
 export default function SelectBox({ value, options, onChange }: SelectBoxProps) {
   // 드롭다운 열림 상태
   const [isOpen, setIsOpen] = useState(false)
+  // 드롭다운 위치 (portal 렌더링용)
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number; width: number } | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   const selectedLabel = options.find((opt) => opt.value === value)?.label ?? ''
+
+  // 드롭다운 열릴 때 트리거 위치 계산
+  const handleOpen = () => {
+    if (!isOpen && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      setMenuPos({
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+      })
+    }
+    setIsOpen((prev) => !prev)
+  }
 
   // 외부 클릭 시 닫기
   useEffect(() => {
@@ -42,9 +59,10 @@ export default function SelectBox({ value, options, onChange }: SelectBoxProps) 
   return (
     <div ref={containerRef} className={selectBoxStyles.container}>
       <button
+        ref={triggerRef}
         type='button'
         className={selectBoxStyles.trigger({ open: isOpen })}
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={handleOpen}
         aria-haspopup='listbox'
         aria-expanded={isOpen}
       >
@@ -52,25 +70,33 @@ export default function SelectBox({ value, options, onChange }: SelectBoxProps) 
         <ChevronDown className={selectBoxStyles.chevron({ open: isOpen })} />
       </button>
 
-      {isOpen && (
-        <div className={selectBoxStyles.menu} role='listbox'>
-          {options.map((opt) => (
-            <button
-              key={String(opt.value)}
-              type='button'
-              role='option'
-              aria-selected={opt.value === value}
-              className={selectBoxStyles.item({ selected: opt.value === value })}
-              onClick={() => {
-                onChange(opt.value)
-                setIsOpen(false)
-              }}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* overflow:hidden 부모에 가려지지 않도록 portal로 body에 렌더링 */}
+      {isOpen &&
+        menuPos &&
+        createPortal(
+          <div
+            className={selectBoxStyles.menu}
+            role='listbox'
+            style={{ position: 'fixed', top: menuPos.top, left: menuPos.left, minWidth: menuPos.width }}
+          >
+            {options.map((opt) => (
+              <button
+                key={String(opt.value)}
+                type='button'
+                role='option'
+                aria-selected={opt.value === value}
+                className={selectBoxStyles.item({ selected: opt.value === value })}
+                onClick={() => {
+                  onChange(opt.value)
+                  setIsOpen(false)
+                }}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>,
+          document.body,
+        )}
     </div>
   )
 }

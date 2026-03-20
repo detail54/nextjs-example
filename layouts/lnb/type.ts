@@ -9,8 +9,6 @@ export type LnbMenuItemProps = {
   isActive: boolean
   /** LNB 접힘 여부 */
   isCollapsed: boolean
-  /** 관리자 전용 배지 표시 여부 */
-  showAdminBadge?: boolean
 }
 
 // LNB 하단 버튼(액션) 아이템 props

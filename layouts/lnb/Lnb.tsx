@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 import Icon from '@/components/icon/Icon'
 import { LnbMenuItem, LnbActionItem } from './LnbMenuItem'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
@@ -72,7 +73,7 @@ export function Lnb() {
 
         {/* 브랜드 로고 영역 */}
         <div className={lnbLogoStyle()}>
-          <img src='/icon.svg' alt='logo' className='w-6 h-6 shrink-0 rounded-sm' />
+          <Image src='/icon.svg' alt='logo' width={24} height={24} className='shrink-0 rounded-sm' />
           <span className={lnbLogoTextStyle({ collapsed: isCollapsed })}>{LNB_MSG.BRAND}</span>
         </div>
 

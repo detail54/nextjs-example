@@ -3,7 +3,7 @@
 import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useTaskPanelStore, MIN_TASK_PANEL_WIDTH, MAX_TASK_PANEL_WIDTH } from '@/stores/useTaskPanelStore'
 import BoardTaskDetail from '@/features/board/components/BoardTaskDetail'
-import SidePanel from './SidePanel'
+import SidePanel from '@/components/panel/SidePanel'
 
 // 태스크 상세보기 전용 사이드 패널
 export default function TaskSidePanel() {

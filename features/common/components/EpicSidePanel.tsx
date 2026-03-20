@@ -3,7 +3,7 @@
 import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { useEpicPanelStore, MIN_EPIC_PANEL_WIDTH, MAX_EPIC_PANEL_WIDTH } from '@/stores/useEpicPanelStore'
 import BoardEpicForm from '@/features/board/components/BoardEpicForm'
-import SidePanel from './SidePanel'
+import SidePanel from '@/components/panel/SidePanel'
 
 // 에픽 등록/수정 전용 사이드 패널
 export default function EpicSidePanel() {

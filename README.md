@@ -20,11 +20,10 @@
 10. [프론트엔드 코드 패턴](#10-프론트엔드-코드-패턴)
 11. [주요 기능 로직](#11-주요-기능-로직)
     - [11-1. 칸반 드래그 앤 드롭](#11-1-칸반-드래그-앤-드롭)
-    - [11-2. 공지사항 페이지네이션](#11-2-공지사항-페이지네이션)
-    - [11-3. 전역 모달 시스템](#11-3-전역-모달-시스템)
-    - [11-4. 타임라인 (Gantt)](#11-4-타임라인-gantt)
-    - [11-5. 권한 기반 UI 표시](#11-5-권한-기반-ui-표시)
-12. [구현 예정 페이지](#12-구현-예정-페이지)
+    - [11-2. 타임라인 (Gantt)](#11-2-타임라인-gantt)
+    - [11-3. 권한 기반 UI 표시](#11-3-권한-기반-ui-표시)
+    - [11-4. 사용자 관리 페이지](#11-4-사용자-관리-페이지)
+12. [미구현 페이지](#12-미구현-페이지)
 
 ---
 
@@ -240,12 +239,13 @@ nextjs-example/
 │
 ├── app/                        # Next.js App Router
 │   ├── (main)/                 # 인증 후 메인 레이아웃 그룹
-│   │   │   ├── layout.tsx          # LNB + 콘텐츠 + PanelProvider 레이아웃
+│   │   ├── layout.tsx          # LNB + 콘텐츠 + 사이드 패널 레이아웃
 │   │   ├── board/page.tsx
 │   │   ├── calendar/page.tsx
 │   │   ├── timeline/page.tsx
 │   │   ├── notice/page.tsx
 │   │   ├── notice-manage/page.tsx
+│   │   ├── user-manage/page.tsx
 │   │   └── my-page/page.tsx
 │   │
 │   ├── api/                    # Route Handlers (백엔드 API)
@@ -262,7 +262,10 @@ nextjs-example/
 │   │   │   │       ├── route.ts            # 에픽 수정/삭제
 │   │   │   │       └── tasks/route.ts      # 태스크 생성
 │   │   │   └── tasks/[id]/route.ts         # 태스크 수정(이동)
-│   │   └── notice/route.ts                 # 공지사항 목록
+│   │   ├── notice/route.ts                 # 공지사항 목록
+│   │   └── users/
+│   │       ├── route.ts                    # 사용자 목록 조회 (ADMIN)
+│   │       └── [id]/role/route.ts          # 사용자 역할 변경 (ADMIN)
 │   │
 │   ├── auth/login/page.tsx     # 로그인 페이지
 │   ├── login-required/page.tsx # 미로그인 접근 안내
@@ -271,7 +274,18 @@ nextjs-example/
 │   ├── layout.tsx              # 루트 레이아웃 (Providers, Toaster)
 │   └── page.tsx                # 홈 (랜딩 페이지)
 │
+├── layouts/                    # 앱 셸 레이아웃 컴포넌트
+│   └── lnb/                    # 사이드 내비게이션
+│       ├── Lnb.tsx
+│       ├── Lnb.styles.ts
+│       ├── LnbMenuItem.tsx
+│       ├── LnbMenuItem.styles.ts
+│       └── type.ts
+│
 ├── features/                   # 기능별 모듈 (프론트엔드의 핵심)
+│   ├── common/
+│   │   ├── api/                # 에픽/태스크 공통 API (보드·타임라인 공유)
+│   │   └── components/         # EpicSidePanel, TaskSidePanel
 │   ├── auth/
 │   │   ├── api/                # API 호출 함수 + 타입 + queryKeys
 │   │   ├── components/         # 로그인 폼 컴포넌트
@@ -287,44 +301,69 @@ nextjs-example/
 │   ├── timeline/
 │   │   ├── components/         # TimelinePage, TimelineEpicRow, TimelineTaskInlineCreate
 │   │   └── utils/              # timelineUtils (날짜→픽셀 변환, 월 목록 등)
+│   ├── user-manage/
+│   │   ├── api/                # userApi, queryKeys, type
+│   │   ├── components/         # UserManagePage
+│   │   └── hooks/              # useUserQuery, useUserRoleUpdate
 │   ├── calendar/components/    # 미구현
 │   ├── my-page/components/     # 미구현
 │   └── notice-manage/components/ # 미구현
 │
-├── components/                 # 공용 UI 컴포넌트
+├── components/                 # 공용 UI 컴포넌트 (기능 무관 범용 프리미티브)
 │   ├── button/                 # BasicButton, IconButton, LinkButton, TextButton
 │   ├── input/                  # BasicInput
 │   ├── modal/                  # Modal, BasicModal, ConfirmModal, ModalProvider
-│   ├── panel/                  # 전역 패널 시스템
-│   │   ├── side-panel/         # SidePanel, EpicSidePanel, TaskSidePanel
-│   │   └── PanelProvider.tsx   # EpicSidePanel + TaskSidePanel 마운트
+│   ├── panel/                  # SidePanel (범용 패널 UI)
+│   │   ├── SidePanel.tsx
+│   │   └── SidePanel.styles.ts
 │   ├── list/                   # DataList, DataListSkeleton
 │   ├── pagination/             # Pagination
-│   ├── select/                 # SelectBox
+│   ├── select/                 # SelectBox (portal 기반 드롭다운)
 │   ├── dropdown/               # DropdownMenu (portal 방식)
 │   ├── datepicker/             # DatePicker
 │   ├── inline-edit/            # InlineEdit
-│   ├── lnb/                    # 사이드 내비게이션
 │   └── icon/                   # Icon 래퍼
 │
 ├── server/                     # 서버 전용 코드 (브라우저에서 실행 안 됨)
-│   ├── db/
-│   │   ├── db.ts               # DB 연결 + 테이블 생성 + 초기 데이터
-│   │   ├── schema.ts           # Drizzle 스키마 정의
-│   │   └── type.ts             # DB row 타입 + Response 공용 타입
-│   ├── repositories/           # DB 쿼리 함수 모음 (Repository 패턴)
+│   ├── core/
+│   │   ├── db/
+│   │   │   ├── db.ts           # DB 연결 + 테이블 생성 + 초기 데이터
+│   │   │   ├── schema.ts       # Drizzle 스키마 정의
+│   │   │   └── type.ts         # DB row 타입 + Response 공용 타입
+│   │   ├── lib/
+│   │   │   ├── withLogger.ts   # 요청/응답 로깅 미들웨어
+│   │   │   └── logger.ts       # 콘솔 로거
+│   │   ├── messages/
+│   │   │   └── httpStatus.ts   # HTTP 상태 메시지 상수
+│   │   └── type.ts             # 공용 서버 타입
+│   ├── auth/
 │   │   ├── auth.repository.ts
-│   │   ├── epic.repository.ts
-│   │   ├── task.repository.ts
-│   │   └── notice.repository.ts
-│   ├── lib/
-│   │   ├── jwt.ts              # JWT 발급/검증
-│   │   ├── authError.ts        # 인증 커스텀 에러 클래스
-│   │   ├── withAuth.ts         # 인증 미들웨어 (route 래퍼)
+│   │   ├── auth.service.ts
 │   │   ├── authenticate.ts     # 인증/권한 검사 유틸
-│   │   ├── withLogger.ts       # 요청/응답 로깅 미들웨어
-│   │   └── logger.ts           # 콘솔 로거
-│   └── messages/               # 서버 응답 메시지 상수
+│   │   ├── authError.ts        # 인증 커스텀 에러 클래스
+│   │   ├── authMsg.ts
+│   │   ├── jwt.ts              # JWT 발급/검증
+│   │   ├── type.ts
+│   │   └── withAuth.ts         # 인증 미들웨어 (route 래퍼)
+│   ├── epics/
+│   │   ├── epic.repository.ts
+│   │   ├── epic.service.ts
+│   │   ├── epicMsg.ts
+│   │   └── type.ts
+│   ├── notices/
+│   │   ├── notice.repository.ts
+│   │   ├── notice.service.ts
+│   │   └── type.ts
+│   ├── tasks/
+│   │   ├── task.repository.ts
+│   │   ├── task.service.ts
+│   │   ├── taskMsg.ts
+│   │   └── type.ts
+│   └── users/
+│       ├── user.repository.ts
+│       ├── user.service.ts
+│       ├── userMsg.ts
+│       └── type.ts
 │
 ├── stores/                     # Zustand 전역 상태
 │   ├── useBasicModalStore.ts   # BasicModal 상태
@@ -335,7 +374,8 @@ nextjs-example/
 ├── context/                    # 앱 전체 상수/설정
 │   ├── apiPaths.ts             # API 경로 상수
 │   ├── appPaths.ts             # 페이지 경로 상수
-│   ├── menuConfig.ts           # LNB 메뉴 설정 + 권한
+│   ├── constants.ts            # 도메인 상수 (TASK_STATUS, EPIC_STATUS, USER_ROLE)
+│   ├── menuConfig.ts           # LNB 메뉴 설정 (COMMON_MENU_LIST, ADMIN_MENU_LIST)
 │   ├── pageTitles.ts           # 페이지 제목 메타데이터
 │   └── messages/               # UI 메시지 상수
 │
@@ -368,7 +408,7 @@ export default function Page() {
 ## 5. 데이터베이스 구조
 
 SQLite를 사용하며 Drizzle ORM으로 스키마를 정의합니다.
-앱 시작 시 `server/db/db.ts`에서 테이블을 자동으로 생성합니다.
+앱 시작 시 `server/core/db/db.ts`에서 테이블을 자동으로 생성합니다.
 
 ### ERD 개요
 
@@ -453,11 +493,11 @@ CREATE TABLE notices (
 
 ### Drizzle 스키마 파일
 
-`server/db/schema.ts`에서 TypeScript로 스키마를 정의합니다.
+`server/core/db/schema.ts`에서 TypeScript로 스키마를 정의합니다.
 이 파일이 DB 테이블의 "설계도"이자, TypeScript 타입의 원천입니다.
 
 ```ts
-// server/db/schema.ts
+// server/core/db/schema.ts
 
 export const tasks = sqliteTable('tasks', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -476,7 +516,7 @@ export const tasks = sqliteTable('tasks', {
 Drizzle 스키마에서 row 타입을 자동 추론할 수 있습니다:
 
 ```ts
-// server/db/type.ts
+// server/core/db/type.ts
 
 export type DbTask = typeof tasks.$inferSelect
 // → { id: number, epicId: number, title: string, status: 'todo' | 'in_progress' | 'done', ... }
@@ -510,10 +550,10 @@ export const GET = withAuth(async (_request: NextRequest) => {
 
 ### 6-2. 응답 타입 규칙
 
-모든 API 응답은 `server/db/type.ts`에 정의된 세 가지 타입 중 하나를 사용합니다.
+모든 API 응답은 `server/core/db/type.ts`에 정의된 세 가지 타입 중 하나를 사용합니다.
 
 ```ts
-// server/db/type.ts
+// server/core/db/type.ts
 
 // 단일 객체 응답
 type BasicResponse<T> = {
@@ -545,11 +585,11 @@ type PageResponse<T> = {
 
 ### 6-3. Repository 패턴
 
-API Route에서 SQL을 직접 작성하지 않고, `server/repositories/` 폴더의 함수들을 호출합니다.
-각 테이블마다 repository 파일이 하나씩 있습니다.
+API Route에서 SQL을 직접 작성하지 않고, 각 도메인 폴더(`server/epics/`, `server/users/` 등)의 repository 파일 함수들을 호출합니다.
+각 도메인마다 repository 파일이 하나씩 있습니다.
 
 ```ts
-// server/repositories/epic.repository.ts
+// server/epics/epic.repository.ts
 
 export const epicRepository = {
   /** 전체 epic 목록 조회 (최신순) */
@@ -591,7 +631,7 @@ export const epicRepository = {
 내부에서 쿠키의 액세스 토큰을 검증하고, 유효하면 `{ user }` 컨텍스트를 핸들러에 넘겨줍니다.
 
 ```ts
-// server/lib/withAuth.ts
+// server/auth/withAuth.ts
 
 export function withAuth(handler: AuthedHandler, options: WithAuthOptions = {}) {
   return withLogger(async (request: NextRequest) => {
@@ -660,7 +700,7 @@ export const DELETE = withAuth(
 `password`, `token`, `secret`이 포함된 필드는 자동으로 `***`로 마스킹됩니다.
 
 ```ts
-// server/lib/logger.ts
+// server/core/lib/logger.ts
 
 const SENSITIVE_KEYS = ['password', 'token', 'secret']
 
@@ -799,10 +839,10 @@ refresh token도 만료되면 세션이 완전히 만료된 것으로 처리하�
 
 ### 7-4. JWT 발급/검증
 
-`server/lib/jwt.ts`에서 `jose` 라이브러리로 JWT를 다룹니다.
+`server/auth/jwt.ts`에서 `jose` 라이브러리로 JWT를 다룹니다.
 
 ```ts
-// server/lib/jwt.ts
+// server/auth/jwt.ts
 
 // Access Token 발급 (HS256 알고리즘, 15분 유효)
 export async function signAccessToken(payload: JwtUserPayload): Promise<string> {
@@ -855,7 +895,7 @@ export function useSession() {
 에러 코드마다 HTTP 상태 코드가 매핑되어 있습니다.
 
 ```ts
-// server/lib/authError.ts
+// server/auth/authError.ts
 
 export const AuthErrorCode = {
   UNAUTHORIZED: { code: 'UNAUTHORIZED', status: 401 }, // 토큰 없음
@@ -893,7 +933,7 @@ if (user.role !== 'ADMIN') throw new AuthError(AuthErrorCode.FORBIDDEN)
 `AuthError`는 코드에 맞는 HTTP 상태로 응답하고, 그 외 예상치 못한 에러는 500으로 처리합니다.
 
 ```ts
-// server/lib/withAuth.ts (에러 처리 부분)
+// server/auth/withAuth.ts (에러 처리 부분)
 
 } catch (error) {
   if (error instanceof AuthError) {
@@ -1005,12 +1045,11 @@ export default function RootLayout({ children }) {
 
 각 Provider의 역할:
 
-| Provider          | 위치                   | 역할                                                                 | 파일                                 |
-| ----------------- | ---------------------- | -------------------------------------------------------------------- | ------------------------------------ |
-| `<Providers>`     | `app/layout.tsx`       | React Query `QueryClient` 공급 + ModalProvider 포함                  | `lib/Providers.tsx`                  |
-| `<ModalProvider>` | `lib/Providers.tsx`    | BasicModal, ConfirmModal을 루트에 마운트                             | `components/modal/ModalProvider.tsx` |
-| `<PanelProvider>` | `app/(main)/layout.tsx`| EpicSidePanel, TaskSidePanel을 flex 형제로 마운트 (페이지 밀림 효과) | `components/panel/PanelProvider.tsx` |
-| `<Toaster>`       | `app/layout.tsx`       | Sonner 토스트 알림 루트 마운트                                       | `app/layout.tsx`                     |
+| Provider          | 위치                | 역할                                                | 파일                                 |
+| ----------------- | ------------------- | --------------------------------------------------- | ------------------------------------ |
+| `<Providers>`     | `app/layout.tsx`    | React Query `QueryClient` 공급 + ModalProvider 포함 | `lib/Providers.tsx`                  |
+| `<ModalProvider>` | `lib/Providers.tsx` | BasicModal, ConfirmModal을 루트에 마운트            | `components/modal/ModalProvider.tsx` |
+| `<Toaster>`       | `app/layout.tsx`    | Sonner 토스트 알림 루트 마운트                      | `app/layout.tsx`                     |
 
 ---
 
@@ -1109,39 +1148,31 @@ export default function ModalProvider() {
 
 ---
 
-### 9-5. PanelProvider — 전역 사이드 패널
+### 9-5. 사이드 패널 — 전역 사이드 패널
 
 사이드 패널은 모달과 달리 **페이지를 밀어내는 효과**가 있습니다.
-이를 위해 `PanelProvider`는 `<main>` 태그와 **flex 형제**로 배치됩니다.
+이를 위해 `EpicSidePanel`과 `TaskSidePanel`은 `<main>` 태그와 **flex 형제**로 직접 배치됩니다.
 
 ```tsx
 // app/(main)/layout.tsx
+
+import { Lnb } from '@/layouts/lnb/Lnb'
+import EpicSidePanel from '@/features/common/components/EpicSidePanel'
+import TaskSidePanel from '@/features/common/components/TaskSidePanel'
 
 export default function MainLayout({ children }) {
   return (
     <div className='flex h-screen bg-secondary-950'>
       <Lnb />
       <main className='flex-1 overflow-auto'>{children}</main>
-      <PanelProvider />  {/* ← main과 나란히 배치 */}
+      <EpicSidePanel /> {/* ← main과 나란히 배치 */}
+      <TaskSidePanel /> {/* ← main과 나란히 배치 */}
     </div>
   )
 }
 ```
 
 패널이 열리면 SidePanel의 너비가 0 → 지정 너비로 transition되며, flex 레이아웃 덕분에 `<main>`이 자연스럽게 좁아집니다.
-
-```tsx
-// components/panel/PanelProvider.tsx
-
-export default function PanelProvider() {
-  return (
-    <>
-      <EpicSidePanel />  {/* useEpicPanelStore 구독 */}
-      <TaskSidePanel />  {/* useTaskPanelStore 구독 */}
-    </>
-  )
-}
-```
 
 각 패널 컴포넌트는 자신의 스토어만 구독하며, 스토어에 상태가 생기면 SidePanel을 열고 해당 콘텐츠를 렌더링합니다.
 
@@ -1159,6 +1190,8 @@ export default function PanelProvider() {
 패널 너비는 드래그로 조절 가능하며, 조절된 너비는 각 스토어의 `panelWidth`에 저장됩니다.
 
 > 모달처럼 루트에 올리지 않는 이유: `Providers.tsx`에 넣으면 flex 레이아웃 바깥에 위치해 페이지 밀림 효과가 동작하지 않기 때문입니다.
+>
+> `EpicSidePanel`과 `TaskSidePanel`은 보드·타임라인 등 여러 기능에서 공유하므로 `features/common/components/`에 위치합니다. 기반이 되는 범용 UI 컴포넌트 `SidePanel`은 `components/panel/`에 있습니다.
 
 ---
 
@@ -1465,8 +1498,9 @@ export const API_PATHS = {
 
 **Priority 재계산 로직:**
 
+앞뒤 태스크의 priority 중간값을 새 priority로 사용합니다. 이 방식을 쓰면 매번 모든 태스크의 priority를 재정렬하지 않아도 됩니다.
+
 ```ts
-// 앞뒤 태스크의 priority 중간값을 새 priority로 사용
 function calcPriority(prev: BoardTask | undefined, next: BoardTask | undefined): number {
   if (!prev && next) return next.priority - 1000 // 맨 앞에 삽입
   if (prev && !next) return prev.priority + 1000 // 맨 뒤에 삽입
@@ -1475,114 +1509,29 @@ function calcPriority(prev: BoardTask | undefined, next: BoardTask | undefined):
 }
 ```
 
-이 방식을 사용하면 매번 모든 태스크의 priority를 재정렬하지 않아도 됩니다.
+---
 
-**서버 동기화:**
-
-```ts
-// 드래그가 끝나면 변경된 status와 priority만 서버에 전송
-moveTask({ id: updatedTask.id, status: overContainer, priority: newPriority })
-```
-
-**드래그 취소 시 원복:**
-
-```ts
-// onDragStart에서 원본 저장
-setOriginalColumns({ ...columns })
-
-// onDragCancel에서 원본 복원
-if (originalColumns) {
-  setColumns(originalColumns)
-}
-```
-
-### 11-2. 공지사항 페이지네이션
-
-**파일**: `features/notice/components/NoticePage.tsx`
-
-URL 파라미터로 페이지/정렬을 서버에 전달하고, React Query로 캐싱합니다.
-
-```ts
-// page, pageSize, sortBy, sortOrder가 모두 queryKey에 포함
-// → 파라미터 하나라도 바뀌면 자동으로 새 데이터 요청
-
-useQuery({
-  queryKey: noticeKeys.list(page, pageSize, sortBy, sortOrder),
-  queryFn: () => getNoticeList({ page, pageSize, sortBy, sortOrder }),
-})
-```
-
-서버에서는 `OFFSET / LIMIT`으로 페이지네이션:
-
-```ts
-// server/repositories/notice.repository.ts
-
-.limit(pageSize)
-.offset((page - 1) * pageSize)
-```
-
-### 11-3. 전역 모달 시스템
-
-모달을 열기 위해 props drilling 없이 어디서든 Zustand store를 통해 호출합니다.
-
-```
-루트 레이아웃
-  └── ModalProvider (항상 마운트됨)
-       ├── BasicModal   ← useBasicModalStore 구독
-       └── ConfirmModal ← useConfirmModalStore 구독
-```
-
-```tsx
-// lib/Providers.tsx
-
-<QueryClientProvider client={queryClient}>
-  {children}
-  <ModalProvider /> {/* 여기서 한 번만 렌더링 */}
-  <ReactQueryDevtools initialIsOpen={false} />
-</QueryClientProvider>
-```
-
-```tsx
-// 어떤 컴포넌트에서든 호출 가능
-const { openBasicModal } = useBasicModalStore()
-
-openBasicModal({
-  title: '공지사항 제목',
-  children: <p>공지 내용...</p>,
-})
-```
-
-### 11-4. 타임라인 (Gantt)
+### 11-2. 타임라인 (Gantt)
 
 **파일**: `features/timeline/`
 
 Jira 스타일의 타임라인 뷰입니다. 왼쪽에 에픽/태스크 목록, 오른쪽에 월별 수평 그리드와 Gantt 바를 표시합니다.
 
-**핵심 유틸리티** (`features/timeline/utils/timelineUtils.ts`):
+**날짜 → 픽셀 변환** (`features/timeline/utils/timelineUtils.ts`):
 
 ```ts
 // 현재 월 기준 12개월 전 ~ 24개월 후, 총 37개월 표시
-const MONTH_WIDTH = 120  // 월당 픽셀 너비
+const MONTH_WIDTH = 120 // 월당 픽셀 너비
 const MONTHS_BEFORE = 12
 
 // 날짜 문자열(YYYY-MM-DD) → 타임라인 내 X 픽셀 좌표
-function dateToX(dateStr: string): number {
-  const monthDiff = /* 기준월로부터 개월 수 */
-  const dayRatio = dayInMonth / daysInMonth
-  return (monthDiff + dayRatio) * MONTH_WIDTH
-}
+function dateToX(dateStr: string): number { ... }
 
 // 에픽/태스크의 바 위치(left, width) 계산 — 범위 밖은 클리핑
 function calcBarPosition(startDate, dueDate): { left: number; width: number } | null
 ```
 
-**초기 스크롤 위치**: 현재 월이 2번째 컬럼에 오도록 마운트 시 `scrollLeft`를 설정합니다.
-
-```ts
-useEffect(() => {
-  scrollRef.current.scrollLeft = (MONTHS_BEFORE - 1) * MONTH_WIDTH
-}, [])
-```
+**초기 스크롤**: 마운트 시 현재 월이 2번째 컬럼에 오도록 `scrollLeft`를 설정합니다.
 
 **sticky 레이아웃**: 단일 스크롤 컨테이너에서 CSS sticky로 좌측 열(`sticky left-0`)과 헤더(`sticky top-0`)를 고정합니다.
 
@@ -1590,7 +1539,7 @@ useEffect(() => {
 
 ---
 
-### 11-5. 권한 기반 UI 표시
+### 11-3. 권한 기반 UI 표시
 
 `useAuth()` 훅으로 현재 사용자의 역할을 확인해 UI를 조건부 렌더링합니다.
 
@@ -1598,63 +1547,13 @@ useEffect(() => {
 // features/auth/hooks/useAuth.ts
 
 export function useAuth() {
-  const { data } = useSession() // /api/auth/me 결과
-  return {
-    role: data?.role,
-    isAdmin: data?.role === 'ADMIN',
-  }
+  const { data } = useSession()
+  return { role: data?.role, isAdmin: data?.role === 'ADMIN' }
 }
 ```
 
-```tsx
-// 관리자만 에픽 등록 버튼 표시
-const { isAdmin } = useAuth()
-
-{
-  isAdmin && <BasicButton onClick={handleOpenEpicForm}>에픽 등록</BasicButton>
-}
-```
-
-LNB 메뉴도 같은 방식으로 권한별로 필터링합니다:
-
-```ts
-// context/menuConfig.ts
-
-{
-  id: 'notice-manage',
-  label: '공지 관리',
-  roles: ['ADMIN'],  // ADMIN에게만 메뉴 표시
-}
-```
-
----
-
-## 12. 구현 예정 페이지
-
-아래 페이지들은 라우트와 컴포넌트 파일은 생성되어 있지만 기능이 구현되지 않았습니다.
-학습 과제로 활용하거나 직접 구현해 볼 수 있습니다.
-
----
-
-### 캘린더 (`/calendar`)
-
-**파일**: `features/calendar/components/CalendarPage.tsx`
-
----
-
-### 마이페이지 (`/my-page`)
-
-**파일**: `features/my-page/components/MyPage.tsx`
-
----
-
-### 공지 관리 (`/notice-manage`)
-
-**파일**: `features/notice-manage/components/NoticeManagePage.tsx`
-
-> ADMIN 전용 페이지. 공지사항 작성/수정/삭제 기능 예정.
-
----
+LNB 메뉴는 공통 메뉴(`COMMON_MENU_LIST`)와 어드민 전용 메뉴(`ADMIN_MENU_LIST`)로 분리됩니다.
+`isAdmin`일 때만 구분선과 "관리자" 섹션 레이블을 추가해 어드민 메뉴를 렌더링합니다.
 
 ## 참고
 
@@ -1663,9 +1562,3 @@ LNB 메뉴도 같은 방식으로 권한별로 필터링합니다:
 | 아이디 | 비밀번호 | 권한  |
 | ------ | -------- | ----- |
 | admin  | admin123 | ADMIN |
-
-### 주요 명령어
-
-```bash
-pnpm dev    # 개발 서버 실행 (http://localhost:3000)
-```

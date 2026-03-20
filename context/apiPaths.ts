@@ -20,15 +20,18 @@ export const API_PATHS = {
     CREATE: '/api/epics',
     UPDATE: (id: number) => `/api/epics/${id}`,
     DELETE: (id: number) => `/api/epics/${id}`,
+    UPDATE_ASSIGNEES: (id: number) => `/api/epics/${id}/assignees`,
   },
   USERS: {
     LIST: '/api/users',
     UPDATE_ROLE: (id: number) => `/api/users/${id}/role`,
+    ALL: '/api/users/all',
   },
   TASKS: {
     CREATE: (epicId: number) => `/api/epics/${epicId}/tasks`,
     UPDATE: (id: number) => `/api/tasks/${id}`,
     DELETE: (id: number) => `/api/tasks/${id}`,
     MOVE: (id: number) => `/api/tasks/${id}`,
+    UPDATE_ASSIGNEES: (id: number) => `/api/tasks/${id}/assignees`,
   },
 } as const

@@ -1,5 +1,5 @@
 import { userRepository } from './user.repository'
-import type { GetUsersParams, GetUsersResult, UpdateUserRoleParams } from './type'
+import type { GetUsersParams, GetUsersResult, UpdateUserRoleParams, SimpleUser } from './type'
 import { USER_MSG } from './userMsg'
 
 export const userService = {
@@ -16,5 +16,10 @@ export const userService = {
     const user = userRepository.findById(id)
     if (!user) throw new Error(USER_MSG.NOT_FOUND)
     userRepository.updateRole(id, role)
+  },
+
+  /** 전체 사용자 목록 조회 (담당자 선택용) */
+  getAll(): SimpleUser[] {
+    return userRepository.getAll()
   },
 }

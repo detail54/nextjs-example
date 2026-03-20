@@ -56,4 +56,12 @@ export const BOARD_MSG = {
 
   // 에픽 수정 완료 토스트
   EPIC_UPDATE_SUCCESS: '에픽이 수정되었습니다.',
+
+  // 담당자
+  ASSIGNEE_LABEL: '담당자',
+  ASSIGNEE_EMPTY: '담당자 없음',
+  ASSIGNEE_SELECT_TITLE: '담당자 선택',
+  ASSIGNEE_DROPDOWN_EMPTY: '등록된 사용자가 없습니다',
+  ASSIGNEE_ASSIGN_TO_ME: '나에게 할당',
+  ASSIGNEE_UNASSIGN_FROM_ME: '나에게서 해제',
 } as const

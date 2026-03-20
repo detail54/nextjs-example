@@ -13,6 +13,10 @@ import BoardKanban from './BoardKanban'
 import DropdownMenu from '@/components/dropdown/DropdownMenu'
 import Icon from '@/components/icon/Icon'
 import { epicAccordionStyles } from './BoardEpicAccordion.styles'
+import { getAvatarBgColor, getInitials } from './AssigneeSelector.styles'
+
+// 헤더에 표시할 최대 담당자 아바타 수
+const MAX_EPIC_ASSIGNEES = 4
 
 type Props = {
   epic: EpicWithTasks
@@ -46,6 +50,10 @@ export default function BoardEpicAccordion({ epic }: Props) {
     { label: BOARD_MSG.EPIC_DELETE, onClick: handleDeleteClick, danger: true },
   ]
 
+  // 담당자 표시용 (최대 MAX_EPIC_ASSIGNEES + 초과 수)
+  const visibleAssignees = epic.assignees.slice(0, MAX_EPIC_ASSIGNEES)
+  const overflowCount = epic.assignees.length - MAX_EPIC_ASSIGNEES
+
   return (
     <div className={epicAccordionStyles.container}>
       {/* 아코디언 헤더 */}
@@ -58,6 +66,24 @@ export default function BoardEpicAccordion({ epic }: Props) {
           aria-expanded={isOpen}
         >
           <div className={epicAccordionStyles.headerLeft}>
+            {/* 에픽 담당자 아바타 (에픽명 왼쪽, 겹침) */}
+            {epic.assignees.length > 0 && (
+              <div className={epicAccordionStyles.assigneeRow}>
+                {visibleAssignees.map((assignee, i) => (
+                  <div
+                    key={assignee.id}
+                    className={`${epicAccordionStyles.assigneeAvatar} ${getAvatarBgColor(assignee.id)}${i > 0 ? ' -ml-2' : ''}`}
+                    title={assignee.username}
+                  >
+                    {getInitials(assignee.username)}
+                  </div>
+                ))}
+                {overflowCount > 0 && (
+                  <div className={epicAccordionStyles.assigneeOverflow}>+{overflowCount}</div>
+                )}
+              </div>
+            )}
+
             <span className={epicAccordionStyles.epicTitle}>{epic.title}</span>
             <span className={epicAccordionStyles.taskCount}>
               {epic.tasks.length}
@@ -87,7 +113,6 @@ export default function BoardEpicAccordion({ epic }: Props) {
           <BoardKanban epic={epic} />
         </div>
       )}
-
     </div>
   )
 }

@@ -8,11 +8,13 @@ import InlineEdit from '@/components/inline-edit/InlineEdit'
 import SelectBox from '@/components/select/SelectBox'
 import DatePicker from '@/components/datepicker/DatePicker'
 import ColorPicker from '@/components/colorpicker/ColorPicker'
-import { useTaskUpdate, useTaskDelete } from '../hooks/useTask'
+import AssigneeSelector from './AssigneeSelector'
+import { useTaskUpdate, useTaskDelete, useTaskAssigneesUpdate } from '../hooks/useTask'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
 import { useTaskPanelStore } from '@/stores/useTaskPanelStore'
 import { useAuth } from '@/features/auth/hooks/useAuth'
-import type { BoardTask } from '@/features/common/api/type'
+import { useAllUsers } from '@/features/common/hooks/useAllUsers'
+import type { BoardTask, Assignee } from '@/features/common/api/type'
 import type { TaskStatus } from '@/server/core/db/type'
 import { boardTaskDetailStyles, TASK_STATUS_LABEL } from './BoardTaskDetail.styles'
 
@@ -41,8 +43,12 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
   const { isAdmin } = useAuth()
   const { mutate: update } = useTaskUpdate()
   const { mutate: deleteTask } = useTaskDelete()
+  const { mutate: updateAssignees } = useTaskAssigneesUpdate()
   const { openConfirmModal } = useConfirmModalStore()
   const { closePanel } = useTaskPanelStore()
+
+  // 전체 사용자 목록 (담당자 선택용)
+  const { data: allUsers = [] } = useAllUsers()
 
   // 삭제 확인 모달 열기
   const handleDeleteClick = () => {
@@ -137,6 +143,12 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
     })
   }
 
+  const handleAssigneesChange = (newAssignees: Assignee[]) => {
+    // 낙관적 업데이트: 즉시 반영
+    setLocalTask((prev) => ({ ...prev, assignees: newAssignees }))
+    updateAssignees({ taskId: task.id, userIds: newAssignees.map((a) => a.id) })
+  }
+
   return (
     <div className={boardTaskDetailStyles.wrapper}>
       {/* 제목 */}
@@ -146,6 +158,16 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
           onSave={handleTitleSave}
           emptyText={BOARD_MSG.TASK_TITLE_EMPTY}
           textClassName='text-base font-semibold'
+        />
+      </div>
+
+      {/* 담당자 선택 */}
+      <div className={boardTaskDetailStyles.section}>
+        <p className={boardTaskDetailStyles.sectionLabel}>{BOARD_MSG.ASSIGNEE_LABEL}</p>
+        <AssigneeSelector
+          assignees={localTask.assignees}
+          allUsers={allUsers}
+          onChange={handleAssigneesChange}
         />
       </div>
 
@@ -191,7 +213,11 @@ export default function BoardTaskDetail({ task }: BoardTaskDetailProps) {
       {/* 삭제 버튼 (관리자만 표시) */}
       {isAdmin && (
         <div className={boardTaskDetailStyles.deleteSection}>
-          <button type='button' className={boardTaskDetailStyles.deleteButton} onClick={handleDeleteClick}>
+          <button
+            type='button'
+            className={boardTaskDetailStyles.deleteButton}
+            onClick={handleDeleteClick}
+          >
             <Trash2 size={14} />
             {BOARD_MSG.TASK_DELETE}
           </button>

@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import { BOARD_MSG } from '@/context/messages/boardMsg'
 import { EPIC_STATUS } from '@/context/constants'
-import { useEpicCreate, useEpicUpdate } from '../hooks/useEpic'
-import type { EpicWithTasks } from '@/features/common/api/type'
+import { useEpicCreate, useEpicUpdate, useEpicAssigneesUpdate } from '../hooks/useEpic'
+import { useAllUsers } from '@/features/common/hooks/useAllUsers'
+import type { EpicWithTasks, Assignee } from '@/features/common/api/type'
 import type { EpicStatus } from '@/server/core/db/type'
 import type { SelectOption } from '@/components/select/SelectBox'
 import BasicInput from '@/components/input/BasicInput'
@@ -12,6 +13,7 @@ import BasicButton from '@/components/button/BasicButton'
 import SelectBox from '@/components/select/SelectBox'
 import DatePicker from '@/components/datepicker/DatePicker'
 import ColorPicker from '@/components/colorpicker/ColorPicker'
+import AssigneeSelector from './AssigneeSelector'
 import { boardEpicFormStyles } from './BoardEpicForm.styles'
 
 // 에픽 상태 옵션 목록
@@ -41,14 +43,20 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
   const [dueDate, setDueDate] = useState(epic?.dueDate ?? '')
   // 색상 (hex 문자열)
   const [color, setColor] = useState<string | null>(epic?.color ?? null)
+  // 담당자 목록
+  const [assignees, setAssignees] = useState<Assignee[]>(epic?.assignees ?? [])
 
   const { mutate: createEpic, isPending: isCreating } = useEpicCreate()
   const { mutate: updateEpic, isPending: isUpdating } = useEpicUpdate()
+  const { mutate: updateAssignees } = useEpicAssigneesUpdate()
   const isPending = isCreating || isUpdating
+
+  // 전체 사용자 목록 (담당자 선택용)
+  const { data: allUsers = [] } = useAllUsers()
 
   const isEditMode = !!epic
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!title.trim()) return
 
@@ -63,7 +71,13 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
           dueDate: dueDate || null,
           color,
         },
-        { onSuccess: () => onSuccess?.() },
+        {
+          onSuccess: () => {
+            // 담당자 교체
+            updateAssignees({ epicId: epic.id, userIds: assignees.map((a) => a.id) })
+            onSuccess?.()
+          },
+        },
       )
     } else {
       createEpic(
@@ -76,13 +90,18 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
           color,
         },
         {
-          onSuccess: () => {
+          onSuccess: (data) => {
+            // 담당자가 있는 경우 신규 에픽 ID로 담당자 설정
+            if (assignees.length > 0) {
+              updateAssignees({ epicId: data.data.id, userIds: assignees.map((a) => a.id) })
+            }
             setTitle('')
             setDescription('')
             setStatus(EPIC_STATUS.ACTIVE)
             setStartDate('')
             setDueDate('')
             setColor(null)
+            setAssignees([])
             onSuccess?.()
           },
         },
@@ -114,6 +133,12 @@ export default function BoardEpicForm({ epic, onSuccess }: BoardEpicFormProps) {
           options={EPIC_STATUS_OPTIONS}
           onChange={(val) => setStatus(val as EpicStatus)}
         />
+      </div>
+
+      {/* 담당자 선택 */}
+      <div className={boardEpicFormStyles.field}>
+        <label className={boardEpicFormStyles.label}>{BOARD_MSG.ASSIGNEE_LABEL}</label>
+        <AssigneeSelector assignees={assignees} allUsers={allUsers} onChange={setAssignees} />
       </div>
 
       {/* 시작일 선택 */}

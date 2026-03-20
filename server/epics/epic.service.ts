@@ -52,7 +52,9 @@ export const epicService = {
           startDate: task.startDate,
           dueDate: task.dueDate,
           color: task.color ?? null,
+          assignees: taskRepository.getAssignees(task.id),
         })),
+        assignees: epicRepository.getAssignees(epic.id),
       }
     })
   },
@@ -92,6 +94,11 @@ export const epicService = {
     })
 
     return { ok: true }
+  },
+
+  /** 에픽 담당자 교체 */
+  updateAssignees(epicId: number, userIds: number[]): void {
+    epicRepository.setAssignees(epicId, userIds)
   },
 
   /** 에픽 삭제 (하위 태스크 포함) */

@@ -1,5 +1,5 @@
 import { db } from '@/server/core/db/db'
-import { tasks } from '@/server/core/db/schema'
+import { tasks, taskAssignees, users } from '@/server/core/db/schema'
 import { eq, asc, sql } from 'drizzle-orm'
 import type {
   CreateTaskParams,
@@ -99,5 +99,25 @@ export const taskRepository = {
   /** task 삭제 */
   delete(id: number) {
     return db.delete(tasks).where(eq(tasks.id, id)).run()
+  },
+
+  /** 태스크 담당자 목록 조회 */
+  getAssignees(taskId: number): { id: number; username: string }[] {
+    return db
+      .select({ id: users.id, username: users.username })
+      .from(taskAssignees)
+      .innerJoin(users, eq(taskAssignees.userId, users.id))
+      .where(eq(taskAssignees.taskId, taskId))
+      .all()
+  },
+
+  /** 태스크 담당자 교체 (기존 전체 삭제 후 재삽입) */
+  setAssignees(taskId: number, userIds: number[]): void {
+    db.delete(taskAssignees).where(eq(taskAssignees.taskId, taskId)).run()
+    if (userIds.length > 0) {
+      db.insert(taskAssignees)
+        .values(userIds.map((userId) => ({ taskId, userId })))
+        .run()
+    }
   },
 }

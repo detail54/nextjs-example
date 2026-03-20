@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
 import type { BasicResponse, ListResponse } from '@/server/core/db/type'
-import type { EpicWithTasks, CreateEpicRequest, UpdateEpicRequest } from './type'
+import type { EpicWithTasks, CreateEpicRequest, UpdateEpicRequest, UpdateEpicAssigneesRequest } from './type'
 
 // 에픽 전체 목록 조회 (태스크 포함)
 export async function getEpicList(): Promise<EpicWithTasks[]> {
@@ -24,5 +24,16 @@ export async function updateEpic({ id, ...body }: UpdateEpicRequest): Promise<Ba
 // 에픽 삭제
 export async function deleteEpic(id: number): Promise<BasicResponse<null>> {
   const { data } = await axios.delete<BasicResponse<null>>(API_PATHS.EPICS.DELETE(id))
+  return data
+}
+
+// 에픽 담당자 교체
+export async function updateEpicAssignees({
+  epicId,
+  userIds,
+}: UpdateEpicAssigneesRequest): Promise<BasicResponse<null>> {
+  const { data } = await axios.put<BasicResponse<null>>(API_PATHS.EPICS.UPDATE_ASSIGNEES(epicId), {
+    userIds,
+  })
   return data
 }

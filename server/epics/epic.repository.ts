@@ -1,5 +1,5 @@
 import { db } from '@/server/core/db/db'
-import { epics } from '@/server/core/db/schema'
+import { epics, epicAssignees, users } from '@/server/core/db/schema'
 import { eq, desc, sql } from 'drizzle-orm'
 import type { CreateEpicParams, UpdateEpicParams } from './type'
 
@@ -32,5 +32,25 @@ export const epicRepository = {
   /** epic 삭제 */
   delete(id: number) {
     return db.delete(epics).where(eq(epics.id, id)).run()
+  },
+
+  /** 에픽 담당자 목록 조회 */
+  getAssignees(epicId: number): { id: number; username: string }[] {
+    return db
+      .select({ id: users.id, username: users.username })
+      .from(epicAssignees)
+      .innerJoin(users, eq(epicAssignees.userId, users.id))
+      .where(eq(epicAssignees.epicId, epicId))
+      .all()
+  },
+
+  /** 에픽 담당자 교체 (기존 전체 삭제 후 재삽입) */
+  setAssignees(epicId: number, userIds: number[]): void {
+    db.delete(epicAssignees).where(eq(epicAssignees.epicId, epicId)).run()
+    if (userIds.length > 0) {
+      db.insert(epicAssignees)
+        .values(userIds.map((userId) => ({ epicId, userId })))
+        .run()
+    }
   },
 }

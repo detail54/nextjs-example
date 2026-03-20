@@ -1,5 +1,13 @@
 import type { TaskStatus, EpicStatus } from '@/server/core/db/type'
 
+// ── 담당자 ──────────────────────────────────────────
+
+// 담당자 타입 (ID + 사용자명)
+export type Assignee = {
+  id: number
+  username: string
+}
+
 // ── 태스크 ──────────────────────────────────────────
 
 // 태스크 데이터 타입
@@ -13,6 +21,7 @@ export type BoardTask = {
   startDate: string | null
   dueDate: string | null
   color: string | null
+  assignees: Assignee[]
 }
 
 // 태스크 생성 요청 타입
@@ -30,6 +39,11 @@ export type UpdateTaskRequest = {
   startDate?: string | null
   dueDate?: string | null
   color?: string | null
+}
+
+// 태스크 담당자 수정 요청 타입
+export type UpdateTaskAssigneesRequest = {
+  userIds: number[]
 }
 
 // 태스크 이동 파라미터 타입 (status + priority 업데이트)
@@ -54,6 +68,7 @@ export type EpicWithTasks = {
   dueDate: string | null
   color: string | null
   tasks: BoardTask[]
+  assignees: Assignee[]
 }
 
 // 에픽 생성 요청 타입
@@ -75,4 +90,10 @@ export type UpdateEpicRequest = {
   startDate?: string | null
   dueDate?: string | null
   color?: string | null
+}
+
+// 에픽 담당자 수정 요청 타입
+export type UpdateEpicAssigneesRequest = {
+  epicId: number
+  userIds: number[]
 }

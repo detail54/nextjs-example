@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createTask, updateTask, deleteTask, moveTask } from '@/features/common/api/taskApi'
+import { createTask, updateTask, deleteTask, moveTask, updateTaskAssignees } from '@/features/common/api/taskApi'
 import { epicKeys } from '@/features/common/api/queryKeys'
-import type { CreateTaskRequest, UpdateTaskRequest, TaskMoveParams } from '@/features/common/api/type'
+import type {
+  CreateTaskRequest,
+  UpdateTaskRequest,
+  TaskMoveParams,
+} from '@/features/common/api/type'
 
 type UpdateTaskVariables = UpdateTaskRequest & { id: number }
 
@@ -53,6 +57,19 @@ export function useTaskMove() {
     mutationFn: (params: TaskMoveParams) => moveTask(params),
     onSuccess: () => {
       // 보드 데이터 재조회
+      queryClient.invalidateQueries({ queryKey: epicKeys.list() })
+    },
+  })
+}
+
+// 태스크 담당자 수정 뮤테이션
+export function useTaskAssigneesUpdate() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ taskId, userIds }: { taskId: number; userIds: number[] }) =>
+      updateTaskAssignees(taskId, { userIds }),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: epicKeys.list() })
     },
   })

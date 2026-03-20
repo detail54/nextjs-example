@@ -54,4 +54,24 @@ export const epicAccordionStyles = {
 
   // 칸반 보드 영역
   content: cva('bg-secondary-900 p-4 rounded-b-lg')(),
+
+  // 에픽 헤더 내 담당자 아바타 묶음 (겹침 레이아웃)
+  assigneeRow: cva('flex items-center')(),
+
+  // 담당자 아바타 (겹침, 첫 번째 제외 -ml-2)
+  assigneeAvatar: cva(
+    'flex flex-shrink-0 items-center justify-center' +
+      ' w-6 h-6 rounded-full' +
+      ' text-white text-xs font-bold select-none' +
+      ' ring-2 ring-secondary-800',
+  )(),
+
+  // 담당자 초과 표시 (+N, 겹침)
+  assigneeOverflow: cva(
+    'flex flex-shrink-0 items-center justify-center' +
+      ' w-6 h-6 rounded-full -ml-2' +
+      ' bg-secondary-600' +
+      ' text-[10px] font-bold text-secondary-300 select-none' +
+      ' ring-2 ring-secondary-800',
+  )(),
 }

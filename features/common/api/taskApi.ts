@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { API_PATHS } from '@/context/apiPaths'
 import type { BasicResponse } from '@/server/core/db/type'
-import type { CreateTaskRequest, UpdateTaskRequest, TaskMoveParams } from './type'
+import type { CreateTaskRequest, UpdateTaskRequest, TaskMoveParams, UpdateTaskAssigneesRequest } from './type'
 
 // 태스크 생성 (todo 컬럼 맨 마지막에 추가)
 export async function createTask(
@@ -33,4 +33,15 @@ export async function deleteTask(id: number): Promise<BasicResponse<null>> {
 // 태스크 이동 (status + priority 업데이트)
 export async function moveTask({ id, status, priority }: TaskMoveParams): Promise<void> {
   await axios.patch<BasicResponse<null>>(API_PATHS.TASKS.MOVE(id), { status, priority })
+}
+
+// 태스크 담당자 교체
+export async function updateTaskAssignees(
+  taskId: number,
+  { userIds }: UpdateTaskAssigneesRequest,
+): Promise<BasicResponse<null>> {
+  const { data } = await axios.put<BasicResponse<null>>(API_PATHS.TASKS.UPDATE_ASSIGNEES(taskId), {
+    userIds,
+  })
+  return data
 }

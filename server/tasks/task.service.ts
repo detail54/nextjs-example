@@ -78,6 +78,11 @@ export const taskService = {
     return { ok: true }
   },
 
+  /** 태스크 담당자 교체 */
+  updateAssignees(taskId: number, userIds: number[]): void {
+    taskRepository.setAssignees(taskId, userIds)
+  },
+
   /** 태스크 삭제 */
   delete(id: number): void {
     taskRepository.delete(id)

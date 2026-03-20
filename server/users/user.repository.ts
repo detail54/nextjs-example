@@ -2,7 +2,7 @@ import { db } from '@/server/core/db/db'
 import { users } from '@/server/core/db/schema'
 import { eq, asc, desc, count } from 'drizzle-orm'
 import type { UserRole } from '@/server/core/db/type'
-import type { UserSortBy, UserSortOrder, UserListItem } from './type'
+import type { UserSortBy, UserSortOrder, UserListItem, SimpleUser } from './type'
 
 export const userRepository = {
   /** 전체 사용자 수 조회 */
@@ -44,5 +44,14 @@ export const userRepository = {
   /** 사용자 역할 변경 */
   updateRole(id: number, role: UserRole): void {
     db.update(users).set({ role }).where(eq(users.id, id)).run()
+  },
+
+  /** 전체 사용자 목록 조회 (담당자 선택용, 페이지네이션 없음) */
+  getAll(): SimpleUser[] {
+    return db
+      .select({ id: users.id, username: users.username })
+      .from(users)
+      .orderBy(asc(users.username))
+      .all()
   },
 }

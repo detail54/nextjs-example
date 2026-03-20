@@ -35,3 +35,9 @@ export type UpdateUserRoleParams = {
   id: number
   role: UserRole
 }
+
+/** 담당자 선택용 간략 사용자 타입 */
+export type SimpleUser = {
+  id: number
+  username: string
+}

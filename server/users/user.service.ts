@@ -1,6 +1,6 @@
 import { userRepository } from './user.repository'
 import type { GetUsersParams, GetUsersResult, UpdateUserRoleParams, SimpleUser } from './type'
-import { USER_MSG } from './userMsg'
+import { USER_MSG } from './user.message'
 
 export const userService = {
   /** 사용자 목록 페이지 조회 */

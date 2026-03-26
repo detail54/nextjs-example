@@ -1,6 +1,6 @@
 import { authService } from '@/server/auth/auth.service'
 import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE, ACCESS_TOKEN_MAX_AGE } from '@/server/auth/jwt'
-import { SERVER_AUTH_MSG } from '@/server/auth/authMsg'
+import { SERVER_AUTH_MSG } from '@/server/auth/auth.message'
 import { HTTP_STATUS } from '@/server/core/messages/httpStatus'
 import { logger } from '@/server/core/lib/logger'
 import { withLogger } from '@/server/core/lib/withLogger'

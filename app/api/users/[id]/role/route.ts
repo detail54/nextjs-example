@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { withAuth } from '@/server/auth/withAuth'
 import { userService } from '@/server/users/user.service'
 import { HTTP_STATUS } from '@/server/core/messages/httpStatus'
-import { USER_MSG } from '@/server/users/userMsg'
+import { USER_MSG } from '@/server/users/user.message'
 import type { BasicResponse, UserRole } from '@/server/core/db/type'
 
 // 사용자 역할 변경 (어드민 전용)

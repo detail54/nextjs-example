@@ -236,153 +236,108 @@ pnpm dev
 ```
 nextjs-example/
 │
-├── app/                        # Next.js App Router
-│   ├── (main)/                 # 인증 후 메인 레이아웃 그룹
-│   │   ├── layout.tsx          # LNB + 콘텐츠 + 사이드 패널 레이아웃
+├── app/                              # Next.js App Router (라우팅만 담당)
+│   ├── (main)/                       # 인증 후 메인 레이아웃 그룹
+│   │   ├── layout.tsx                # LNB + 콘텐츠 + 사이드 패널 레이아웃
 │   │   ├── board/page.tsx
-│   │   ├── calendar/page.tsx
-│   │   ├── timeline/page.tsx
-│   │   ├── notice/page.tsx
-│   │   ├── notice-manage/page.tsx
-│   │   ├── user-manage/page.tsx
-│   │   └── my-page/page.tsx
+│   │   ├── notice-manage/
+│   │   │   ├── page.tsx
+│   │   │   ├── new/page.tsx
+│   │   │   └── [id]/edit/page.tsx
+│   │   └── ...                       # timeline, notice, calendar, user-manage, my-page
 │   │
-│   ├── api/                    # Route Handlers (백엔드 API)
+│   ├── api/                          # Route Handlers (백엔드 API)
 │   │   ├── auth/
 │   │   │   ├── login/route.ts
 │   │   │   ├── logout/route.ts
 │   │   │   ├── me/route.ts
 │   │   │   └── refresh/route.ts
 │   │   ├── board/
-│   │   │   ├── route.ts                    # 전체 보드 조회
-│   │   │   ├── epics/
-│   │   │   │   ├── route.ts                # 에픽 생성
-│   │   │   │   └── [epicId]/
-│   │   │   │       ├── route.ts            # 에픽 수정/삭제
-│   │   │   │       └── tasks/route.ts      # 태스크 생성
-│   │   │   └── tasks/[id]/route.ts         # 태스크 수정(이동)
-│   │   ├── notice/route.ts                 # 공지사항 목록
+│   │   │   ├── route.ts              # 전체 보드 조회
+│   │   │   ├── epics/[epicId]/route.ts
+│   │   │   ├── epics/[epicId]/tasks/route.ts
+│   │   │   └── tasks/[id]/route.ts
+│   │   ├── notice/route.ts
+│   │   ├── notice-manage/
+│   │   │   ├── route.ts              # 목록 조회 + 등록 (ADMIN)
+│   │   │   └── [id]/route.ts         # 단건 조회 + 수정 + 삭제 (ADMIN)
 │   │   └── users/
-│   │       ├── route.ts                    # 사용자 목록 조회 (ADMIN)
-│   │       └── [id]/role/route.ts          # 사용자 역할 변경 (ADMIN)
+│   │       ├── route.ts              # 사용자 목록 조회 (ADMIN)
+│   │       ├── [id]/role/route.ts    # 역할 변경 (ADMIN)
+│   │       ├── me/route.ts           # 내 프로필 조회
+│   │       ├── me/email/route.ts     # 이메일 변경
+│   │       └── me/password/route.ts  # 비밀번호 변경
 │   │
-│   ├── auth/login/page.tsx     # 로그인 페이지
-│   ├── login-required/page.tsx # 미로그인 접근 안내
-│   ├── session-expired/page.tsx# 세션 만료 안내
-│   ├── unauthorized/page.tsx   # 권한 없음 안내
-│   ├── layout.tsx              # 루트 레이아웃 (Providers, Toaster)
-│   └── page.tsx                # 홈 (랜딩 페이지)
+│   ├── auth/login/page.tsx
+│   ├── login-required/page.tsx
+│   ├── session-expired/page.tsx
+│   ├── unauthorized/page.tsx
+│   ├── layout.tsx                    # 루트 레이아웃 (Providers, Toaster)
+│   └── page.tsx
 │
-├── layouts/                    # 앱 셸 레이아웃 컴포넌트
-│   └── lnb/                    # 사이드 내비게이션
-│       ├── Lnb.tsx
-│       ├── Lnb.styles.ts
-│       ├── LnbMenuItem.tsx
-│       ├── LnbMenuItem.styles.ts
-│       └── type.ts
+├── layouts/
+│   └── lnb/                          # 사이드 내비게이션 (Lnb, LnbMenuItem)
 │
-├── features/                   # 기능별 모듈 (프론트엔드의 핵심)
+├── features/                         # 기능별 모듈 (프론트엔드의 핵심)
 │   ├── common/
-│   │   ├── api/                # 에픽/태스크 공통 API (보드·타임라인 공유)
-│   │   └── components/         # EpicSidePanel, TaskSidePanel
-│   ├── auth/
-│   │   ├── api/                # API 호출 함수 + 타입 + queryKeys
-│   │   ├── components/         # 로그인 폼 컴포넌트
-│   │   └── hooks/              # useLogin, useLogout, useSession, useAuth
-│   ├── board/
-│   │   ├── api/
-│   │   ├── components/
-│   │   └── hooks/
-│   ├── notice/
-│   │   ├── api/
-│   │   ├── components/
-│   │   └── hooks/
-│   ├── timeline/
-│   │   ├── components/         # TimelinePage, TimelineEpicRow, TimelineTaskInlineCreate
-│   │   └── utils/              # timelineUtils (날짜→픽셀 변환, 월 목록 등)
-│   ├── user-manage/
-│   │   ├── api/                # userApi, queryKeys, type
-│   │   ├── components/         # UserManagePage
-│   │   └── hooks/              # useUserQuery, useUserRoleUpdate
-│   ├── calendar/components/    # 미구현
-│   ├── my-page/components/     # 미구현
-│   └── notice-manage/components/ # 미구현
+│   │   ├── api/                      # 에픽/태스크 공통 API (보드·타임라인 공유)
+│   │   └── components/               # EpicSidePanel, TaskSidePanel
+│   ├── notice-manage/
+│   │   ├── api/                      # noticeManageApi, queryKeys, type
+│   │   ├── components/               # NoticeManagePage, NoticeManageForm, ...
+│   │   ├── hooks/                    # useNoticeManageQuery, useNoticeCreate, ...
+│   │   └── utils/                    # 해당 feature의 utill
+│   └── ...                           # my-page, auth, notice, user-manage 동일 구조 (api, components, hooks)
+├── components/                       # 공용 UI 컴포넌트 (기능 무관 범용 프리미티브)
+│   ├── button/                       # BasicButton, IconButton, LinkButton, TextButton
+│   └── .../
 │
-├── components/                 # 공용 UI 컴포넌트 (기능 무관 범용 프리미티브)
-│   ├── button/                 # BasicButton, IconButton, LinkButton, TextButton
-│   ├── input/                  # BasicInput
-│   ├── modal/                  # Modal, BasicModal, ConfirmModal, ModalProvider
-│   ├── panel/                  # SidePanel (범용 패널 UI)
-│   │   ├── SidePanel.tsx
-│   │   └── SidePanel.styles.ts
-│   ├── list/                   # DataList, DataListSkeleton
-│   ├── pagination/             # Pagination
-│   ├── select/                 # SelectBox (portal 기반 드롭다운)
-│   ├── dropdown/               # DropdownMenu (portal 방식)
-│   ├── datepicker/             # DatePicker
-│   ├── inline-edit/            # InlineEdit
-│   └── icon/                   # Icon 래퍼
-│
-├── server/                     # 서버 전용 코드 (브라우저에서 실행 안 됨)
+├── server/                           # 서버 전용 코드 (브라우저에서 실행 안 됨)
 │   ├── core/
 │   │   ├── db/
-│   │   │   ├── db.ts           # DB 연결 + 테이블 생성 + 초기 데이터
-│   │   │   ├── schema.ts       # Drizzle 스키마 정의
-│   │   │   └── type.ts         # DB row 타입 + Response 공용 타입
+│   │   │   ├── db.ts                 # DB 연결 + 테이블 생성 + 초기 데이터
+│   │   │   ├── schema.ts             # Drizzle 스키마 정의
+│   │   │   └── type.ts               # DB row 타입 + Response 공용 타입
 │   │   ├── lib/
-│   │   │   ├── withLogger.ts   # 요청/응답 로깅 미들웨어
-│   │   │   └── logger.ts       # 콘솔 로거
+│   │   │   ├── withLogger.ts         # 요청/응답 로깅 미들웨어
+│   │   │   └── logger.ts             # 콘솔 로거
 │   │   ├── messages/
-│   │   │   └── httpStatus.ts   # HTTP 상태 메시지 상수
-│   │   └── type.ts             # 공용 서버 타입
+│   │   │   └── httpStatus.ts         # HTTP 상태 메시지 상수
+│   │   └── type.ts                   # 공용 서버 타입
 │   ├── auth/
 │   │   ├── auth.repository.ts
 │   │   ├── auth.service.ts
-│   │   ├── authenticate.ts     # 인증/권한 검사 유틸
-│   │   ├── authError.ts        # 인증 커스텀 에러 클래스
-│   │   ├── authMsg.ts
-│   │   ├── jwt.ts              # JWT 발급/검증
+│   │   ├── auth.message.ts           # 서버 응답 메시지 상수
+│   │   ├── authenticate.ts           # 인증/권한 검사 유틸
+│   │   ├── authError.ts              # 인증 커스텀 에러 클래스
+│   │   ├── jwt.ts                    # JWT 발급/검증
 │   │   ├── type.ts
-│   │   └── withAuth.ts         # 인증 미들웨어 (route 래퍼)
+│   │   └── withAuth.ts               # 인증 미들웨어 (route 래퍼)
 │   ├── epics/
 │   │   ├── epic.repository.ts
 │   │   ├── epic.service.ts
-│   │   ├── epicMsg.ts
+│   │   ├── epic.message.ts
 │   │   └── type.ts
-│   ├── notices/
-│   │   ├── notice.repository.ts
-│   │   ├── notice.service.ts
-│   │   └── type.ts
-│   ├── tasks/
-│   │   ├── task.repository.ts
-│   │   ├── task.service.ts
-│   │   ├── taskMsg.ts
-│   │   └── type.ts
-│   └── users/
-│       ├── user.repository.ts
-│       ├── user.service.ts
-│       ├── userMsg.ts
-│       └── type.ts
+│   └── ...                           # notices, tasks, users 동일 구조
 │
-├── stores/                     # Zustand 전역 상태
-│   ├── useBasicModalStore.ts   # BasicModal 상태
-│   ├── useConfirmModalStore.ts # ConfirmModal 상태
-│   ├── useEpicPanelStore.ts    # 에픽 등록/수정 패널 상태
-│   └── useTaskPanelStore.ts    # 태스크 상세 패널 상태
+├── stores/                           # Zustand 전역 상태
+│   ├── useBasicModalStore.ts
+│   ├── useConfirmModalStore.ts
+│   └── ...                           # useEpicPanelStore, useTaskPanelStore
 │
-├── context/                    # 앱 전체 상수/설정
-│   ├── apiPaths.ts             # API 경로 상수
-│   ├── appPaths.ts             # 페이지 경로 상수
-│   ├── constants.ts            # 도메인 상수 (TASK_STATUS, EPIC_STATUS, USER_ROLE)
-│   ├── menuConfig.ts           # LNB 메뉴 설정 (COMMON_MENU_LIST, ADMIN_MENU_LIST)
-│   ├── pageTitles.ts           # 페이지 제목 메타데이터
-│   └── messages/               # UI 메시지 상수
+├── context/                          # 앱 전체 상수/설정
+│   ├── apiPaths.ts                   # API 경로 상수
+│   ├── appPaths.ts                   # 페이지 경로 상수
+│   ├── constants.ts                  # 도메인 상수 (TASK_STATUS, EPIC_STATUS 등)
+│   ├── menuConfig.ts                 # LNB 메뉴 설정
+│   ├── pageTitles.ts                 # 페이지 제목 메타데이터
+│   └── messages/                     # 기능별 UI 메시지 상수 (boardMsg.ts 등)
 │
 ├── lib/
-│   ├── Providers.tsx           # QueryClientProvider + ModalProvider 래퍼
-│   └── queryClient.ts          # QueryClient 설정
+│   ├── Providers.tsx                 # QueryClientProvider + ModalProvider 래퍼
+│   └── queryClient.ts                # QueryClient 설정
 │
-└── db.sqlite                   # SQLite 데이터베이스 파일 (자동 생성)
+└── db.sqlite                         # SQLite 데이터베이스 파일 (자동 생성)
 ```
 
 ### 핵심 설계 원칙

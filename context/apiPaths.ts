@@ -26,6 +26,9 @@ export const API_PATHS = {
     LIST: '/api/users',
     UPDATE_ROLE: (id: number) => `/api/users/${id}/role`,
     ALL: '/api/users/all',
+    ME: '/api/users/me',
+    UPDATE_MY_EMAIL: '/api/users/me/email',
+    UPDATE_MY_PASSWORD: '/api/users/me/password',
   },
   TASKS: {
     CREATE: (epicId: number) => `/api/epics/${epicId}/tasks`,

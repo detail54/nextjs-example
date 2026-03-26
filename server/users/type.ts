@@ -1,5 +1,34 @@
 import type { UserRole } from '@/server/core/db/type'
 
+// ─── 마이페이지 타입 ──────────────────────────────────────────────
+
+/** 내 프로필 정보 */
+export type UserProfile = {
+  id: number
+  username: string
+  email: string
+  role: UserRole
+  createdAt: string
+}
+
+/** 이메일 변경 파라미터 */
+export type UpdateMyEmailParams = {
+  userId: number
+  username: string
+  email: string
+  currentPassword: string
+}
+
+/** 비밀번호 변경 파라미터 */
+export type UpdateMyPasswordParams = {
+  userId: number
+  username: string
+  currentPassword: string
+  newPassword: string
+}
+
+// ─── 사용자 목록 조회 타입 ────────────────────────────────────────
+
 /** 사용자 목록 조회 정렬 기준 컬럼 */
 export type UserSortBy = 'username' | 'createdAt'
 

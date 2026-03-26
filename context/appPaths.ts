@@ -21,6 +21,8 @@ export const APP_PATHS = {
   },
   NOTICE_MANAGE: {
     ROOT: '/notice-manage',
+    NEW: '/notice-manage/new',
+    EDIT: (id: number) => `/notice-manage/${id}/edit`,
   },
   USER_MANAGE: {
     ROOT: '/user-manage',

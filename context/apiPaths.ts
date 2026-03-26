@@ -15,6 +15,13 @@ export const API_PATHS = {
   NOTICE: {
     LIST: '/api/notice',
   },
+  NOTICE_MANAGE: {
+    LIST: '/api/notice-manage',
+    CREATE: '/api/notice-manage',
+    DETAIL: (id: number) => `/api/notice-manage/${id}`,
+    UPDATE: (id: number) => `/api/notice-manage/${id}`,
+    DELETE: (id: number) => `/api/notice-manage/${id}`,
+  },
   EPICS: {
     LIST: '/api/epics',
     CREATE: '/api/epics',

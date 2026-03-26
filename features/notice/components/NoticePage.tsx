@@ -9,6 +9,7 @@ import Pagination from '@/components/pagination/Pagination'
 import { noticePageStyles } from './NoticePage.styles'
 import type { NoticeItem, NoticeSortBy, NoticeSortOrder } from '../api/type'
 import type { ListColumn } from '@/components/list/type'
+import { formatDate } from '../utils/noticeUtils'
 
 // 페이지 사이즈 옵션 목록
 const PAGE_SIZE_OPTIONS = [10, 20, 30]
@@ -19,11 +20,6 @@ const SORT_MAP: Record<string, { sortBy: NoticeSortBy; sortOrder: NoticeSortOrde
   createdAt_asc: { sortBy: 'createdAt', sortOrder: 'asc' },
   title_asc: { sortBy: 'title', sortOrder: 'asc' },
   title_desc: { sortBy: 'title', sortOrder: 'desc' },
-}
-
-// YYYY-MM-DD HH:MM:SS → YYYY.MM.DD 형식 변환
-function formatDate(dateStr: string): string {
-  return dateStr.slice(0, 10).replace(/-/g, '.')
 }
 
 // 공지사항 페이지 컴포넌트

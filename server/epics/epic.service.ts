@@ -1,6 +1,6 @@
 import { epicRepository } from './epic.repository'
 import { taskRepository } from '@/server/tasks/task.repository'
-import { SERVER_EPIC_MSG } from './epicMsg'
+import { SERVER_EPIC_MSG } from './epic.message'
 import { type EpicStatus } from '@/server/core/db/type'
 import { type EpicWithTasks } from '@/features/common/api/type'
 import { type ServiceResult, type ServiceDataResult } from '@/server/core/type'

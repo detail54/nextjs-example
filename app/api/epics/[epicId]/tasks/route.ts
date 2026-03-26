@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authenticate } from '@/server/auth/authenticate'
 import { taskService } from '@/server/tasks/task.service'
-import { SERVER_EPIC_MSG } from '@/server/epics/epicMsg'
+import { SERVER_EPIC_MSG } from '@/server/epics/epic.message'
 import type { BasicResponse } from '@/server/core/db/type'
 
 type RouteContext = { params: Promise<{ epicId: string }> }

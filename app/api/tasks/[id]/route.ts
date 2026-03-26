@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authenticate, authenticateAdmin } from '@/server/auth/authenticate'
 import { taskService } from '@/server/tasks/task.service'
-import { SERVER_TASK_MSG } from '@/server/tasks/taskMsg'
+import { SERVER_TASK_MSG } from '@/server/tasks/task.message'
 import type { BasicResponse, TaskStatus } from '@/server/core/db/type'
 
 type RouteContext = { params: Promise<{ id: string }> }

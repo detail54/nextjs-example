@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAccessToken, ACCESS_TOKEN_COOKIE } from './jwt'
 import { AuthError, AuthErrorCode } from './authError'
-import { SERVER_AUTH_MSG } from './authMsg'
+import { SERVER_AUTH_MSG } from './auth.message'
 import { HTTP_STATUS } from '@/server/core/messages/httpStatus'
 import type { BasicResponse } from '@/server/core/db/type'
 

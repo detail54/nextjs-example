@@ -10,7 +10,7 @@ import type {
   UpdateMyEmailParams,
   UpdateMyPasswordParams,
 } from './type'
-import { USER_MSG } from './userMsg'
+import { USER_MSG } from './user.message'
 import type { ServiceResult, ServiceDataResult } from '@/server/core/type'
 
 export const userService = {

@@ -1,12 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <!-- 배경 원 -->
-  <rect width="32" height="32" rx="8" fill="#6366f1"/>
-  <!-- 칸반 보드: 왼쪽 컬럼 -->
-  <rect x="5" y="8" width="6" height="12" rx="2" fill="white" opacity="0.9"/>
-  <!-- 칸반 보드: 가운데 컬럼 (더 짧음) -->
-  <rect x="13" y="8" width="6" height="8" rx="2" fill="white" opacity="0.9"/>
-  <!-- 칸반 보드: 오른쪽 컬럼 -->
-  <rect x="21" y="8" width="6" height="10" rx="2" fill="white" opacity="0.9"/>
-  <!-- 하단 바 -->
-  <rect x="5" y="22" width="22" height="2" rx="1" fill="white" opacity="0.4"/>
+  <!-- 노트 배경 -->
+  <rect x="1.5" y="1.5" width="29" height="29" rx="5" fill="#f5eedd" stroke="#e0d3be" stroke-width="0.8"/>
+  <!-- N 왼쪽 바 -->
+  <path d="M5,8 L5,24" stroke="#5c4d3c" stroke-width="2" stroke-linecap="round"/>
+  <!-- N 대각선 -->
+  <path d="M5,8 L16,24" stroke="#5c4d3c" stroke-width="2" stroke-linecap="round"/>
+  <!-- T 스템 = N 오른쪽 바 (공유) -->
+  <path d="M16,8 L16,24" stroke="#5c4d3c" stroke-width="2" stroke-linecap="round"/>
+  <!-- T 크로스바 (N 왼쪽 바에 닿지 않음) -->
+  <path d="M10.5,8 L21,8" stroke="#5c4d3c" stroke-width="2" stroke-linecap="round"/>
+  <!-- o (하단 정렬, NT에 바짝) -->
+  <circle cx="23.5" cy="19.5" r="4.5" stroke="#5c4d3c" stroke-width="2" fill="none"/>
 </svg>

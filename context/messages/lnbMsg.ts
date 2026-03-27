@@ -1,6 +1,6 @@
 // LNB 관련 문구
 export const LNB_MSG = {
-  BRAND: 'TaskFlow',
+  BRAND: 'Noto',
   BOARD: '보드',
   CALENDAR: '캘린더',
   TIMELINE: '타임라인',

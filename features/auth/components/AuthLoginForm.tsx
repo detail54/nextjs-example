@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { SquareCheckBig, User, Lock } from 'lucide-react'
+import { NotebookPen, User, Lock } from 'lucide-react'
 import BasicButton from '@/components/button/BasicButton'
 import BasicInput from '@/components/input/BasicInput'
 import LinkButton from '@/components/button/LinkButton'
@@ -43,7 +43,7 @@ export default function AuthLoginForm() {
           <div className={s.brandTop}>
             {/* 브랜드 아이콘 */}
             <div className={s.brandIconWrapper}>
-              <Icon icon={SquareCheckBig} size='xl' className='stroke-white' />
+              <Icon icon={NotebookPen} size='xl' className='stroke-white' />
             </div>
 
             <div>

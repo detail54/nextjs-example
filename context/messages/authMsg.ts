@@ -1,6 +1,6 @@
 // 인증 관련 문구 상수
 export const AUTH_MSG = {
-  BRAND_NAME: 'TaskFlow',
+  BRAND_NAME: 'Noto',
   BRAND_DESCRIPTION: '팀과 함께 더 스마트하게 일하세요',
 
   LOGIN_TITLE: '환영합니다',
@@ -32,7 +32,7 @@ export const AUTH_MSG = {
   SESSION_EXPIRED_TITLE: '세션이 만료되었습니다',
   SESSION_EXPIRED_DESC: '인증이 만료되었습니다. 다시 로그인해 주세요.',
 
-  COPYRIGHT: '© 2026 TaskFlow. All rights reserved.',
+  COPYRIGHT: '© 2026 Noto. All rights reserved.',
   BRAND_FEATURES: ['프로젝트 관리', '팀 협업', '실시간 진행 현황'] as const,
 
   // 계정 추가 (회원가입)

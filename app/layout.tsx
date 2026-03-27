@@ -15,7 +15,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='ko'>
+    <html lang='ko' data-theme='dark' suppressHydrationWarning>
+      <head>
+        {/* 테마 깜빡임 방지 - 하이드레이션 전 localStorage에서 테마 적용 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=JSON.parse(localStorage.getItem('noto-theme')||'{}');document.documentElement.setAttribute('data-theme',s.state?.theme||'dark')}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body>
         <Providers>
           {children}

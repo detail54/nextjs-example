@@ -20,7 +20,7 @@ Next.js App Router 기반의 풀스택 프로젝트입니다.
 
 ### 프론트엔드
 
-| 라이브러리                     | 용도                         |
+| 라이브러리                     | 용도                              |
 | ------------------------------ | ---------------------------- |
 | Next.js 16 (App Router)        | 풀스택 프레임워크            |
 | TailwindCSS 4                  | 스타일링                     |
@@ -258,3 +258,11 @@ users
 - 페이지네이션 목록에서 update 시 → 해당 페이지 쿼리키만 invalidate
 - 컴포넌트 파일(`.tsx`)과 스타일 파일(`.styles.ts`) 항상 쌍으로 작성
 - API 데이터를 표시하는 컴포넌트는 스켈레톤 필수
+
+### 테마
+
+- 색상 토큰은 `app/globals.css`의 `@theme` 블록에서 CSS 변수로 정의
+- 테마별 오버라이드는 `[data-theme='...']` 셀렉터로 CSS 변수 재정의
+- 현재 지원 테마: `dark` (기본) / `vintage` (웜 세피아 + 테라코타)
+- 테마 상태: `stores/useThemeStore.ts` (Zustand persist, `localStorage` 저장)
+- 새 테마 추가 시 `globals.css`에 오버라이드 블록만 추가하면 됨

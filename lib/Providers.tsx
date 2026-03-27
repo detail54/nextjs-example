@@ -4,6 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState } from 'react'
 import ModalProvider from '@/components/modal/ModalProvider'
+import ThemeInitializer from './ThemeInitializer'
 import { createQueryClient } from './queryClient'
 
 // 전역 Provider 래퍼 - QueryClient 및 모달 제공
@@ -13,6 +14,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      {/* 테마 DOM 동기화 */}
+      <ThemeInitializer />
       {children}
       {/* 전역 모달 - useConfirmModalStore / useBasicModalStore로 제어 */}
       <ModalProvider />

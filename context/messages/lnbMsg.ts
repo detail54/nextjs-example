@@ -17,4 +17,8 @@ export const LNB_MSG = {
   UNAUTHORIZED_BACK: '돌아가기',
   LOGOUT_CONFIRM_TITLE: '로그아웃',
   LOGOUT_CONFIRM_DESC: '정말 로그아웃 하시겠습니까?',
+  THEME_DARK: '다크 테마',
+  THEME_OLIVE: '올리브 테마',
+  THEME_BLUE: '블루 테마',
+  THEME_WHITE: '화이트 테마',
 } as const

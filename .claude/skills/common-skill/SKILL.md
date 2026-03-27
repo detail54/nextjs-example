@@ -26,3 +26,10 @@ description: 모든 요청/명령에 항상 사용.
 - app 폴던 안에는 각 페이지별 route, layout, page만 구성.
 - db는 snake_case, 그외 api response나 frontend 단에서는 모두 camelCase로 사용.
 - 파일 경로 변경시 import 중인 파일들 경로 에러 확인.
+
+## 모든 작업 후 아래와 같은 경우에만 README 수정 및 추가 작성.
+
+- 폴더구조, 파일과 코드의 패턴 변경사항 있을경우.
+- 라이브러리 추가 사용시.
+- 기능 추가 및 수정된 경우.
+- 데이터 베이스 스키마 변경된 경우.

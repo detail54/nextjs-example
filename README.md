@@ -1,4 +1,4 @@
-# Next.js 풀스택 프로젝트
+# Noto
 
 Next.js App Router 기반의 풀스택 프로젝트입니다.
 프론트엔드(React)와 백엔드(API Routes)를 하나의 저장소에서 관리합니다.
@@ -86,7 +86,7 @@ pnpm dev
 ## 3. 폴더 구조
 
 ```
-nextjs-example/
+noto/
 │
 ├── app/                              # Next.js App Router (라우팅만 담당)
 │   ├── (main)/                       # 인증 후 메인 레이아웃 그룹

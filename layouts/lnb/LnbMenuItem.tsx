@@ -8,11 +8,7 @@ import type { LnbMenuItemProps, LnbActionItemProps } from './type'
 // 네비게이션 링크 메뉴 아이템
 export function LnbMenuItem({ label, path, icon, isActive, isCollapsed }: LnbMenuItemProps) {
   return (
-    <Link
-      href={path}
-      className={lnbItemStyle({ isActive })}
-      title={isCollapsed ? label : undefined}
-    >
+    <Link href={path} className={lnbItemStyle({ isActive })} title={isCollapsed ? label : undefined}>
       <span className={lnbItemIconStyle()}>
         <Icon icon={icon} size='md' />
       </span>

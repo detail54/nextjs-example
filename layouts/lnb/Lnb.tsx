@@ -10,12 +10,9 @@ import {
   Users,
   UserCircle,
   LogOut,
+  Settings,
   ChevronLeft,
   ChevronRight,
-  Sun,
-  Moon,
-  SunDim,
-  Contrast,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
@@ -23,7 +20,6 @@ import Image from 'next/image'
 import Icon from '@/components/icon/Icon'
 import { LnbMenuItem, LnbActionItem } from './LnbMenuItem'
 import { useConfirmModalStore } from '@/stores/useConfirmModalStore'
-import { useThemeStore } from '@/stores/useThemeStore'
 import {
   lnbWrapperStyle,
   lnbStyle,
@@ -62,7 +58,6 @@ export function Lnb() {
   const { data: session } = useSession()
   const { mutate: logout } = useLogout()
   const { openConfirmModal } = useConfirmModalStore()
-  const { theme, setTheme } = useThemeStore()
 
   // 현재 유저가 어드민인지 여부
   const isAdmin = session?.role === USER_ROLE.ADMIN
@@ -121,32 +116,20 @@ export function Lnb() {
           )}
         </nav>
 
-        {/* 하단 메뉴 (테마 토글 + 마이페이지 + 로그아웃) */}
+        {/* 하단 메뉴 (마이페이지 + 설정 + 로그아웃) */}
         <div className={lnbBottomStyle()}>
-          {/* 테마 전환 - dark → olive → blue → white → dark 순환 */}
-          <LnbActionItem
-            label={
-              theme === 'dark'
-                ? LNB_MSG.THEME_OLIVE
-                : theme === 'olive'
-                  ? LNB_MSG.THEME_BLUE
-                  : theme === 'blue'
-                    ? LNB_MSG.THEME_WHITE
-                    : LNB_MSG.THEME_DARK
-            }
-            icon={theme === 'dark' ? Sun : theme === 'olive' ? SunDim : theme === 'blue' ? Contrast : Moon}
-            isCollapsed={isCollapsed}
-            onClick={() =>
-              setTheme(
-                theme === 'dark' ? 'olive' : theme === 'olive' ? 'blue' : theme === 'blue' ? 'white' : 'dark',
-              )
-            }
-          />
           <LnbMenuItem
             label={LNB_MSG.MY_PAGE}
             path={APP_PATHS.MY_PAGE.ROOT}
             icon={UserCircle}
             isActive={pathname.startsWith(APP_PATHS.MY_PAGE.ROOT)}
+            isCollapsed={isCollapsed}
+          />
+          <LnbMenuItem
+            label={LNB_MSG.SETTINGS}
+            path={APP_PATHS.SETTINGS.ROOT}
+            icon={Settings}
+            isActive={pathname.startsWith(APP_PATHS.SETTINGS.ROOT)}
             isCollapsed={isCollapsed}
           />
           <LnbActionItem

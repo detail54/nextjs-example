@@ -30,6 +30,9 @@ export const APP_PATHS = {
   MY_PAGE: {
     ROOT: '/my-page',
   },
+  SETTINGS: {
+    ROOT: '/settings',
+  },
   UNAUTHORIZED: '/unauthorized',
   /** 401 - 토큰 없음 (미로그인 상태로 보호 경로 접근) */
   LOGIN_REQUIRED: '/login-required',
